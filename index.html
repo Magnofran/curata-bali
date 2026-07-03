@@ -855,7 +855,7 @@
             text-align: right;
             padding-right: 3rem;
             color: #888;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
         }
 
         .col-center {
@@ -872,7 +872,7 @@
             padding-left: 3rem;
             color: var(--text-dark);
             font-weight: 500;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
         }
 
         /* Table Header Formatting */
@@ -886,7 +886,14 @@
             letter-spacing: 2px;
             font-size: 0.8rem;
             font-weight: 600;
+        }
+
+        .header-row .col-left {
             color: #999;
+        }
+
+        .header-row .col-right {
+            color: var(--text-dark);
         }
 
         /* Footer & Footnote */
@@ -926,7 +933,7 @@
             .col-left, .col-right {
                 text-align: center;
                 padding: 0;
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .col-center {
                 transform: rotate(90deg);
@@ -941,7 +948,7 @@
         /* Seamless Exploration Carousel (Mobile) */
         .exploration-grid {
             display: flex;
-            gap: 1.5rem;
+            gap: 0; /* Removes gap so 100% width steps align seamlessly */
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             padding-bottom: 1.5rem;
@@ -954,21 +961,25 @@
         }
         
         .exploration-step {
-            flex: 0 0 85%;
+            flex: 0 0 100%; /* Forces active step to command the entire viewport */
+            width: 100%;
             scroll-snap-align: center;
             text-align: center;
+            padding: 0 1.5rem; /* Creates internal breathing room so text avoids arrows */
+            box-sizing: border-box;
         }
         
         @media (min-width: 768px) {
             .exploration-grid {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
-                gap: 2rem;
+                gap: 2rem; /* Restores the visual gap for the desktop grid */
                 overflow-x: visible;
                 padding-bottom: 0;
             }
             .exploration-step {
                 flex: auto;
+                padding: 0; /* Resets internal padding for desktop */
             }
         }
 
@@ -1098,7 +1109,7 @@
 
 	<section id="seamless-exploration" style="max-width: 1150px; margin: 4rem auto 2rem auto; padding: 0 2rem;">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <p style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless Exploration</p>
+            <p style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless</p>
         </div>
         
         <div class="exploration-wrapper" style="position: relative;">
@@ -2587,11 +2598,11 @@
 
                 // Listen for physical arrow clicks
                 exploreLeft.addEventListener('click', () => {
-                    exploreGrid.scrollBy({ left: -exploreGrid.clientWidth * 0.85, behavior: 'smooth' });
+                    exploreGrid.scrollBy({ left: -exploreGrid.clientWidth, behavior: 'smooth' });
                 });
 
                 exploreRight.addEventListener('click', () => {
-                    exploreGrid.scrollBy({ left: exploreGrid.clientWidth * 0.85, behavior: 'smooth' });
+                    exploreGrid.scrollBy({ left: exploreGrid.clientWidth, behavior: 'smooth' });
                     exploreRight.classList.remove('pulse-arrow');
                 });
                 
