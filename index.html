@@ -972,20 +972,51 @@
             }
         }
 
-        /* Mobile Swipe Hint */
-        .mobile-swipe-hint {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-            animation: pulseFade 2s infinite;
+        /* Mobile Interactive Nav Arrows */
+        .explore-nav-btn {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-dark);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s ease, background 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 1.2rem;
         }
 
-        /* Hide the hint on Desktop where grid is fully visible */
+        .explore-nav-btn:active {
+            background: var(--border-light);
+        }
+        
+        .explore-nav-btn.left { left: -10px; }
+        .explore-nav-btn.right { right: -10px; }
+        
+        .explore-nav-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .pulse-arrow {
+            animation: pulseShadow 2s infinite;
+        }
+        
+        @keyframes pulseShadow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.2); }
+            50% { box-shadow: 0 0 0 6px rgba(15, 23, 42, 0); }
+        }
+
+        /* Hide the nav arrows on Desktop where grid is fully visible */
         @media (min-width: 768px) {
-            .mobile-swipe-hint {
+            .explore-nav-btn {
                 display: none;
             }
         }
@@ -1068,29 +1099,33 @@
 	<section id="seamless-exploration" style="max-width: 1150px; margin: 4rem auto 2rem auto; padding: 0 2rem;">
         <div style="text-align: center; margin-bottom: 3rem;">
             <p style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless Exploration</p>
-            <p class="mobile-swipe-hint">Swipe to view steps &rarr;</p>
         </div>
         
-        <div class="exploration-grid">
-            <div class="exploration-step">
-                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
-                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Select Experience</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Browse our curated collection and review the inclusions.</p>
-            </div>
-            <div class="exploration-step">
-                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
-                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Request Reservation</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Submit your dates and preferences via our secure form.</p>
-            </div>
-            <div class="exploration-step">
-                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">3</span>
-                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Concierge Confirmation</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">We verify availability and send your deposit link.</p>
-            </div>
-            <div class="exploration-step">
-                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">4</span>
-                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Enjoy Bali</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Your private host arrives. Settle the balance upon pickup.</p>
+        <div class="exploration-wrapper" style="position: relative;">
+            <button class="explore-nav-btn left hidden" id="exploreNavLeft" aria-label="Previous step">&larr;</button>
+            <button class="explore-nav-btn right pulse-arrow" id="exploreNavRight" aria-label="Next step">&rarr;</button>
+            
+            <div class="exploration-grid" id="exploreGrid">
+                <div class="exploration-step">
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Select Experience</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Browse our curated collection and review the inclusions.</p>
+                </div>
+                <div class="exploration-step">
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Request Reservation</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Submit your dates and preferences via our secure form.</p>
+                </div>
+                <div class="exploration-step">
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">3</span>
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Concierge Confirmation</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">We verify availability and send your deposit link.</p>
+                </div>
+                <div class="exploration-step">
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">4</span>
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Enjoy Bali</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Your private host arrives. Settle the balance upon pickup.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -2515,6 +2550,53 @@
                 faqScrollRight.addEventListener('click', () => {
                     faqCarousel.scrollBy({ left: getFaqScrollAmount(), behavior: 'smooth' });
                 });
+            }
+
+            // Seamless Exploration Mobile Navigation Logic
+            const exploreGrid = document.getElementById('exploreGrid');
+            const exploreLeft = document.getElementById('exploreNavLeft');
+            const exploreRight = document.getElementById('exploreNavRight');
+
+            if (exploreGrid && exploreLeft && exploreRight) {
+                const updateExploreArrows = () => {
+                    const scrollLeft = Math.ceil(exploreGrid.scrollLeft);
+                    const maxScroll = Math.floor(exploreGrid.scrollWidth - exploreGrid.clientWidth);
+                    
+                    // Show/Hide Left Arrow
+                    if (scrollLeft <= 5) {
+                        exploreLeft.classList.add('hidden');
+                    } else {
+                        exploreLeft.classList.remove('hidden');
+                    }
+                    
+                    // Show/Hide Right Arrow & Manage Pulse
+                    if (scrollLeft >= maxScroll - 5) {
+                        exploreRight.classList.add('hidden');
+                        exploreRight.classList.remove('pulse-arrow'); // Stop pulsing at end
+                    } else {
+                        exploreRight.classList.remove('hidden');
+                        if (scrollLeft > 5) {
+                            exploreRight.classList.remove('pulse-arrow'); // Stop pulsing after first interaction
+                        }
+                    }
+                };
+
+                // Listen for native swiping and orientation changes
+                exploreGrid.addEventListener('scroll', updateExploreArrows);
+                window.addEventListener('resize', updateExploreArrows); 
+
+                // Listen for physical arrow clicks
+                exploreLeft.addEventListener('click', () => {
+                    exploreGrid.scrollBy({ left: -exploreGrid.clientWidth * 0.85, behavior: 'smooth' });
+                });
+
+                exploreRight.addEventListener('click', () => {
+                    exploreGrid.scrollBy({ left: exploreGrid.clientWidth * 0.85, behavior: 'smooth' });
+                    exploreRight.classList.remove('pulse-arrow');
+                });
+                
+                // Initialize the correct arrow state on load
+                setTimeout(updateExploreArrows, 100);
             }
         });
 		
