@@ -785,6 +785,159 @@
                 font-size: 16px !important; 
             }
         }
+	/* -----------------------------------
+           THE CURATA DIFFERENCE (EDITORIAL) 
+           ----------------------------------- */
+        
+        .curata-difference {
+            padding: 8rem 2rem;
+            background-color: #FAFAFA;
+            text-align: center;
+        }
+
+        /* Hero Statement */
+        .difference-hero {
+            max-width: 900px;
+            margin: 0 auto 5rem auto;
+        }
+
+        .difference-hero .subheading {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            color: #888;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .difference-hero h2 {
+            font-size: 2.8rem;
+            line-height: 1.3;
+            color: var(--text-dark);
+            font-weight: 400;
+        }
+
+        /* Philosophy Text */
+        .difference-philosophy {
+            max-width: 700px;
+            margin: 0 auto 5rem auto;
+        }
+
+        .difference-philosophy h3 {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .difference-philosophy p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Editorial Comparison Layout */
+        .editorial-comparison {
+            max-width: 850px;
+            margin: 0 auto;
+            border-top: 1px solid #E5E5E5;
+        }
+
+        .editorial-row {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #E5E5E5;
+            padding: 2.5rem 0;
+        }
+
+        .col-left {
+            flex: 1;
+            text-align: right;
+            padding-right: 3rem;
+            color: #888;
+            font-size: 1.15rem;
+        }
+
+        .col-center {
+            width: 40px;
+            text-align: center;
+            color: #CCC;
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .col-right {
+            flex: 1;
+            text-align: left;
+            padding-left: 3rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1.15rem;
+        }
+
+        /* Table Header Formatting */
+        .editorial-row.header-row {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #CCC;
+        }
+
+        .header-row .col-left, .header-row .col-right {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+        }
+
+        /* Footer & Footnote */
+        .difference-footer {
+            max-width: 600px;
+            margin: 5rem auto 0 auto;
+        }
+
+        .signature-line {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .footnote {
+            font-size: 0.9rem;
+            color: #888;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .curata-difference {
+                padding: 5rem 1.5rem;
+            }
+            .difference-hero h2 {
+                font-size: 2.2rem;
+            }
+            .editorial-row {
+                flex-direction: column;
+                padding: 2rem 0;
+            }
+            .col-left, .col-right {
+                text-align: center;
+                padding: 0;
+                font-size: 1.1rem;
+            }
+            .col-center {
+                transform: rotate(90deg);
+                margin: 1rem 0;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+		
     </style>
 </head>
 <body>
@@ -830,6 +983,66 @@
         </div>
     </section>
 
+	<!-- The Curata Difference Section -->
+    <section class="curata-difference">
+        <div class="container">
+            
+            <div class="difference-hero">
+                <span class="subheading">Private by Design</span>
+                <h2>Luxury isn't measured by where you stay.<br>It's measured by how effortless the journey feels.</h2>
+            </div>
+
+            <div class="difference-philosophy">
+                <h3>The difference isn't where you go. It's how you experience it.</h3>
+                <p>Private hospitality isn't about exclusivity. It's about removing everything that distracts from the experience. From the moment you're collected until you're returned to your accommodation, every detail is quietly coordinated so you can remain present in the experience—not the logistics.</p>
+            </div>
+
+            <div class="editorial-comparison">
+                <div class="editorial-row header-row">
+                    <div class="col-left">Most Travelers Experience</div>
+                    <div class="col-center"></div>
+                    <div class="col-right">With Curata</div>
+                </div>
+                
+                <div class="editorial-row">
+                    <div class="col-left">Planning around the group</div>
+                    <div class="col-center">&rarr;</div>
+                    <div class="col-right">Your day flows at your pace</div>
+                </div>
+                
+                <div class="editorial-row">
+                    <div class="col-left">Shared transport</div>
+                    <div class="col-center">&rarr;</div>
+                    <div class="col-right">Your own private vehicle</div>
+                </div>
+                
+                <div class="editorial-row">
+                    <div class="col-left">Splitting attention across dozens of guests</div>
+                    <div class="col-center">&rarr;</div>
+                    <div class="col-right">A dedicated concierge, never stretched thin</div>
+                </div>
+                
+                <div class="editorial-row">
+                    <div class="col-left">Waiting between stops</div>
+                    <div class="col-center">&rarr;</div>
+                    <div class="col-right">Seamless transitions throughout the day</div>
+                </div>
+                
+                <div class="editorial-row">
+                    <div class="col-left">Thinking about logistics</div>
+                    <div class="col-center">&rarr;</div>
+                    <div class="col-right">Simply enjoying Bali</div>
+                </div>
+            </div>
+
+            <div class="difference-footer">
+                <h4 class="signature-line">Everything arranged. Nothing shared.</h4>
+                <p class="footnote">Every four guests are paired with their own concierge and private vehicle — so a party of 20 still moves as five effortless groups of four, not one crowded one.</p>
+            </div>
+
+        </div>
+    </section>
+	
     <section class="packages-section">
         <div class="section-header">
             <h2>Choose Your Experience or Service</h2>
