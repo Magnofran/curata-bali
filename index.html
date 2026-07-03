@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curated Bali Experiences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & Core Variables */
+        :root {
+            --bg-base: #f9fafb;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-vibrant: #C2A679; /* Muted Architectural Gold */
+            --accent-hover: #A88D60;
+            --border-light: #e2e8f0;
+            --radius-lg: 0px; 
+            --radius-md: 0px;
+            --shadow-soft: none; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+}
+
+	/* Editorial Register for Headers */
+        h1, h2, h3, .modal-body h3 { 
+            font-family: 'Cormorant Garamond', serif; 
+            letter-spacing: normal; /* Removes the tight -0.04em tech tracking */
+        }
+
+        /* Fix the Red Error Text on Inputs */
+        input, textarea, select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-bottom: 2px solid var(--border-light);
+            border-radius: 0;
+            background: rgba(15, 23, 42, 0.03);
+            font-family: inherit !important;
+            font-size: 0.95rem !important;
+            font-weight: 500;
+            color: var(--text-dark); /* Changed from #FF4F4F */
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-appearance: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            background: rgba(15, 23, 42, 0.06);
+            border-bottom: 2px solid var(--text-dark); /* Deep ink focus state instead of red */
+        }
+
+        /* Legacy negative tracking removed to allow Serif fonts to breathe */
+        
+        label, .card-tag, .trust-badge {
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .main-hero {
+            position: relative;
+            height: 75vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: url('images/hero.jpg') center/cover no-repeat;
+        }
+
+        .main-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.8));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            color: #ffffff;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            line-height: 1.4; /* Tightened from 1.6 */
+            max-width: 600px; /* Constrains the width so it doesn't sprawl */
+            margin: 0 auto; /* Keeps it centered */
+        }
+
+        .scroll-indicator {
+            text-decoration: none; /* Prevents default anchor underlining */
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            z-index: 2;
+            animation: pulseFade 2s infinite;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7), transparent);
+        }
+
+        @keyframes pulseFade {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, 0); }
+            50% { opacity: 1; transform: translate(-50%, 5px); }
+        }
+
+        /* Carousel Section */
+        .packages-section { padding: 4rem 0; max-width: 1400px; margin: 0 auto; }
+        .section-header { 
+            padding: 0 2rem; 
+            margin-bottom: 1.5rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .section-header h2 { 
+            font-size: clamp(1.5rem, 6vw, 2rem); 
+            line-height: 1.15; 
+            letter-spacing: -0.03em; 
+        }
+        
+        .carousel-nav {
+            display: none; /* Hidden on mobile */
+            gap: 0.5rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .carousel-nav { display: flex; }
+        }
+        
+        .carousel-btn {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-dark);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.2rem;
+        }
+        
+        .carousel-btn:hover {
+            background: var(--text-dark);
+            color: #ffffff;
+            border-color: var(--text-dark);
+        }
+
+        .carousel {
+            display: flex;
+            gap: 1rem; /* Tightened from 1.5rem */
+            overflow-x: auto;
+            padding: 1rem 2rem 4rem 2rem;
+            scroll-snap-type: x mandatory;
+            scroll-padding-left: 2rem;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel::-webkit-scrollbar, .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+
+        .card {
+            flex: 0 0 90%; /* Expanded from 85% to give text more horizontal space on mobile */
+            max-width: 400px;
+            scroll-snap-align: start;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) { .card { flex: 0 0 40%; } }
+        @media (min-width: 1024px) { .card { flex: 0 0 28%; } }
+
+        .card:hover {
+            transform: translate(-4px, -4px); 
+            box-shadow: 8px 8px 0px var(--text-dark);
+            border-color: var(--text-dark);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 240px;
+            width: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .price-anchor {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--text-dark);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .operational-directive {
+            margin: 1.5rem 0;
+        }
+
+        .operational-directive > strong {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .directive-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .directive-list li {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            padding: 1.25rem; /* Increased padding to match the "Before You Book" cards */
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            border-left: 2px solid var(--text-dark); /* Harmonized structural anchor */
+        }
+        
+        /* Apex Structural Span for Odd Items */
+        .directive-list li:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+        
+        .directive-list li strong {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-wrapper img { transform: scale(1.05); }
+
+        .card-content {
+            padding: 1.25rem 1.15rem; /* Reclaims horizontal space for the inner text */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-vibrant);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.2; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
+
+        .card-btn {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .card-btn::after {
+            content: '→';
+            color: var(--accent-vibrant); /* Locked to architectural gold */
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover .card-btn::after { transform: translateX(4px); }
+
+        /* Modal & Form */
+    dialog {
+        margin: auto;
+        padding: 0;
+        border: none;
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        max-width: 640px;
+        width: 95%;
+        height: 90vh;
+        flex-direction: column;
+    }
+    
+    @keyframes modalEnter {
+        from { opacity: 0; transform: scale(0.98) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    
+    @keyframes backdropEnter {
+        from { opacity: 0; backdrop-filter: blur(0px); }
+        to { opacity: 1; backdrop-filter: blur(4px); }
+    }
+
+    @keyframes contentStagger {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes systemRecalculate {
+        0% { opacity: 0.3; transform: scale(0.96) translateY(2px); color: var(--accent-vibrant); }
+        40% { opacity: 1; transform: scale(1.01) translateY(0); }
+        100% { opacity: 1; transform: scale(1); color: #ffffff; }
+    }
+
+    .recalculate-flash {
+        animation: systemRecalculate 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
+
+    dialog[open] { 
+        display: flex; 
+        animation: modalEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+    
+    dialog[open]::backdrop { 
+        background: rgba(15, 23, 42, 0.6); 
+        animation: backdropEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+
+    dialog[open] .modal-header { animation: contentStagger 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+    dialog[open] .modal-body { animation: contentStagger 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+
+    .modal-header {
+        flex-shrink: 0;
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+    }
+    .modal-header img { width: 100%; height: 100%; object-fit: cover; }
+
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .modal-body {
+        padding: 2rem 1.25rem;
+        overflow-y: auto;
+        flex-grow: 1;
+        -webkit-overflow-scrolling: touch;
+    }
+
+@media (max-width: 480px) {
+    .modal-body {
+        padding: 1.5rem 1rem;
+    }
+}
+
+        .modal-body h3 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .modal-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-dark); letter-spacing: -0.04em; }
+
+       input, textarea, select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-bottom: 2px solid var(--border-light);
+            border-radius: 0;
+            background: rgba(15, 23, 42, 0.03);
+            font-family: inherit !important;
+            font-size: 0.95rem !important;
+            font-weight: 500;
+            color: #FF4F4F; /* Premium Orange for confirmed user data */
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-appearance: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            background: rgba(15, 23, 42, 0.06);
+            border-bottom: 2px solid #FF4F4F; /* Premium Orange focus state */
+        }
+
+        /* Apex Disabled State */
+        select:disabled, input:disabled {
+            opacity: 0.35;
+            cursor: not-allowed !important;
+            color: var(--text-muted) !important;
+            background-image: none !important; /* Removes the dropdown arrow to signal it is locked */
+            border-bottom: 2px solid var(--border-light) !important;
+        }
+        
+        /* Apex Grid for Wellness Section */
+        .wellness-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+       /* Apex Placeholder Typography */
+        ::placeholder {
+            color: #94a3b8; 
+            font-size: 0.95rem !important;
+            font-weight: 400 !important;
+            letter-spacing: -0.01em;
+            font-family: inherit !important;
+            opacity: 1; 
+        }
+        
+        /* Harmonize unselected dropdown states */
+        select:invalid, select option[value=""][disabled] {
+            color: #94a3b8;
+        }
+
+        textarea { resize: vertical; }
+
+       input[readonly] {
+            background: var(--border-light);
+            color: var(--text-dark); /* Harmonized with new luxury palette */
+            cursor: not-allowed;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--accent-vibrant);
+            color: var(--text-dark); /* Contrast optimized for neon green */
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover { background: var(--accent-hover); }
+
+        /* Removed legacy multi-field phone styling */
+        .form-group.row { display: flex; gap: 1rem; }
+        .form-group.row .col { flex: 1; }
+
+        textarea {
+            width: 100%;
+            padding: 0.85rem;
+            border: 1px solid var(--border-light);
+            background: var(--bg-base);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        textarea:focus { background: var(--surface); border-color: var(--accent-vibrant); }
+
+        /* Responsive Date/Time Group */
+        .split-input-group {
+            display: flex;
+            gap: 1rem; /* Snaps to the universal column grid gap */
+        }
+        .split-input-group input, .split-input-group select { 
+            flex: 1; 
+            min-width: 0; 
+            min-height: 48px; 
+        }
+        
+        @media (max-width: 480px) {
+            .split-input-group, .form-group.row {
+                flex-direction: column;
+            }
+            .wellness-grid {
+                grid-template-columns: 1fr;
+            }
+            .split-input-group input {
+                width: 100% !important;
+            }
+            .directive-list, #inclusionsList {
+                grid-template-columns: 1fr;
+            }
+            .directive-list li:last-child:nth-child(odd),
+            #inclusionsList li:last-child:nth-child(odd) {
+                grid-column: auto; /* Releases the full-width span on mobile */
+            }
+        }
+
+        /* Custom Input */
+        #customCode { display: none; width: 80px; flex: none; padding: 0.85rem 0.5rem; text-align: center; }
+
+        /* Footer & Map */
+        .site-footer { background-color: var(--surface); border-top: 1px solid var(--border-light); padding: 3rem 2rem; margin-top: 2rem; text-align: center; }
+        .footer-content { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+        
+        .badge-separator { 
+            display: none; /* Hides the dot on mobile */
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem; /* MICRO-SPACING: Pulls phone and email tighter together */
+            margin: 1.5rem 0; /* MACRO-SPACING: Pushes the headline up and socials down */
+            font-weight: 500;
+        }
+
+        /* Expands back to the original layout on tablets and desktop */
+        @media (min-width: 768px) {
+            .trust-badge {
+                flex-direction: row;
+                gap: 0.75rem;
+            }
+            .badge-separator { 
+                display: block; 
+            }
+            .contact-info {
+                flex-direction: row;
+                gap: 2.5rem;
+                margin: 0; /* Resets the vertical spacing for the horizontal desktop view */
+            }
+        }
+        .contact-info a { color: var(--text-dark); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+        .contact-info a:hover { color: var(--accent-vibrant); }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-links a { color: var(--text-muted); transition: color 0.2s; }
+        .social-links a:hover { color: var(--accent-vibrant); }
+        .social-icon { width: 24px; height: 24px; fill: currentColor; }
+        .footer-copyright { margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted); }
+
+        .map-section { max-width: 1400px; margin: 2rem auto 4rem auto; padding: 0 2rem; }
+        .map-header { margin-bottom: 1.5rem; border-bottom: 2px solid var(--text-dark); padding-bottom: 0.5rem; display: inline-block; }
+        .map-header h2 { font-size: 1.5rem; letter-spacing: -0.02em; }
+        .map-container { width: 100%; height: 450px; border: 1px solid var(--border-light); background: var(--bg-base); position: relative; overflow: hidden; }
+        .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%) contrast(110%); transition: filter 0.5s ease; }
+        .map-container:hover iframe, .map-container:active iframe { filter: grayscale(0%) contrast(100%); }
+
+        /* Enhancements Block */
+        .enhancements-section { background: #ffffff; border: 1px solid var(--border-light); padding: 1.5rem; margin: 1.5rem 0; border-left: 3px solid var(--text-dark); }
+        .enhancements-section > label { display: block; margin-bottom: 0.5rem; font-size: 0.75rem; color: var(--text-dark); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+        .enhancement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .addon-item { display: flex; flex-direction: column; gap: 0.5rem; }
+        .addon-item label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin: 0; text-transform: none; letter-spacing: normal; }
+        .addon-item select { width: 100%; padding: 0.75rem; font-size: 0.9rem; border: 1px solid var(--border-light); background: var(--bg-base); outline: none; cursor: pointer; }
+	
+	/* --- Apex UX Upgrades --- */
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--surface);
+            color: var(--text-dark);
+            padding: 0.35rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-popular {
+            background: var(--text-dark);
+            color: #fff;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem; /* Dropped slightly to compress the paragraph */
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.35;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.75rem; /* Down-scaled to ensure single-line rendering */
+            font-weight: 500;
+            color: var(--text-dark);
+            border-top: 1px solid var(--border-light);
+            padding-top: 1rem;
+        }
+
+        .price-block {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        .price-value { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
+
+        /* Modal Inclusions Box Grid */
+        #inclusionsList {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem; /* Wider horizontal gap for borderless text */
+        }
+       #inclusionsList li {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.5rem 0; /* Tighter vertical padding */
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start; /* Aligns text to the top if it wraps */
+        }
+
+        /* Apex Structural Span for Odd Items */
+        #inclusionsList li:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+
+        /* Apex Upgrade: FAQ Carousel Nav */
+        .faq-carousel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 0.75rem;
+            gap: 1rem;
+        }
+        
+        .faq-nav {
+            display: none; /* Hidden on mobile to prioritize native swiping */
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+        
+        @media (min-width: 1024px) {
+            .faq-nav { display: flex; }
+        }
+        
+        .faq-btn {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+        
+        .faq-btn:hover {
+            background: var(--text-dark);
+            color: #ffffff;
+            border-color: var(--text-dark);
+        }
+
+        /* Apex Accordion FAQ */
+        .faq-accordion { display: flex; flex-direction: column; border-top: 1px solid var(--border-light); }
+        .faq-item { border-bottom: 1px solid var(--border-light); }
+        .faq-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            list-style: none; /* Removes default triangle */
+            outline: none;
+        }
+        .faq-summary::-webkit-details-marker { display: none; } /* Safari Support */
+        .faq-summary::after {
+            content: '+';
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+        }
+        .faq-item[open] .faq-summary::after {
+            content: '−';
+            transform: rotate(180deg);
+            color: var(--text-dark);
+        }
+        .faq-content {
+            padding-bottom: 1.5rem;
+            animation: faqFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes faqFadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+	/* Apex UX: Mobile Viewport Stabilization */
+        @media (max-width: 768px) {
+            input, textarea, select, ::placeholder {
+                font-size: 16px !important; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-hero">
+        <nav style="position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 2.5rem; display: flex; justify-content: space-between; z-index: 10;">
+            <span style="color: #ffffff; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.85rem;">Curata</span>
+        </nav>
+        
+       <div class="hero-content">
+            <h1>Experience Bali Differently.</h1>
+            <p>Private tours, in-villa wellness, and personalized concierge services designed to elevate every moment of your stay in Bali.</p>
+        </div>
+        <a href="#seamless-exploration" class="scroll-indicator">Explore</a>
+    </header>
+
+    <section id="seamless-exploration" style="max-width: 1150px; margin: 4rem auto 2rem auto; padding: 0 2rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless Exploration</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+            <div>
+                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
+                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Select Experience</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Browse our curated collection<br>and review the inclusions.</p>
+            </div>
+            <div>
+                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
+                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Request Reservation</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Submit your dates and preferences<br>via our secure form.</p>
+            </div>
+            <div>
+                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">3</span>
+                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Concierge Confirmation</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">We verify availability and<br>send your deposit link.</p>
+            </div>
+            <div>
+                <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">4</span>
+                <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Enjoy Bali</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Your private host arrives. Settle<br>the balance upon pickup.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="packages-section">
+        <div class="section-header">
+            <h2>Choose Your Experience or Service</h2>
+            <div class="carousel-nav">
+                <button class="carousel-btn" id="scrollLeft" aria-label="Scroll Left">&larr;</button>
+                <button class="carousel-btn" id="scrollRight" aria-label="Scroll Right">&rarr;</button>
+            </div>
+        </div>
+
+        <div class="carousel" id="packagesCarousel">
+	<article class="card" onclick="openModal('Package AA', 'Tabanan Ancestral Origins', '$285 / person', 'images/package-0a.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge badge-popular" style="background: var(--text-dark); color: #fff;">Signature Flagship</span>
+                    <img src="images/package-0a.jpg" alt="Tabanan Temple" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Tabanan Ancestral Origins</h3>
+                    <p class="card-subtitle">An exclusive invitation to the untouched frontier. Private high-priest rituals, heritage performances, and private-chef dining.</p>
+                    <div class="card-meta">
+                        <span>⏱ Full Day • Approx. 10 Hours</span>
+                        <span>👥 Best for Cultural Purists</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$285 / person</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+            <!-- Package A -->
+            <article class="card" onclick="openModal('Package A', 'Ubud Artisan & Design', '$220 / person', 'images/package-a.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">Private Experience</span>
+                    <img src="images/package-a.jpg" alt="Ubud" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Ubud Artisan & Design</h3>
+                    <p class="card-subtitle">Private studio access and master-craft workshops, culminating in a farm-to-table lunch at a design estate.</p>
+                    <div class="card-meta">
+                        <span>⏱ Full Day • Approx. 9 Hours</span>
+                        <span>👥 Best for Creatives & Designers</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$220 / person</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+
+            <!-- Package B -->
+            <article class="card" onclick="openModal('Package B', 'Uluwatu Surf & Stay', '$245 / person', 'images/package-b.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">Private Experience</span>
+                    <img src="images/package-b.jpg" alt="Uluwatu" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Uluwatu Surf & Stay</h3>
+                    <p class="card-subtitle">Stunning cliffside views and premium ocean access, guided throughout by your personal host.</p>
+                    <div class="card-meta">
+                        <span>⏱ Full Day • Approx. 8 Hours</span>
+                        <span>👥 Best for Couples & Groups</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$245 / person</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+
+            <!-- Package C -->
+            <article class="card" onclick="openModal('Package C', 'VIP Bali Nightlife', '$250 / guest', 'images/package-c.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge badge-popular">Most Popular</span>
+                    <img src="images/package-c.jpg" alt="VIP Nightlife" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>VIP Bali Nightlife</h3>
+                    <p class="card-subtitle">A 7-hour hosted nightlife experience featuring Bali's most sought-after venues.</p>
+                    <div class="card-meta">
+                        <span>⏱ Evening • Approx. 7 Hours</span>
+                        <span>👥 Best for Groups & Celebrations</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$250 / guest</span>
+                    </div>
+                    <button class="card-btn">Reserve Your Night</button>
+                </div>
+            </article>
+
+	    <!-- Package D -->
+            <article class="card" onclick="openModal('Package D', 'Nusa Penida Expedition', '$275 / person', 'images/package-d.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">Private Experience</span>
+                    <img src="images/package-d.jpg" alt="Nusa Penida" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Nusa Penida Expedition</h3>
+                    <p class="card-subtitle">Explore untouched beaches, dramatic coastal cliffs, and vibrant coral reefs — your host handles tickets, port logistics, and transfers from start to finish.</p>
+                    <div class="card-meta">
+                        <span>⏱ Full Day • Approx. 10 Hours</span>
+                        <span>👥 Best for Adventure Seekers</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$275 / person</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+
+            <!-- Package E -->
+            <article class="card" onclick="openModal('Package E', 'In-Villa Massage', '$55 / session', 'images/package-e.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">In-Villa Service</span>
+                    <img src="images/package-e.jpg" alt="Wellness" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>In-Villa Massage</h3>
+                    <p class="card-subtitle">Complete relaxation without leaving your accommodation. Premium mobile therapists.</p>
+                    <div class="card-meta">
+                        <span>⏱ Flexible • 45 to 90 Mins</span>
+                        <span>👥 Best for Relaxation</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$55 / session</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+
+            <!-- Package F -->
+            <article class="card" onclick="openModal('Package F', 'Family Concierge', '$120 / shift', 'images/package-f.jpg')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">Family Friendly</span>
+                    <img src="images/package-f.jpg" alt="Family Care" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Family Concierge & Care</h3>
+                    <p class="card-subtitle">Professional in-villa childcare and family support for complete peace of mind.</p>
+                    <div class="card-meta">
+                        <span>⏱ Shift Modules & Live-In</span>
+                        <span>👥 Best for Parents & Families</span>
+                    </div>
+                    <div class="price-block">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$120 / shift</span>
+                    </div>
+                    <button class="card-btn">Check Availability</button>
+                </div>
+            </article>
+        </div>   
+    </section>
+<section class="map-section">
+        <div class="map-header">
+            <h2>Where We Operate</h2>
+        </div>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d505963.2687595535!2d115.0232490892917!3d-8.45553424168058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd141d0b3060c41%3A0x27f272c726353d26!2sBali!5e0!3m2!1sen!2sid!4v1690000000000!5m2!1sen!2sid" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Apex Upgrade: FAQ Section -->
+    <section style="max-width: 800px; margin: 4rem auto; padding: 0 2rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 1.75rem; letter-spacing: -0.02em;">Common Questions</h2>
+        </div>
+       <div class="faq-accordion">
+            <details class="faq-item">
+                <summary class="faq-summary">When do I pay?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">A 50% deposit secures your tour booking. The remaining balance is settled securely via a digital invoice prior to your experience. In-villa services (Mobile Massage and Family Concierge) require 100% upfront payment to lock in your dedicated staff.</p>
+                </div>
+            </details>
+            
+            <details class="faq-item">
+                <summary class="faq-summary">What payment methods do you accept?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">To guarantee a seamless and secure experience, we operate on a strictly cashless basis. We accept Visa, Mastercard, Wise, and direct Bank Transfers for all deposits and final balances. We do not accept cash on-site.</p>
+                </div>
+            </details>
+            
+            <details class="faq-item">
+                <summary class="faq-summary">What is your cancellation policy?</summary>
+                <div class="faq-content">
+                    <div class="faq-carousel-header">
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Our policy is strictly structured based on how far in advance you secure your reservation to protect our local partners' inventory:</p>
+                        <div class="faq-nav">
+                            <button class="faq-btn" id="faqScrollLeft" aria-label="Scroll Left">&larr;</button>
+                            <button class="faq-btn" id="faqScrollRight" aria-label="Scroll Right">&rarr;</button>
+                        </div>
+                    </div>
+                    
+                    <div id="cancellationCarousel" class="hide-scroll" style="display: flex; gap: 0.75rem; margin: 0.75rem 0; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.25rem;">
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Advance (30+ Days)</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Cancellations permitted up to <strong>20 days</strong> from booking confirmation.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Standard (15-29 Days)</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Cancellations permitted up to <strong>7 days</strong> from booking confirmation.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Short-Term (4-14 Days)</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Free cancellation requires at least <strong>72 hours' notice</strong>.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Last-Minute (< 72 Hrs)</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">A strict <strong>12-hour grace period</strong> from the time of booking applies.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--accent-vibrant); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Same-Day & Mobile Services</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">In-villa dispatch services are strictly non-refundable. Enforces a <strong>100% Burn</strong> rule.</span>
+                        </div>
+                    </div>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Cancellations initiated by us due to severe weather or unsafe conditions are fully refundable.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">Can I customize an itinerary?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Yes. All tours are entirely private. You can discuss adjustments with your concierge prior to the day of the experience.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">Are meals and personal purchases included?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No. To provide you with total flexibility, meals, dining, shopping, and VIP venue tables are out-of-pocket. Your host will happily provide recommendations and facilitate reservations, but your package strictly covers the stated logistics, transport, and expert curation.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">We are a large group. Will we be transported in a minibus?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Absolutely not. Minibuses inherently compromise comfort and restrict access to Bali's more exclusive, hidden locations due to narrow infrastructure. For groups of 5 or more, your per-guest investment automatically triggers our Expanded Fleet Protocol. We replace the standard group-tour model with a synchronized convoy of premium vehicles and a scaled concierge team (<strong>1 dedicated host per 4 guests</strong>). This architecture guarantees your party absolute autonomy—granting you the luxury to 'splinter' your convoy if certain guests wish to return to the villa early, without ever cutting the day short for the rest of the group.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">Is tipping included or expected?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Gratuity is never required but always appreciated. If your host or driver provided an exceptional experience, you are welcome to tip them directly at your discretion.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="trust-badge">
+                <span>Curated Experiences</span>
+                <span class="badge-separator">•</span>
+                <span>Trusted Local Partners</span>
+            </div>
+            <div class="contact-info">
+                <a href="https://wa.me/6281234567890" target="_blank">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M16.5 15.5c-.5.5-1.5.5-2.5 0s-3-2-3.5-3.5 0-2 .5-2.5a.94.94 0 0 0 0-1.3L10 7a.94.94 0 0 0-1.3 0c-.8.8-.8 2 0 3s2.5 4 4 5.5 2.2.8 3 0a.94.94 0 0 0 0-1.3l-1.2-1.2a.94.94 0 0 0-1.3 0z"/></svg>
+                    +62 812 3456 7890
+                </a>
+                <a href="mailto:concierge@example.com">
+                    <svg class="social-icon" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    concierge@example.com
+                </a>
+            </div>
+	    
+	    <div class="social-links">
+    <a href="https://www.instagram.com/YOUR_INSTAGRAM" target="_blank" aria-label="Instagram">
+        <svg class="social-icon" viewBox="0 0 24 24">
+            <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm5 2.8A5.2 5.2 0 0 0 6.8 12 5.2 5.2 0 0 0 12 17.2 5.2 5.2 0 0 0 17.2 12 5.2 5.2 0 0 0 12 6.8zm0 2A3.2 3.2 0 0 1 15.2 12 3.2 3.2 0 0 1 12 15.2 3.2 3.2 0 0 1 8.8 12 3.2 3.2 0 0 1 12 8.8zm5.4-3.2a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/>
+        </svg>
+    </a>
+
+    <a href="https://www.facebook.com/YOUR_FACEBOOK" target="_blank" aria-label="Facebook">
+        <svg class="social-icon" viewBox="0 0 24 24">
+            <path d="M22 12A10 10 0 1 0 10.44 21.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/>
+        </svg>
+    </a>
+</div>
+
+            <p class="footer-copyright">&copy; 2026 Curata Bali. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Pop-Up -->
+    <dialog id="packageModal">
+        <div class="modal-header">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <img id="modalImage" src="" alt="Selected Package">
+            
+            <!-- Apex UX: Silent Progress Hairline -->
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: transparent; z-index: 15;">
+                <div id="booking-progress" style="height: 100%; width: 0%; background: var(--accent-vibrant); transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <h3 id="modalTitle">Package Title</h3>
+            <p id="modalPrice" style="font-size: 1.15rem; font-weight: 600; color: var(--text-dark); margin-bottom: 1.5rem;"></p>
+            
+            <!-- Moved: Inclusions First -->
+            <div id="modalInclusions" style="margin-bottom: 2rem;">
+                <strong id="inclusionsTitle" style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; color: var(--text-dark);">What's Included</strong>
+                <ul id="inclusionsList" style="list-style-type: none; padding-left: 0; font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.8;">
+                    <!-- Injected via JS (Now formatted as 2 columns via CSS) -->
+                </ul>
+            </div>
+
+           <!-- Dynamic Scaled Logistics Block -->
+            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                <!-- Injected via JS when guests >= 5 -->
+            </div>
+
+            <!-- Moved: Booking Logistics Second -->
+            <div class="operational-directive" id="modalDirective">
+                <!-- Injected via JS -->
+            </div>          
+
+            <!-- Apex Pre-Booking Guidance Section -->
+            <div id="guidance-section" style="display: none; margin-bottom: 2rem;">
+                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; color: var(--text-dark);">Before You Book</strong>
+                <div id="guidance-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem;">
+                    <!-- Injected dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Apex Booking Threshold -->
+            <div style="margin-bottom: 2.5rem; padding: 1.5rem; border: 1px solid var(--border-light); background: var(--bg-base); text-align: center;">
+                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark); margin-bottom: 0.75rem;">Booking Details</strong>
+                <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Complete the form below. Our concierge team will review your selection and contact you to finalize your itinerary.</p>
+            </div>
+            
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                
+                <div class="form-group">
+                    <label for="selectedPackage">Selected Experience</label>
+                    <input type="text" id="selectedPackage" name="package_selection" readonly>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="col">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="phone">WhatsApp Number</label>
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <span style="position: absolute; left: 1rem; color: var(--text-dark); font-weight: 500; font-size: 0.95rem; pointer-events: none; z-index: 2;">+</span>
+                            <input type="tel" id="phone" name="phone" required placeholder="61 412 345 678" style="padding-left: 1.85rem;" oninput="this.value = this.value.replace(/[^0-9\s]/g, '');">
+                        </div>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Please include your country code.</p>
+                    </div>
+                    <div class="col">
+                        <div id="standard-guest-col">
+                            <label for="guests">Number of Guests</label>
+                            <select id="guests" name="guests" required style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <option value="" disabled selected>Select Guests</option>
+                            </select>
+                            <!-- Apex Inline Reveal -->
+                            <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--text-dark); color: #ffffff; border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                                <!-- Injected via JS -->
+                            </div>
+                            <!-- Standalone Massage Ratio Note -->
+                            <p id="guestMassageNote" style="display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; font-style: italic;">*Standard: 1 specialist per 2 guests (sequential sessions). For simultaneous sessions, please request multiple specialists in the <strong>Special Requirements</strong> section below.</p>
+                        </div>
+                        <div id="family-guest-col" style="display: none;">
+                            <label for="num_children">Number of Children</label>
+                            <input type="number" id="num_children" name="num_children" min="1" max="10" placeholder="e.g., 2" oninput="checkConciergeRatio(this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!-- Hidden block for Ages and the Safety Warning -->
+                    <div class="col" id="family-ages-col" style="display: none;">
+                        <label for="children_ages">Ages of Children</label>
+                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 8">
+                        <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 children per concierge applies. Your request will automatically reflect the required additional staff.</p>
+                    </div>
+
+                    <!-- Global Date & Time Block -->
+                    <div class="col">
+                        <label id="dateLabel" for="dates">Date of Experience</label>
+                        <div class="split-input-group">
+                            <input type="date" id="dates" name="dates" required>
+                            <select id="time" name="time" required style="cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
+                                <option value="" disabled selected>Select Time</option>
+                            </select>
+                        </div>
+                        <p id="timeHelperText" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; margin-top: 0.25rem; margin-bottom: 0; display: none;"></p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Wellness/Massage Section -->
+                <div id="wellness-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.5rem;">
+                    <label id="wellness-title" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: -0.04em; color: var(--text-dark); margin-bottom: 0.75rem; display: block;">In-Villa Wellness (Optional Add-on)</label>
+                    
+                    <div id="wellness-info-box" style="background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+                        <p id="wellness-desc" style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Arrange for a local Balinese massage therapist to visit your accommodation after your tour.</p>
+                        <p id="wellnessRatioNote" style="font-size: 0.75rem; color: var(--text-muted); margin: 0; line-height: 1.5;">*Standard: 1 specialist per 2 guests (sequential sessions). For simultaneous/synchronized sessions, please request multiple specialists in the <strong>Special Requirements</strong> section below; availability will be confirmed by our concierge.</p>
+                    </div>
+                    
+                    <div class="wellness-grid">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="massage_duration">Duration</label>
+                            <select id="massage_duration" name="massage_duration" onchange="toggleWellnessFields()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <option value="None">None</option>
+                                <option value="45 Minutes (+$40/pp)">45 Minutes (+ $40/pp)</option>
+                                <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
+                                <option value="90 Minutes (+$90/pp)">90 Minutes (+ $90/pp)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="massage-guests-col" style="margin-bottom: 0;">
+                            <label for="massage_guests">Add-on Guests</label>
+                            <select id="massage_guests" name="massage_guests" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <option value="" disabled selected>Select...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="massage_style">Massage Style</label>
+                            <select id="massage_style" name="massage_style" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <option value="" disabled selected>Select...</option>
+                                <option value="Traditional Balinese">Traditional Balinese</option>
+                                <option value="Deep Tissue">Deep Tissue (Firm)</option>
+                                <option value="Soft Relaxation">Soft Relaxation</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="massage-time-col" style="margin-bottom: 0;">
+                            <label for="massage_time">Preferred Start Time</label>
+                            <select id="massage_time" name="massage_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <option value="" disabled selected>Select tour time first...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p id="massage-time-note" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4; display: none;">*Options dynamically calculated to allow a 2 to 3-hour relaxation and shower buffer after your tour concludes.</p>
+                </div>
+
+                <!-- Family Concierge Section (Flattened Flow) -->
+                <div id="family-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.25rem;">
+                    <div class="form-group">
+                        <label for="care_schedule">Care Schedule Module</label>
+                        <select name="care_schedule" id="care_schedule" onchange="updateFamilyCareTimes()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <option value="Day Shift">Day Shift — 8 Hours ($120)</option>
+                            <option value="Evening Shift">Evening Shift — 8 Hours ($120)</option>
+                            <option value="Night Shift">Night Shift — Flexible Up To 8 Hrs ($150)</option>
+                            <option value="24-Hour Live-In">24-Hour Live-In — $250 / day (Requires Private Room)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <div class="col">
+                            <label for="start_time">Requested Start Time</label>
+                            <select id="start_time" name="start_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                                <!-- Dynamically injected via JS -->
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="care_days">Number of Days</label>
+                            <input type="number" id="care_days" name="care_days" min="1" max="15" placeholder="e.g., 3" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">*Live-In Care includes built-in daily rest periods for our staff. Separate accommodation must be provided.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="attribution">Referral ID / Transport (Optional)</label>
+                    <input type="text" id="attribution" name="attribution" maxlength="100" placeholder="e.g., Wayan, Rep A12, or leave blank">
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Special Requirements / Notes</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Dietary restrictions, preferred activities, etc."></textarea>
+                </div>
+
+		<!-- Apex Investment Summary -->
+        <div id="investmentSummary" style="display: none; margin-bottom: 1.5rem; padding: 1.5rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--accent-vibrant);">
+            <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 1rem;">Live Itinerary & Investment</strong>
+            
+            <!-- Itinerary Details -->
+            <div id="summary-itinerary" style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-light); font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.35rem;">
+                <span id="summary-date-time" style="color: var(--text-dark); font-weight: 600;"></span>
+                <span id="summary-protocol"></span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="summary-line-item">Experience Subtotal</span>
+                <span id="summary-subtotal" style="color: var(--text-dark); font-weight: 500;">$0</span>
+            </div>
+            
+            <div id="summary-addon-row" style="display: none; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="summary-addon-label">In-Villa Wellness</span>
+                <span id="summary-addon-total" style="color: var(--text-dark); font-weight: 500;">$0</span>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-light); margin: 1rem 0 0 0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="summary-deposit-label" style="font-size: 0.85rem; font-weight: 700; color: var(--text-dark);">Required Deposit</span>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Final confirmation by concierge.</span>
+                </div>
+                <div style="text-align: right;">
+                    <span id="summary-grand-total" style="display: block; font-size: 0.75rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.15rem;"></span>
+                    <span id="summary-deposit-total" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark);">$0</span>
+                </div>
+            </div>
+        </div>
+
+                <button type="submit" class="submit-btn" onclick="
+                    if(this.form.checkValidity()) {
+                        this.innerHTML = 'Securely Transmitting...';
+                        this.style.opacity = '0.8';
+                        this.style.pointerEvents = 'none';
+                    }
+                ">Submit Booking Request</button>
+            </form>
+        </div>
+    </dialog>
+
+    <script>
+        // Centralized Object Configuration
+        const packageData = {
+            // 1. THE NEW FLAGSHIP
+            'Package AA': {
+                durationHours: 10,
+                delayDays: 3,
+                dateLabel: 'Date & Pick-Up Time',
+                timeMin: '07:00',
+                timeMax: '09:00',
+                timeHelper: 'Ancestral journeys require a morning start to ensure private temple rituals occur during the quietest hours.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Exclusive Access</strong> private temple rituals are booked with local high priests.</li><li><strong>Bespoke Catering</strong> the lunch menu is curated by a private chef; please note dietary requirements.</li><li><strong>Full Payment</strong> required to secure the high priest, chef, and artisanal facilitators.</li></ul>`,
+                guestMax: 10, guestPlaceholder: '2',
+                incTitle: 'The Journey Includes',
+                incHTML: `<li>✓ Private high-priest ritual</li><li>✓ Sacred jungle spring visit</li><li>✓ Private-chef catered lunch</li><li>✓ Heritage dance performance</li><li>✓ Hands-on coconut oil workshop</li><li>✓ Private round-trip transport</li>`,
+                showDressCode: true,
+                dressCodeHTML: `Traditional temple attire required (Sarong provided). Modest clothing is essential for temple entry.`,
+                formMode: 'standard'
+            },
+            // 2. THE RE-POSITIONED UBUD
+            'Package A': {
+                durationHours: 9,
+                delayDays: 2,
+                dateLabel: 'Date & Pick-Up Time',
+                timeMin: '08:00',
+                timeMax: '10:00',
+                timeHelper: 'Artisan immersions are best enjoyed with a morning start to beat the creative workshops\' peak crowds.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Studio Access</strong> private sessions with master artisans are scheduled exclusively for your group.</li><li><strong>Custom Itinerary</strong> share your creative interests in the notes below to help us tailor your studio visits.</li><li><strong>50% Deposit</strong> secures your booking.</li></ul>`,
+                guestMax: 20, guestPlaceholder: '2',
+                incTitle: 'The Immersion Includes',
+                incHTML: `<li>✓ Private guide & artisan liaison</li><li>✓ 2 exclusive master-craft workshops</li><li>✓ Gallery & design-house tour</li><li>✓ Farm-to-table lunch at design estate</li><li>✓ Curated Provisions Box</li>`,
+                showDressCode: false,
+                formMode: 'standard'
+            },
+            'Package B': {
+                durationHours: 8,
+                delayDays: 2,
+                dateLabel: 'Date & Pick-Up Time',
+                timeMin: '06:00',
+                timeMax: '10:00',
+                timeHelper: 'Coastal excursions require a morning departure (06:00 AM – 10:00 AM) to pace the 8-hour schedule perfectly for sunset.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>48-Hour Notice</strong> required to guarantee availability.</li><li><strong>50% Deposit</strong> confirms your booking — balance due at the start of your experience.</li><li><strong>Guided Throughout</strong> your host handles entrances, photos, and logistics along the way.</li></ul>`,
+                guestMax: 20, guestPlaceholder: '2',
+                incTitle: 'Package Includes',
+                incHTML: `<li>✓ Private driver & personal guide</li><li>✓ Uluwatu Temple (entrance included)</li><li>✓ Cliff viewpoints</li><li>✓ Beach Club stop</li><li>✓ Premium Mineral Water (2x 600ml)</li><li>✓ Curated Provisions Box (Sweet & Savory)</li>`,
+                showDressCode: false,
+                formMode: 'standard'
+            },
+            'Package C': {
+                durationHours: 8,
+                delayDays: 2,
+                dateLabel: 'Date & Pick-Up Time',
+                timeMin: '17:00',
+                timeMax: '19:00',
+                timeHelper: 'Nightlife experiences initiate in the early evening (05:00 PM – 07:00 PM) to ensure seamless venue entry and optimal pacing before peak hours.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Curated Routing</strong> venues selected dynamically around Bali's current scene.</li><li><strong>VIP Tables Excluded</strong> the package covers your host's curation and access. Table minimums and bottle service are paid directly to the venue.</li><li><strong>Table Reservations</strong> note your interest below. Post-booking, your host will present a curated itinerary so you can choose exactly where to secure a table for the night.</li><li><strong>Large Groups (9-15 Guests)</strong> Large-scale deployments require specialized venue negotiation (e.g., dual VIP sections). Our synchronized multi-vehicle protocol ensures absolute flexibility for your group.</li><li style="grid-column: 1 / -1;"><strong>Groups Exceeding 15 Guests</strong> To maintain our private concierge standard and ensure seamless venue coordination, groups larger than 15 guests should be submitted as an additional booking request by another member of your party. In the <strong>Special Requirements</strong> section, simply reference the primary booking name. Our concierge team will automatically link both submissions and coordinate them as a single event.</li><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> secures your booking — balance due upon pickup.</li></ul>`,
+                transparencyHTML: `This package secures your host’s specialized curation, logistics, and private transport.<br><br>To grant you absolute financial autonomy throughout the night, any VIP table minimums, dining, or extended beverage consumption are settled independently by you directly with the venues.`,
+                guestMax: 15, guestPlaceholder: '1-15',
+                incTitle: 'Night Includes',
+                incHTML: `<li>✓ Personal nightlife host & social liaison</li><li>✓ 2 selected house cocktails/beverages</li><li>✓ Fast-track entry where available</li><li>✓ Private transportation all night</li><li>✓ VIP table facilitation (upon request)</li><li>✓ Flexible itinerary</li>`,
+                showDressCode: true,
+                dressCodeHTML: `Smart casual or upscale nightlife attire.<br><br>• No singlets, no flip-flops, no sportswear.<br>• Closed shoes or fashionable sandals recommended.<br><br>Some venues reserve the right to refuse entry if dress standards are not met.`,
+                formMode: 'standard'
+            },
+            'Package D': {
+                durationHours: 10,
+                delayDays: 2,
+                dateLabel: 'Date & Pick-Up Time',
+                timeMin: '05:00',
+                timeMax: '09:00',
+                timeHelper: 'Expeditions require a morning departure (05:00 AM – 09:00 AM) to align with port schedules and travel duration.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>48-Hour Notice</strong> required to guarantee availability.</li><li><strong>50% Deposit</strong> confirms your booking — balance due at the start of your experience.</li><li><strong>Fully Managed</strong> your host handles port check-in, boat tickets, and island transfers start to finish.</li><li><strong>Want a Private Charter?</strong> note it in Special Requirements below and our concierge team will follow up with charter pricing.</li></ul>`,
+                guestMax: 20, guestPlaceholder: '2',
+                incTitle: 'Package Includes',
+                incHTML: `<li>✓ Fast boat tickets (port & timing handled)</li><li>✓ Private island driver & guide</li><li>✓ Kelingking Beach & Broken Beach</li><li>✓ Angel's Billabong & Crystal Bay</li><li>✓ Premium Mineral Water (2x 600ml)</li><li>✓ Curated Provisions Box (Sweet & Savory)</li>`,
+                showDressCode: false,
+                formMode: 'standard'
+            },
+            'Package E': {
+                delayDays: 0, /* Enables same-day selection for the 6-hour logic to work */
+                dateLabel: 'Date & Preferred Time',
+                timeMin: '00:00',
+                timeMax: '23:30',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>6-Hour Notice</strong> required to guarantee therapist availability.</li><li><strong>In-Villa Service</strong> your therapist is dispatched directly to your villa or hotel.</li><li><strong>Full Payment Required</strong> to reserve your therapist and appointment time.</li></ul>`,
+                guestMax: 20, guestPlaceholder: '2',
+                incTitle: 'Session Includes',
+                incHTML: `<li>✓ Certified therapist</li><li>✓ Massage table (if required)</li><li>✓ Premium massage oils</li><li>✓ Fresh towels</li><li>✓ Villa or hotel visit</li>`,
+                showDressCode: false,
+                formMode: 'massage'
+            },
+            'Package F': {
+                delayDays: 3,
+                dateLabel: 'Start Date',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>72-Hour Notice</strong> required to assign the most suitable caregiver.</li><li><strong>Full Payment Required</strong> to reserve your caregiver and preferred schedule.</li></ul>`,
+                guestMax: 20, guestPlaceholder: '2',
+                incTitle: 'Service Includes',
+                incHTML: `<li>✓ Supervised childcare</li><li>✓ Children's activities and play</li><li>✓ Family support and meal assistance</li><li>✓ Bedtime routines</li><li>✓ Swimming supervision (upon request)</li><li>✓ Flexible scheduling</li>`,
+                showDressCode: false,
+                formMode: 'family'
+            }
+        };
+
+        const modal = document.getElementById('packageModal');
+
+        // Apex UX: Silent Progress Tracking Algorithm
+        function updateBookingProgress() {
+            const form = document.querySelector('form');
+            if (!form) return;
+
+            // Dynamically scan for actively required fields that are currently visible
+            const requiredFields = Array.from(form.querySelectorAll('input[required], select[required]')).filter(field => {
+                return field.offsetParent !== null; // Excludes dynamically hidden fields
+            });
+
+            if (requiredFields.length === 0) return;
+
+            let filledCount = 0;
+            requiredFields.forEach(field => {
+                if (field.value && field.value.trim() !== '') {
+                    filledCount++;
+                }
+            });
+
+            const percentage = (filledCount / requiredFields.length) * 100;
+            document.getElementById('booking-progress').style.width = `${percentage}%`;
+        }
+
+        // Attach global listeners for real-time recalculation
+        document.addEventListener('DOMContentLoaded', () => {
+            const formInputs = document.querySelectorAll('form input, form select, form textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateBookingProgress);
+                input.addEventListener('change', updateBookingProgress);
+            });
+        });
+
+        function openModal(packageID, title, price, imgSrc) {
+            const config = packageData[packageID] || packageData['Package A'];
+
+            // 1. Core Meta
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalPrice').textContent = price;
+            document.getElementById('selectedPackage').value = `${packageID} - ${title}`;
+
+            // 2. Directives & Dynamic Labels
+            document.getElementById('modalDirective').innerHTML = config.directiveHTML;
+            document.getElementById('dateLabel').textContent = config.dateLabel;
+            
+            // 3. Calendar Constraints & Reset Time
+            const dateInput = document.getElementById('dates');
+            const timeSelect = document.getElementById('time');
+            const timeHelperText = document.getElementById('timeHelperText');
+
+            // Apex UX: Strict Local Timezone Parsing
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + config.delayDays);
+            const yyyy = minDate.getFullYear();
+            const mm = String(minDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(minDate.getDate()).padStart(2, '0');
+            
+            dateInput.setAttribute('min', `${yyyy}-${mm}-${dd}`);
+            dateInput.value = "";
+            timeSelect.innerHTML = '<option value="" disabled selected>Select Date First</option>';
+
+            if (config.timeMin && config.timeMax) {
+                timeHelperText.textContent = config.timeHelper;
+                timeHelperText.style.display = 'block';
+            } else {
+                timeHelperText.style.display = 'none';
+            } 
+
+            // 4. Guest Configurations
+            const guestInput = document.getElementById('guests');
+            let guestOptions = '<option value="" disabled selected>Select Guests</option>';
+            const maxLimit = Math.min(config.guestMax || 15, 15); 
+            for (let i = 1; i <= maxLimit; i++) {
+                guestOptions += `<option value="${i}">${i} Guest${i > 1 ? 's' : ''}</option>`;
+            }
+            guestInput.innerHTML = guestOptions;
+
+            // 5. Inclusions
+            document.getElementById('inclusionsTitle').textContent = config.incTitle;
+            document.getElementById('inclusionsList').innerHTML = config.incHTML;
+
+            // 6. Pre-Booking Guidance Integration
+            const guidanceSection = document.getElementById('guidance-section');
+            const guidanceGrid = document.getElementById('guidance-grid');
+            let guidanceContent = '';
+
+            if (config.transparencyHTML) {
+                guidanceContent += `
+                    <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 1.25rem;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 0.5rem;">Transparency</strong>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">${config.transparencyHTML}</p>
+                    </div>
+                `;
+            }
+
+            if (config.showDressCode && config.dressCodeHTML) {
+                guidanceContent += `
+                    <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 1.25rem;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 0.5rem;">Dress Code</strong>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">${config.dressCodeHTML}</p>
+                    </div>
+                `;
+            }
+
+            if (guidanceContent !== '') {
+                guidanceGrid.innerHTML = guidanceContent;
+                guidanceSection.style.display = 'block';
+            } else {
+                guidanceSection.style.display = 'none';
+            }
+
+            // Reset Dynamic Logistics
+            const logisticsBlock = document.getElementById('dynamicLogisticsBlock');
+            if(logisticsBlock) logisticsBlock.style.display = 'none';
+            const inlineNotice = document.getElementById('inlineFleetNotice');
+            if(inlineNotice) {
+                inlineNotice.style.display = 'none';
+                inlineNotice.classList.remove('recalculate-flash');
+            }
+
+           // 7. UI Module Swapping
+            const standardGuestCol = document.getElementById('standard-guest-col');
+            const familyGuestCol = document.getElementById('family-guest-col'); /* Restored missing variable */
+            const familyAgesCol = document.getElementById('family-ages-col');
+            const wellnessSection = document.getElementById('wellness-section');
+            const wellnessTitle = document.getElementById('wellness-title');
+            const wellnessDesc = document.getElementById('wellness-desc');
+            const familySection = document.getElementById('family-section');
+            const guestMassageNote = document.getElementById('guestMassageNote');
+            const wellnessRatioNote = document.getElementById('wellnessRatioNote');
+            const massageGuestsCol = document.getElementById('massage-guests-col');
+            const massageTimeCol = document.getElementById('massage-time-col');
+            const massageTimeNote = document.getElementById('massage-time-note');
+
+            // Apex UX: Dynamic Notes Placeholder
+            const notesField = document.getElementById('notes');
+            if (notesField) {
+                if (config.formMode === 'massage') {
+                    notesField.placeholder = "e.g., Request simultaneous sessions, focus areas, injuries, etc.";
+                } else if (config.formMode === 'family') {
+                    notesField.placeholder = "e.g., Children's allergies, bedtime routines, special needs, etc.";
+                } else if (packageID === 'Package C') { // VIP Nightlife
+                    notesField.placeholder = "e.g., Venue preferences, table reservation requests, music taste, etc.";
+                } else {
+                    notesField.placeholder = "Dietary restrictions, preferred activities, etc.";
+                }
+            }
+
+            // Reset baselines
+            standardGuestCol.style.display = 'block';
+            document.getElementById('guests').required = true;
+            familyGuestCol.style.display = 'none';
+            document.getElementById('num_children').required = false;
+            familyAgesCol.style.display = 'none';
+            document.getElementById('children_ages').required = false;
+
+            if (config.formMode === 'family') {
+                standardGuestCol.style.display = 'none';
+                document.getElementById('guests').required = false;
+                
+                familyGuestCol.style.display = 'block';
+                document.getElementById('num_children').required = true;
+                familyAgesCol.style.display = 'block';
+                document.getElementById('children_ages').required = true;
+
+                timeSelect.style.display = 'none';
+                timeSelect.required = false;
+                
+                wellnessSection.style.display = 'none';
+                familySection.style.display = 'block';
+                
+                if(guestMassageNote) guestMassageNote.style.display = 'none';
+                if(wellnessRatioNote) wellnessRatioNote.style.display = 'none';
+
+                document.getElementById('care_schedule').value = "Day Shift"; 
+                updateFamilyCareTimes(); 
+            } else if (config.formMode === 'massage') {
+                timeSelect.style.display = 'block';
+                timeSelect.required = true;
+                wellnessSection.style.display = 'block';
+                
+                // Apex UX: Completely remove redundant headers for standalone massage
+                if(wellnessTitle) wellnessTitle.style.display = 'none';
+                const wellnessInfoBox = document.getElementById('wellness-info-box');
+                if(wellnessInfoBox) wellnessInfoBox.style.display = 'none';
+                
+                if(massageTimeCol) massageTimeCol.style.display = 'none';
+                if(massageTimeNote) massageTimeNote.style.display = 'none';
+                familySection.style.display = 'none';
+                
+                if(guestMassageNote) guestMassageNote.style.display = 'block';
+                if(wellnessRatioNote) wellnessRatioNote.style.display = 'none';
+                if(massageGuestsCol) massageGuestsCol.style.display = 'none'; // Primary guest count covers this
+
+                document.getElementById('massage_duration').innerHTML = `
+                    <option value="" disabled selected>Select Duration</option>
+                    <option value="45 Minutes ($55/pp)">45 Minutes ($55/pp)</option>
+                    <option value="60 Minutes ($75/pp)">60 Minutes ($75/pp)</option>
+                    <option value="90 Minutes ($105/pp)">90 Minutes ($105/pp)</option>
+                `;
+            } else {
+                timeSelect.style.display = 'block';
+                timeSelect.required = true;
+                wellnessSection.style.display = 'block';
+                
+                // Restore headers for standard optional add-on
+                if(wellnessTitle) {
+                    wellnessTitle.style.display = 'block';
+                    wellnessTitle.textContent = 'In-Villa Wellness (Optional Add-on)';
+                }
+                const wellnessInfoBox = document.getElementById('wellness-info-box');
+                if(wellnessInfoBox) {
+                    wellnessInfoBox.style.display = 'block';
+                    const wellnessDesc = document.getElementById('wellness-desc');
+                    if(wellnessDesc) wellnessDesc.textContent = 'Arrange for a local Balinese massage therapist to visit your accommodation after your tour — save $15 versus booking on-demand.';
+                }
+                
+                if(massageTimeCol) massageTimeCol.style.display = 'block';
+                if(massageTimeNote) massageTimeNote.style.display = 'block';
+                document.getElementById('massage_time').innerHTML = '<option value="" disabled selected>Select tour time first...</option>';
+                familySection.style.display = 'none';
+                
+                if(guestMassageNote) guestMassageNote.style.display = 'none';
+                if(wellnessRatioNote) wellnessRatioNote.style.display = 'block';
+                if(massageGuestsCol) massageGuestsCol.style.display = 'block'; // Show dynamic add-on guests selector
+
+                document.getElementById('massage_duration').innerHTML = `
+                    <option value="None">None</option>
+                    <option value="45 Minutes (+$40/pp)">45 Minutes (+ $40/pp)</option>
+                    <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
+                    <option value="90 Minutes (+$90/pp)">90 Minutes (+ $90/pp)</option>
+                `;
+            }
+
+            // Lock wellness fields until a duration is explicitly selected
+            toggleWellnessFields();
+
+            modal.showModal();
+            document.body.style.overflow = 'hidden'; /* Locks background scrolling */
+            
+            // Calibrate the progress line and reset the pricing calculator the millisecond the modal renders
+            setTimeout(() => {
+                updateBookingProgress();
+                calculateInvestment();
+            }, 50); 
+            
+            /* Apex Upgrade: Structural Haptic Feedback */
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(15);
+            }
+        }
+
+        function closeModal() {
+            modal.close();
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10); /* Lighter tick for closing */
+            }
+        }
+
+        function checkConciergeRatio(childCount) {
+            const warning = document.getElementById('concierge-ratio-warning');
+            if (childCount > 2) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+
+        // Apex UX: Restores background scrolling via any close method (Button, Backdrop, or ESC key)
+        modal.addEventListener('close', () => {
+            document.body.style.overflow = '';
+        });
+
+        // Apex Cascading Logic for Wellness Add-on
+        function toggleWellnessFields() {
+            const durationEl = document.getElementById('massage_duration');
+            if (!durationEl) return;
+            
+            const isOptedOut = durationEl.value === 'None';
+            
+            const guestsEl = document.getElementById('massage_guests');
+            const styleEl = document.getElementById('massage_style');
+            const timeEl = document.getElementById('massage_time');
+            
+            if (guestsEl) {
+                guestsEl.disabled = isOptedOut;
+                if (isOptedOut) guestsEl.value = ""; // Resets field if they cancel
+            }
+            if (styleEl) {
+                styleEl.disabled = isOptedOut;
+                if (isOptedOut) styleEl.value = "";
+            }
+            if (timeEl) {
+                timeEl.disabled = isOptedOut;
+                if (isOptedOut) timeEl.value = "";
+            }
+        }
+
+        modal.addEventListener('click', (e) => {
+            const dialogDimensions = modal.getBoundingClientRect();
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                modal.close();
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(10);
+                }
+            }
+        });
+
+        // Dynamic Time Dropdown Builder
+        const dateInputEl = document.getElementById('dates');
+        const timeSelectEl = document.getElementById('time');
+        const timeHelperTextEl = document.getElementById('timeHelperText');
+
+        function buildTimeDropdown() {
+            if (!dateInputEl.value) return;
+
+            // Universal UX Fallback for Non-Compliant Browsers
+            const minAllowedDate = dateInputEl.getAttribute('min');
+            if (dateInputEl.value < minAllowedDate) {
+                dateInputEl.value = ''; // Instantly wipe invalid selection
+                timeSelectEl.innerHTML = '<option value="" disabled selected>Select Date First</option>';
+                
+                // Accessible & Visible Error State
+                dateInputEl.style.borderBottom = '2px solid #FF0000'; // Hard red visual cue
+                timeHelperTextEl.textContent = 'Please select a valid future date based on the required notice period.';
+                timeHelperTextEl.style.color = '#FF0000';
+                timeHelperTextEl.style.display = 'block';
+
+                setTimeout(() => { 
+                    dateInputEl.style.borderBottom = ''; // Resets to global CSS baseline
+                    timeHelperTextEl.style.color = 'var(--text-muted)';
+                    timeHelperTextEl.style.display = 'none';
+                }, 3500);
+                
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate([20, 50, 20]); // Hardware error tick (Android only)
+                }
+                return; // Halt execution
+            }
+
+            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
+            const config = packageData[packageID];
+            
+            // Base operational hours (07:00 AM - 10:00 PM) unless the package restricts them
+            let startHour = config && config.timeMin ? parseInt(config.timeMin.split(':')[0]) : 7;
+            let endHour = config && config.timeMax ? parseInt(config.timeMax.split(':')[0]) : 22;
+
+            let minAllowedHour = 0;
+            let minAllowedMinute = 0;
+
+            const selectedDate = new Date(dateInputEl.value + 'T00:00:00');
+            const now = new Date();
+            
+            // If booking for today, enforce the 6-hour minimum buffer
+            if (selectedDate.toDateString() === now.toDateString()) {
+                const gateTime = new Date();
+                gateTime.setHours(gateTime.getHours() + 6);
+                minAllowedHour = gateTime.getHours();
+                minAllowedMinute = gateTime.getMinutes();
+            }
+
+            let optionsHTML = '<option value="" disabled selected>Select Time</option>';
+            let validOptionsCount = 0;
+
+            for (let h = startHour; h <= endHour; h++) {
+                for (let m of [0, 30]) {
+                    // Cap exactly at the max hour if it ends on the dot (e.g., 09:00 max blocks 09:30)
+                    if (h === endHour && m > 0 && config && config.timeMax && config.timeMax.endsWith(':00')) continue;
+
+                    // Completely filter out any increments that fall before the 6-hour buffer
+                    if (h < minAllowedHour || (h === minAllowedHour && m < minAllowedMinute)) {
+                        continue;
+                    }
+
+                    const hour24 = String(h).padStart(2, '0');
+                    const minStr = String(m).padStart(2, '0');
+                    const timeValue = `${hour24}:${minStr}`;
+
+                    const hour12 = h % 12 || 12;
+                    const ampm = h < 12 ? 'AM' : 'PM';
+                    const timeLabel = `${hour12}:${minStr} ${ampm}`;
+
+                    optionsHTML += `<option value="${timeValue}">${timeLabel}</option>`;
+                    validOptionsCount++;
+                }
+            }
+
+            if (validOptionsCount === 0) {
+                optionsHTML = '<option value="" disabled selected>No available times left today</option>';
+            }
+
+            timeSelectEl.innerHTML = optionsHTML;
+        }
+
+        function updateMassageTime() {
+            const timeVal = timeSelectEl.value;
+            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
+            const config = packageData[packageID];
+            const massageTimeEl = document.getElementById('massage_time');
+
+            if (!massageTimeEl || config.formMode === 'massage') return;
+
+            if (!timeVal || !config || !config.durationHours) {
+                massageTimeEl.innerHTML = '<option value="" disabled selected>Select tour time first...</option>';
+                return;
+            }
+
+            const [hours, minutes] = timeVal.split(':').map(Number);
+            let optionsHTML = '<option value="" disabled selected>Select Buffered Time</option>';
+            
+            for (let buffer of [2, 2.5, 3]) {
+                const totalAddMins = (config.durationHours + buffer) * 60;
+                
+                const mTime = new Date();
+                mTime.setHours(hours, minutes + totalAddMins, 0);
+                
+                const ampm = mTime.getHours() < 12 ? 'AM' : 'PM';
+                const h12 = mTime.getHours() % 12 || 12;
+                const minStr = String(mTime.getMinutes()).padStart(2, '0');
+                
+                const startTotalMins = hours * 60 + minutes;
+                const endTotalMins = startTotalMins + totalAddMins;
+                const dayLabel = endTotalMins >= 24 * 60 ? ' (Next Day)' : '';
+                
+                const labelBuffer = buffer % 1 === 0 ? buffer : buffer.toFixed(1);
+                
+                optionsHTML += `<option value="${h12}:${minStr} ${ampm}${dayLabel}">${h12}:${minStr} ${ampm} — ${labelBuffer}-Hr Buffer${dayLabel}</option>`;
+            }
+            optionsHTML += `<option value="Next Morning">Next Morning (Specify in Notes)</option>`;
+            
+            massageTimeEl.innerHTML = optionsHTML;
+        }
+
+	    function updateFamilyCareTimes() {
+            const schedule = document.getElementById('care_schedule').value;
+            const timeSelect = document.getElementById('start_time');
+            if (!timeSelect) return;
+
+            let startHour = 6;
+            let endHour = 12;
+
+            if (schedule === 'Evening Shift') {
+                startHour = 13; // 1:00 PM
+                endHour = 16;   // 4:00 PM (Ends by midnight)
+            } else if (schedule === 'Night Shift') {
+                startHour = 17; // 5:00 PM
+                endHour = 22;   // 10:00 PM (Covers late night partying)
+            } else if (schedule === '24-Hour Live-In') {
+                startHour = 6;  // 6:00 AM
+                endHour = 14;   // 2:00 PM flexibility for live-in starts
+            }
+
+            let optionsHTML = '';
+            for (let h = startHour; h <= endHour; h++) {
+                for (let m of [0, 30]) {
+                    // Optional: Don't show the :30 interval on the absolute last hour for Day/Evening shifts
+                    if (h === endHour && m === 30 && schedule !== 'Night Shift') continue;
+                    
+                    const ampm = h < 12 ? 'AM' : 'PM';
+                    const hour12 = h % 12 || 12;
+                    const minStr = m === 0 ? '00' : '30';
+                    const timeValue = `${String(h).padStart(2, '0')}:${minStr}`;
+                    
+                    optionsHTML += `<option value="${timeValue}">${hour12}:${minStr} ${ampm}</option>`;
+                }
+            }
+            timeSelect.innerHTML = optionsHTML;
+        }
+
+        dateInputEl.addEventListener('change', buildTimeDropdown);
+        timeSelectEl.addEventListener('change', updateMassageTime);
+
+        // Dynamic Fleet & Host Protocol Trigger
+        document.getElementById('guests').addEventListener('change', function() {
+            const guestCount = parseInt(this.value);
+            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
+            const config = packageData[packageID];
+            const logisticsBlock = document.getElementById('dynamicLogisticsBlock');
+            const inclusionsList = document.getElementById('inclusionsList');
+            const inlineNotice = document.getElementById('inlineFleetNotice');
+
+            // Dynamically build Add-on Guests dropdown to match Primary Guest Count
+            const massageGuestsSelect = document.getElementById('massage_guests');
+            if (massageGuestsSelect) {
+                let mgOptions = '<option value="" disabled selected>Select...</option>';
+                for (let i = 1; i <= guestCount; i++) {
+                    mgOptions += `<option value="${i}" ${i === guestCount ? 'selected' : ''}>${i} Guest${i > 1 ? 's' : ''}</option>`;
+                }
+                massageGuestsSelect.innerHTML = mgOptions;
+            }
+
+            // Restrict logic to standard tour deployments (exclude in-villa wellness/family)
+            if (!logisticsBlock || config.formMode !== 'standard') return;
+
+            // Reset inclusions to baseline before calculating dynamic additions
+            inclusionsList.innerHTML = config.incHTML;
+            
+            // Apex 1:4 Ratio Calculation
+            const hostCount = Math.ceil(guestCount / 4);
+
+            if (guestCount >= 5) {
+                const isSyndicate = guestCount >= 9;
+                const protocolTitle = isSyndicate ? "Expanded Group Coordination" : "Dedicated Convoy Secured";
+                
+                // Apex UX: Distinct luxury tones for each tier's notice
+                const inlineColor = isSyndicate ? "#ffffff" : "#94a3b8"; // Platinum White for 9+, Soft Slate for 5-8
+                
+                const inlineTitle = isSyndicate ? "✦ Multi-Vehicle Convoy Allocated" : "✦ Scaled Logistics Allocated";
+                const inlineDesc = "Your group size automatically activates our expanded deployment for absolute comfort.";
+
+                inclusionsList.innerHTML += `<li style="background: var(--surface); border-color: var(--text-dark);">✓ Scaled Concierge Team (${hostCount} Hosts)</li>`;
+                inclusionsList.innerHTML += `<li style="background: var(--surface); border-color: var(--text-dark);">✓ Synchronized Multi-Vehicle Fleet</li>`;
+
+                logisticsBlock.style.display = 'block';
+                logisticsBlock.innerHTML = `
+                    <strong style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;">${protocolTitle}</strong>
+                    <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
+                `;
+
+                if (inlineNotice) {
+                    inlineNotice.style.display = 'block';
+                    inlineNotice.style.background = 'var(--text-dark)';
+                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details above.`;
+                }
+
+            } else {
+                logisticsBlock.style.display = 'none';
+                
+                if (inlineNotice) {
+                    inlineNotice.style.display = 'block';
+                    inlineNotice.style.background = 'var(--text-dark)';
+                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Private Logistics Confirmed</strong>Your personal operational footprint is set. A premium vehicle and <strong>1 dedicated host</strong> are allocated strictly for your group's comfort.`;
+                }
+            }
+
+            // Execute Tectonic Recalculation Micro-interaction
+            if (inlineNotice) {
+                inlineNotice.classList.remove('recalculate-flash');
+                void inlineNotice.offsetWidth; // Force CSS reflow to restart animation
+                inlineNotice.classList.add('recalculate-flash');
+                
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(10); // Hardware haptic tick
+                }
+            }
+        });
+
+	function calculateInvestment() {
+            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
+            if (!packageID) return;
+            
+            const config = packageData[packageID];
+            const summaryBox = document.getElementById('investmentSummary');
+            
+            // Extract the raw base price from the UI string
+            const rawPriceText = document.getElementById('modalPrice').textContent;
+            const basePrice = parseInt(rawPriceText.replace(/[^0-9]/g, ''), 10) || 0;
+            
+            let total = 0;
+            let addonTotal = 0;
+            let guestCount = 1;
+            let protocolText = "";
+
+            if (config.formMode === 'family') {
+                const days = parseInt(document.getElementById('care_days').value) || 0;
+                const schedule = document.getElementById('care_schedule').value;
+                let shiftPrice = 120;
+                if (schedule.includes('Night')) shiftPrice = 150;
+                if (schedule.includes('Live-In')) shiftPrice = 250;
+                
+                total = shiftPrice * days;
+                document.getElementById('summary-line-item').textContent = `${days} Shift${days > 1 ? 's' : ''} Secured`;
+                protocolText = `✓ Professional Family Concierge Assigned`;
+            } else if (config.formMode === 'massage') {
+                guestCount = parseInt(document.getElementById('guests').value) || 0;
+                total = basePrice * guestCount;
+                document.getElementById('summary-line-item').textContent = `Session for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
+                protocolText = `✓ Premium Mobile Therapists Dispatched`;
+            } else {
+                guestCount = parseInt(document.getElementById('guests').value) || 0;
+                total = basePrice * guestCount;
+                document.getElementById('summary-line-item').textContent = `Experience for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
+                
+                const hostCount = Math.ceil(guestCount / 4);
+                if (guestCount >= 5) {
+                    protocolText = `✓ Expanded Concierge Team (${hostCount} Hosts) <br> ✓ Premium Multi-Vehicle Fleet`;
+                } else if (guestCount > 0) {
+                    protocolText = `✓ Private Logistics Confirmed (1 Host)`;
+                }
+            }
+
+            // Calculate optional Wellness Add-ons with dynamic labeling
+            const durationEl = document.getElementById('massage_duration');
+            const massageGuestsEl = document.getElementById('massage_guests');
+            if (config.formMode === 'standard' && durationEl && durationEl.value !== 'None') {
+                let addonPrice = 0;
+                if (durationEl.value.includes('45')) addonPrice = 40;
+                if (durationEl.value.includes('60')) addonPrice = 60;
+                if (durationEl.value.includes('90')) addonPrice = 90;
+                
+                const addonGuests = parseInt(massageGuestsEl.value) || 1;
+                addonTotal = addonPrice * addonGuests;
+                
+                // Extract exact scheduled time and buffer
+                const massageTimeEl = document.getElementById('massage_time');
+                let wellnessScheduleText = "Select start time below...";
+                let bufferText = "";
+                
+                if (massageTimeEl && massageTimeEl.selectedIndex > 0) {
+                    const selectedText = massageTimeEl.options[massageTimeEl.selectedIndex].text;
+                    if (selectedText.includes('Next Morning')) {
+                        wellnessScheduleText = "Scheduled for Next Morning";
+                        bufferText = "(Time specified in notes)";
+                    } else {
+                        const timeParts = selectedText.split(' — ');
+                        wellnessScheduleText = `${timeParts[0].trim()} Arrival`;
+                        if (timeParts[1]) {
+                            bufferText = `(${timeParts[1].replace(' Buffer', ' relaxation buffer')})`;
+                        }
+                    }
+                }
+                
+                const durationMins = durationEl.value.split(' ')[0];
+                document.getElementById('summary-addon-label').innerHTML = `In-Villa Wellness<br><span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">${durationMins}-Minute Session • ${addonGuests} Guest${addonGuests > 1 ? 's' : ''}<br><span style="color: var(--text-dark); font-weight: 600;">${wellnessScheduleText}</span><br><i style="opacity: 0.8;">${bufferText}</i></span>`;
+                
+                document.getElementById('summary-addon-row').style.display = 'flex';
+                document.getElementById('summary-addon-total').textContent = `US$${addonTotal.toLocaleString('en-US')}`;
+            } else {
+                document.getElementById('summary-addon-row').style.display = 'none';
+            }
+
+            const grandTotal = total + addonTotal;
+            const requiresFullPayment = (config.formMode === 'massage' || config.formMode === 'family');
+            const depositRequired = requiresFullPayment ? grandTotal : (grandTotal * 0.5);
+
+            // Harvest and format Live Calendar selections
+            const dateVal = document.getElementById('dates').value;
+            const timeVal = document.getElementById('time') ? document.getElementById('time').value : '';
+            let dateTimeText = "Date & Time Pending";
+            
+            if (dateVal) {
+                // Parse date relative to the user's timezone safely
+                const [yyyy, mm, dd] = dateVal.split('-');
+                const dateObj = new Date(yyyy, mm - 1, dd);
+                const dateOptions = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+                const formattedDate = dateObj.toLocaleDateString('en-US', dateOptions);
+                
+                // Apex UX: Calculate Approximate Return Time for Standard Experiences
+                if (timeVal && config.durationHours && config.formMode === 'standard') {
+                    // Handle standard 24h "HH:MM" format from the time input
+                    const [hoursStr, minutesStr] = timeVal.split(':');
+                    let hours = parseInt(hoursStr, 10);
+                    let minutes = parseInt(minutesStr, 10);
+                    
+                    // Format Pick-up Time (12-hour)
+                    const startAmpm = hours >= 12 ? 'PM' : 'AM';
+                    const startHour12 = (hours % 12) || 12;
+                    const startMinStr = String(minutes).padStart(2, '0');
+                    
+                    // Execute total duration math
+                    const endTotalMins = (hours * 60) + minutes + (config.durationHours * 60);
+                    const endHour24 = Math.floor(endTotalMins / 60);
+                    const endMins = endTotalMins % 60;
+                    
+                    // Reformat Return Time to 12-hour clock
+                    const endAmpm = (endHour24 % 24) >= 12 ? 'PM' : 'AM';
+                    const endHour12 = (endHour24 % 12) || 12;
+                    const endMinStr = String(endMins).padStart(2, '0');
+                    const nextDayLabel = endHour24 >= 24 ? ' (Next Day)' : '';
+                    
+                    dateTimeText = `${formattedDate}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Pick-up ≈ ${endHour12}:${endMinStr} ${endAmpm} Return${nextDayLabel}</span>`;
+                } else if (timeVal) {
+                    // Fallback formatting for mobile services that do not require return times
+                    const [hoursStr, minutesStr] = timeVal.split(':');
+                    let hours = parseInt(hoursStr, 10);
+                    const startAmpm = hours >= 12 ? 'PM' : 'AM';
+                    const startHour12 = (hours % 12) || 12;
+                    dateTimeText = `${formattedDate}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${minutesStr} ${startAmpm} Arrival</span>`;
+                } else {
+                    dateTimeText = formattedDate;
+                }
+            }
+
+            // Render output via innerHTML to support the structural span tags
+            document.getElementById('summary-date-time').innerHTML = dateTimeText;
+            document.getElementById('summary-protocol').innerHTML = protocolText;
+            document.getElementById('summary-subtotal').textContent = `US$${total.toLocaleString('en-US')}`;
+            
+            document.getElementById('summary-deposit-label').textContent = requiresFullPayment ? "100% Upfront Required" : "50% Deposit Required";
+            document.getElementById('summary-deposit-total').textContent = `US$${depositRequired.toLocaleString('en-US')}`;
+            
+            // Strike-through gross total for visual context on 50% deposits
+            if (!requiresFullPayment && grandTotal > 0) {
+                document.getElementById('summary-grand-total').textContent = `Total: US$${grandTotal.toLocaleString('en-US')}`;
+            } else {
+                document.getElementById('summary-grand-total').textContent = '';
+            }
+
+            if (grandTotal > 0) {
+                summaryBox.style.display = 'block';
+            } else {
+                summaryBox.style.display = 'none';
+            }
+        }
+
+        // Attach Real-Time Pricing Engine Triggers
+        document.addEventListener('DOMContentLoaded', () => {
+            // Added dates and time so the itinerary syncs live
+            const pricingTriggers = ['guests', 'care_schedule', 'care_days', 'massage_duration', 'massage_guests', 'dates', 'time', 'massage_time'];
+            pricingTriggers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', calculateInvestment);
+                    el.addEventListener('input', calculateInvestment);
+                }
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                const attrInput = document.getElementById('attribution');
+                if (attrInput) {
+                    attrInput.value = `Rep: ${refCode}`;
+                    attrInput.setAttribute('readonly', true);
+                    attrInput.style.backgroundColor = 'var(--border-light)';
+                    attrInput.style.cursor = 'not-allowed';
+                }
+            }
+        });
+
+        // Carousel Desktop Navigation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.getElementById('packagesCarousel');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+
+            if (carousel && scrollLeftBtn && scrollRightBtn) {
+                // Dynamically calculate the scroll distance based on one card's width + the 1rem (16px) gap
+                const getScrollAmount = () => {
+                    const card = carousel.querySelector('.card');
+                    return card ? card.offsetWidth + 16 : 300; 
+                };
+
+                scrollLeftBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+                });
+
+                scrollRightBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                });
+            }
+
+            // FAQ Cancellation Carousel Navigation
+            const faqCarousel = document.getElementById('cancellationCarousel');
+            const faqScrollLeft = document.getElementById('faqScrollLeft');
+            const faqScrollRight = document.getElementById('faqScrollRight');
+
+            if (faqCarousel && faqScrollLeft && faqScrollRight) {
+                const getFaqScrollAmount = () => {
+                    // Calculates based on your strict 240px flex-basis + 0.75rem (12px) gap
+                    return 252; 
+                };
+
+                faqScrollLeft.addEventListener('click', () => {
+                    faqCarousel.scrollBy({ left: -getFaqScrollAmount(), behavior: 'smooth' });
+                });
+
+                faqScrollRight.addEventListener('click', () => {
+                    faqCarousel.scrollBy({ left: getFaqScrollAmount(), behavior: 'smooth' });
+                });
+            }
+        });
+		
+    </script>
+<!-- Apex Upgrade: Floating WhatsApp -->
+    <a href="https://wa.me/6281234567890" target="_blank" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--text-dark);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        z-index: 1000;
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Chat with Concierge
+    </a>
+</body>
+  </html>
