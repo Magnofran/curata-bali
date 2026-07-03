@@ -2379,8 +2379,20 @@
                 protocolText = `✓ Professional Family Concierge Assigned`;
             } else if (config.formMode === 'massage') {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
-                total = basePrice * guestCount;
-                document.getElementById('summary-line-item').textContent = `Session for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
+                
+                // Dynamically read the selected duration to override base price
+                const durationEl = document.getElementById('massage_duration');
+                let sessionPrice = basePrice; // Fallback to $55
+                let durationLabel = "Session";
+                
+                if (durationEl && durationEl.value) {
+                    if (durationEl.value.includes('45')) { sessionPrice = 55; durationLabel = "45-Min Session"; }
+                    if (durationEl.value.includes('60')) { sessionPrice = 75; durationLabel = "60-Min Session"; }
+                    if (durationEl.value.includes('90')) { sessionPrice = 105; durationLabel = "90-Min Session"; }
+                }
+                
+                total = sessionPrice * guestCount;
+                document.getElementById('summary-line-item').textContent = `${durationLabel} for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
                 protocolText = `✓ Premium Mobile Therapists Dispatched`;
             } else {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
