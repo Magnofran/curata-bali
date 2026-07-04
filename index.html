@@ -12,7 +12,7 @@
             --surface: #ffffff;
             --text-dark: #0f172a;
             --text-muted: #64748b;
-            --accent-vibrant: #C2A679; /* Muted-Architectural Gold */
+            --accent-vibrant: #C2A679; /* Muted Architectural Gold */
             --accent-hover: #A88D60;
             --border-light: #e2e8f0;
             --radius-lg: 0px; 
@@ -576,11 +576,10 @@
             .split-input-group input {
                 width: 100% !important;
             }
-            .directive-list, #inclusionsList {
+            .directive-list {
                 grid-template-columns: 1fr;
             }
-            .directive-list li:last-child:nth-child(odd),
-            #inclusionsList li:last-child:nth-child(odd) {
+            .directive-list li:last-child:nth-child(odd) {
                 grid-column: auto; /* Releases the full-width span on mobile */
             }
         }
@@ -704,13 +703,13 @@
         .price-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         .price-value { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
 
-        /* Modal Inclusions Box Grid */
+        /* Modal Inclusions Box Grid (Mobile First) */
         #inclusionsList {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem 1.5rem; /* Wider horizontal gap for borderless text */
+            grid-template-columns: 1fr;
+            gap: 0; /* Removes gap since padding handles vertical rhythm */
         }
-       #inclusionsList li {
+        #inclusionsList li {
             background: transparent;
             border: none;
             border-bottom: 1px solid var(--border-light);
@@ -723,9 +722,15 @@
             align-items: flex-start; /* Aligns text to the top if it wraps */
         }
 
-        /* Apex Structural Span for Odd Items */
-        #inclusionsList li:last-child:nth-child(odd) {
-            grid-column: 1 / -1;
+        /* Apex Structural Span for Odd Items (Desktop & Tablet) */
+        @media (min-width: 768px) {
+            #inclusionsList {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem 1.5rem;
+            }
+            #inclusionsList li:last-child:nth-child(odd) {
+                grid-column: 1 / -1;
+            }
         }
 
         /* Apex Upgrade: FAQ Carousel Nav */
