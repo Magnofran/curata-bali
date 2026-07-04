@@ -2419,7 +2419,6 @@
                 const days = parseInt(document.getElementById('care_days').value) || 0;
                 const childCount = parseInt(document.getElementById('num_children').value) || 1; 
                 const schedule = document.getElementById('care_schedule').value;
-                const startTimeSelect = document.getElementById('start_time');
                 
                 // Parse exact shift name and price
                 let shiftPrice = 120;
@@ -2431,12 +2430,10 @@
                 const conciergesNeeded = Math.ceil(childCount / 2);
                 total = shiftPrice * days * conciergesNeeded;
                 
-                // Capture the exact time label
-                let startTimeText = (startTimeSelect && startTimeSelect.options.length > 0) ? startTimeSelect.options[startTimeSelect.selectedIndex].text : "Pending Time";
+                document.getElementById('summary-line-item').innerHTML = `${days} ${shiftName}${days > 1 ? 's' : ''} • ${conciergesNeeded} Caregiver${conciergesNeeded > 1 ? 's' : ''}`;
                 
-                // Inject multi-line HTML into the receipt
-                document.getElementById('summary-line-item').innerHTML = `${days} ${shiftName}${days > 1 ? 's' : ''} • ${conciergesNeeded} Caregiver${conciergesNeeded > 1 ? 's' : ''}<br><span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.15rem;">Commencing at ${startTimeText}</span>`;
-                protocolText = `✓ ${conciergesNeeded} Professional Concierge${conciergesNeeded > 1 ? 's' : ''} Assigned`;
+                const childLabel = childCount === 1 ? "1 Child" : `${childCount} Children`;
+                protocolText = `✓ ${conciergesNeeded} Professional Concierge${conciergesNeeded > 1 ? 's' : ''} Assigned for ${childLabel}`;
             } else if (config.formMode === 'massage') {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
                 
@@ -2521,10 +2518,51 @@
                 const [yyyy, mm, dd] = dateVal.split('-');
                 const dateObj = new Date(yyyy, mm - 1, dd);
                 const dateOptions = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-                const formattedDate = dateObj.toLocaleDateString('en-US', dateOptions);
+                let finalDateStr = dateObj.toLocaleDateString('en-US', dateOptions);
                 
-                // Apex UX: Calculate Approximate Return Time for Standard Experiences
-                if (timeVal && config.durationHours && config.formMode === 'standard') {
+                if (config.formMode === 'family') {
+                    // Format multi-day spanning
+                    const days = parseInt(document.getElementById('care_days').value) || 1;
+                    if (days > 1) {
+                        const endDateObj = new Date(dateObj);
+                        endDateObj.setDate(dateObj.getDate() + (days - 1));
+                        finalDateStr = `${finalDateStr} – ${endDateObj.toLocaleDateString('en-US', dateOptions)}`;
+                    }
+
+                    const startTimeSelect = document.getElementById('start_time');
+                    const sTimeVal = startTimeSelect ? startTimeSelect.value : '';
+                    const schedule = document.getElementById('care_schedule').value;
+                    
+                    if (sTimeVal) {
+                        const [hoursStr, minutesStr] = sTimeVal.split(':');
+                        let hours = parseInt(hoursStr, 10);
+                        let minutes = parseInt(minutesStr, 10);
+                        
+                        const startAmpm = hours >= 12 ? 'PM' : 'AM';
+                        const startHour12 = (hours % 12) || 12;
+                        const startMinStr = String(minutes).padStart(2, '0');
+
+                        if (schedule.includes('Live-In')) {
+                            dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Arrival ≈ 24-Hour Coverage</span>`;
+                        } else {
+                            // Standard Shift Math (8 Hours)
+                            const shiftHours = 8;
+                            const endTotalMins = (hours * 60) + minutes + (shiftHours * 60);
+                            const endHour24 = Math.floor(endTotalMins / 60);
+                            const endMins = endTotalMins % 60;
+                            
+                            const endAmpm = (endHour24 % 24) >= 12 ? 'PM' : 'AM';
+                            const endHour12 = (endHour24 % 12) || 12;
+                            const endMinStr = String(endMins).padStart(2, '0');
+                            const nextDayLabel = endHour24 >= 24 ? ' (Next Day)' : '';
+                            
+                            dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Arrival ≈ ${endHour12}:${endMinStr} ${endAmpm} Departure${nextDayLabel}</span>`;
+                        }
+                    } else {
+                        dateTimeText = finalDateStr;
+                    }
+
+                } else if (timeVal && config.durationHours && config.formMode === 'standard') {
                     // Handle standard 24h "HH:MM" format from the time input
                     const [hoursStr, minutesStr] = timeVal.split(':');
                     let hours = parseInt(hoursStr, 10);
@@ -2546,16 +2584,16 @@
                     const endMinStr = String(endMins).padStart(2, '0');
                     const nextDayLabel = endHour24 >= 24 ? ' (Next Day)' : '';
                     
-                    dateTimeText = `${formattedDate}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Pick-up ≈ ${endHour12}:${endMinStr} ${endAmpm} Return${nextDayLabel}</span>`;
+                    dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Pick-up ≈ ${endHour12}:${endMinStr} ${endAmpm} Return${nextDayLabel}</span>`;
                 } else if (timeVal) {
                     // Fallback formatting for mobile services that do not require return times
                     const [hoursStr, minutesStr] = timeVal.split(':');
                     let hours = parseInt(hoursStr, 10);
                     const startAmpm = hours >= 12 ? 'PM' : 'AM';
                     const startHour12 = (hours % 12) || 12;
-                    dateTimeText = `${formattedDate}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${minutesStr} ${startAmpm} Arrival</span>`;
+                    dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${minutesStr} ${startAmpm} Arrival</span>`;
                 } else {
-                    dateTimeText = formattedDate;
+                    dateTimeText = finalDateStr;
                 }
             }
 
