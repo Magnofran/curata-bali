@@ -1589,7 +1589,8 @@
                         </div>
                         <div id="family-guest-col" style="display: none;">
                             <label for="num_children">Number of Children</label>
-                            <input type="number" id="num_children" name="num_children" min="1" max="10" placeholder="e.g., 2" inputmode="numeric" pattern="[0-9]*" oninput="checkConciergeRatio(this.value)">
+                            <input type="number" id="num_children" name="num_children" min="1" max="10" placeholder="e.g., 2" inputmode="numeric" oninput="checkConciergeRatio(this.value)">
+                            <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 children per concierge applies. Your request will automatically reflect the required additional staff.</p>
                         </div>
                     </div>
                 </div>
@@ -1598,8 +1599,7 @@
                     <!-- Hidden block for Ages and the Safety Warning -->
                     <div class="col" id="family-ages-col" style="display: none;">
                         <label for="children_ages">Ages of Children</label>
-                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 8">
-                        <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 children per concierge applies. Your request will automatically reflect the required additional staff.</p>
+                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 8" oninput="this.value = this.value.replace(/[^0-9,\s]/g, '');">
                     </div>
 
                     <!-- Global Date & Time Block -->
@@ -1680,7 +1680,7 @@
                         </div>
                         <div class="col">
                             <label for="care_days">Number of Days</label>
-                            <input type="number" id="care_days" name="care_days" min="1" max="15" placeholder="e.g., 3" inputmode="numeric" pattern="[0-9]*" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <input type="number" id="care_days" name="care_days" min="1" max="15" placeholder="e.g., 3" inputmode="numeric" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                         </div>
                     </div>
                     
@@ -2417,14 +2417,26 @@
 
             if (config.formMode === 'family') {
                 const days = parseInt(document.getElementById('care_days').value) || 0;
+                const childCount = parseInt(document.getElementById('num_children').value) || 1; 
                 const schedule = document.getElementById('care_schedule').value;
-                let shiftPrice = 120;
-                if (schedule.includes('Night')) shiftPrice = 150;
-                if (schedule.includes('Live-In')) shiftPrice = 250;
+                const startTimeSelect = document.getElementById('start_time');
                 
-                total = shiftPrice * days;
-                document.getElementById('summary-line-item').textContent = `${days} Shift${days > 1 ? 's' : ''} Secured`;
-                protocolText = `✓ Professional Family Concierge Assigned`;
+                // Parse exact shift name and price
+                let shiftPrice = 120;
+                let shiftName = "Day Shift";
+                if (schedule.includes('Evening')) shiftName = "Evening Shift";
+                if (schedule.includes('Night')) { shiftPrice = 150; shiftName = "Night Shift"; }
+                if (schedule.includes('Live-In')) { shiftPrice = 250; shiftName = "Live-In Day"; }
+
+                const conciergesNeeded = Math.ceil(childCount / 2);
+                total = shiftPrice * days * conciergesNeeded;
+                
+                // Capture the exact time label
+                let startTimeText = (startTimeSelect && startTimeSelect.options.length > 0) ? startTimeSelect.options[startTimeSelect.selectedIndex].text : "Pending Time";
+                
+                // Inject multi-line HTML into the receipt
+                document.getElementById('summary-line-item').innerHTML = `${days} ${shiftName}${days > 1 ? 's' : ''} • ${conciergesNeeded} Caregiver${conciergesNeeded > 1 ? 's' : ''}<br><span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.15rem;">Commencing at ${startTimeText}</span>`;
+                protocolText = `✓ ${conciergesNeeded} Professional Concierge${conciergesNeeded > 1 ? 's' : ''} Assigned`;
             } else if (config.formMode === 'massage') {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
                 
@@ -2571,8 +2583,8 @@
 
         // Attach Real-Time Pricing Engine Triggers
         document.addEventListener('DOMContentLoaded', () => {
-            // Added dates and time so the itinerary syncs live
-            const pricingTriggers = ['guests', 'care_schedule', 'care_days', 'massage_duration', 'massage_guests', 'dates', 'time', 'massage_time'];
+            // Added dates, time, children, and start_time so the itinerary syncs live
+            const pricingTriggers = ['guests', 'num_children', 'care_schedule', 'care_days', 'start_time', 'massage_duration', 'massage_guests', 'dates', 'time', 'massage_time'];
             pricingTriggers.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
