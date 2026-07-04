@@ -172,9 +172,13 @@
             gap: 1.5rem;
         }
         .section-header h2 { 
-            font-size: clamp(1.5rem, 6vw, 2rem); 
+            font-family: 'Inter', sans-serif; /* Overrides the global serif */
+            font-weight: 800; /* Pushed to maximum structural weight */
+            font-size: clamp(1.8rem, 6vw, 2.4rem); /* Increased size baseline and peak */
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* Matches the exact spacing of the Seamless title */
             line-height: 1.15; 
-            letter-spacing: -0.03em; 
+            color: var(--text-dark);
         }
         
         .carousel-nav {
@@ -1160,7 +1164,7 @@
 	
     <section class="packages-section">
         <div class="section-header">
-            <h2>Choose Your Experience or Service</h2>
+            <h2>Select Experience</h2>
             <div class="carousel-nav">
                 <button class="carousel-btn" id="scrollLeft" aria-label="Scroll Left">&larr;</button>
                 <button class="carousel-btn" id="scrollRight" aria-label="Scroll Right">&rarr;</button>
