@@ -2434,6 +2434,11 @@
                 
                 const childLabel = childCount === 1 ? "1 Child" : `${childCount} Children`;
                 protocolText = `✓ ${conciergesNeeded} Professional Concierge${conciergesNeeded > 1 ? 's' : ''} Assigned for ${childLabel}`;
+
+                // Apex UX: Inject explicit operational footnote for Live-In deployments
+                if (schedule.includes('Live-In')) {
+                    protocolText += `<span style="display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; border-top: 1px dashed var(--border-light); padding-top: 0.5rem;">*Live-In Care includes built-in daily rest periods for our staff. Separate accommodation must be provided.</span>`;
+                }
             } else if (config.formMode === 'massage') {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
                 
