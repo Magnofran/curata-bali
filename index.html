@@ -815,6 +815,67 @@
                 font-size: 16px !important; 
             }
         }
+
+        /* Apex UX: Guest/Children Stepper (Universal Desktop & Mobile) */
+        .qty-stepper {
+            display: flex; /* Always visible */
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            background: rgba(15, 23, 42, 0.03);
+            border-bottom: 2px solid var(--border-light);
+            padding: 0.4rem 0.4rem 0.4rem 0.6rem;
+            transition: border-color 0.2s ease;
+        }
+        .qty-stepper:focus-within {
+            border-bottom: 2px solid var(--text-dark);
+        }
+        .qty-stepper-btn {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border-light);
+            background: var(--surface);
+            color: var(--text-dark);
+            font-size: 1.35rem;
+            line-height: 1;
+            font-weight: 500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+        }
+        .qty-stepper-btn:active {
+            transform: scale(0.9);
+            background: var(--border-light);
+        }
+        .qty-stepper-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+            background: var(--surface);
+        }
+        .qty-stepper-value {
+            flex: 1;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: normal;
+            text-transform: none;
+        }
+
+        /* Universal: swap native select/number input entirely for the stepper control */
+        #standard-guest-col select#guests,
+        #family-guest-col input#num_children {
+            display: none !important;
+        }
+
 	/* -----------------------------------
            THE CURATA DIFFERENCE (EDITORIAL) 
            ----------------------------------- */
@@ -1580,6 +1641,12 @@
                             <select id="guests" name="guests" required style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="" disabled selected>Select Guests</option>
                             </select>
+                            <!-- Apex UX: Mobile-only stepper replaces the native scrolling picker to prevent viewport jump -->
+                            <div class="qty-stepper" id="guestStepper" role="group" aria-label="Number of guests">
+                                <button type="button" class="qty-stepper-btn" id="guestStepperMinus" aria-label="Decrease number of guests">&minus;</button>
+                                <span class="qty-stepper-value" id="guestStepperValue">Select Guests</span>
+                                <button type="button" class="qty-stepper-btn" id="guestStepperPlus" aria-label="Increase number of guests">&plus;</button>
+                            </div>
                             <!-- Apex Inline Reveal -->
                             <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--text-dark); color: #ffffff; border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
                                 <!-- Injected via JS -->
@@ -1590,6 +1657,12 @@
                         <div id="family-guest-col" style="display: none;">
                             <label for="num_children">Number of Children</label>
                             <input type="number" id="num_children" name="num_children" min="1" max="10" placeholder="e.g., 2" inputmode="numeric" oninput="checkConciergeRatio(this.value)">
+                            <!-- Apex UX: Mobile-only stepper replaces the native number input's spinner -->
+                            <div class="qty-stepper" id="childrenStepper" role="group" aria-label="Number of children">
+                                <button type="button" class="qty-stepper-btn" id="childrenStepperMinus" aria-label="Decrease number of children">&minus;</button>
+                                <span class="qty-stepper-value" id="childrenStepperValue">Number of Children</span>
+                                <button type="button" class="qty-stepper-btn" id="childrenStepperPlus" aria-label="Increase number of children">&plus;</button>
+                            </div>
                             <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 children per concierge applies. Your request will automatically reflect the required additional staff.</p>
                         </div>
                     </div>
@@ -1920,6 +1993,10 @@
                 guestOptions += `<option value="${i}">${i} Guest${i > 1 ? 's' : ''}</option>`;
             }
             guestInput.innerHTML = guestOptions;
+
+            // Apex UX: Boot the mobile steppers to match package constraints
+            initQtyStepper('guestStepper', 1, maxLimit, config.formMode === 'family', 'Guest');
+            initQtyStepper('childrenStepper', 1, 10, null, 'Child', 'Children');
 
             // 5. Inclusions
             document.getElementById('inclusionsTitle').textContent = config.incTitle;
@@ -2635,6 +2712,93 @@
                     el.addEventListener('input', calculateInvestment);
                 }
             });
+        });
+
+        /* ============================================================
+           Apex UX: Guest / Children Stepper (Mobile Only)
+        ============================================================ */
+        function initQtyStepper(stepperId, min, max, keepExistingValue, singularLabel, pluralLabel) {
+            const stepper = document.getElementById(stepperId);
+            if (!stepper) return;
+
+            stepper.dataset.min = min;
+            stepper.dataset.max = max;
+            stepper.dataset.singular = singularLabel;
+            stepper.dataset.plural = pluralLabel || `${singularLabel}s`;
+            stepper.dataset.target = (stepperId === 'guestStepper') ? 'guests' : 'num_children';
+
+            const target = document.getElementById(stepper.dataset.target);
+
+            if (!keepExistingValue && target) {
+                target.value = min;
+                target.dispatchEvent(new Event('change', { bubbles: true }));
+                target.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            updateQtyStepperDisplay(stepperId);
+        }
+
+        function updateQtyStepperDisplay(stepperId) {
+            const stepper = document.getElementById(stepperId);
+            if (!stepper) return;
+            const target = document.getElementById(stepper.dataset.target);
+            if (!target) return;
+
+            const min = parseInt(stepper.dataset.min, 10);
+            const max = parseInt(stepper.dataset.max, 10);
+            const valueEl = stepper.querySelector('.qty-stepper-value');
+            const minusBtn = stepper.querySelector('.qty-stepper-btn:first-child');
+            const plusBtn = stepper.querySelector('.qty-stepper-btn:last-child');
+            const val = parseInt(target.value, 10);
+
+            if (!val) {
+                valueEl.textContent = (stepper.dataset.target === 'guests') ? 'Select Guests' : 'Number of Children';
+                minusBtn.disabled = true;
+                plusBtn.disabled = false;
+                return;
+            }
+
+            valueEl.textContent = `${val} ${val === 1 ? stepper.dataset.singular : stepper.dataset.plural}`;
+            minusBtn.disabled = val <= min;
+            plusBtn.disabled = val >= max;
+        }
+
+        function stepQty(stepperId, direction) {
+            const stepper = document.getElementById(stepperId);
+            if (!stepper) return;
+            const target = document.getElementById(stepper.dataset.target);
+            if (!target) return;
+
+            const min = parseInt(stepper.dataset.min, 10);
+            const max = parseInt(stepper.dataset.max, 10);
+            let val = parseInt(target.value, 10);
+            val = isNaN(val) ? min : val + direction;
+            if (val < min) val = min;
+            if (val > max) val = max;
+
+            target.value = val;
+            target.dispatchEvent(new Event('input', { bubbles: true }));
+            target.dispatchEvent(new Event('change', { bubbles: true }));
+            updateQtyStepperDisplay(stepperId);
+
+            if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(8);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const guestMinus = document.getElementById('guestStepperMinus');
+            const guestPlus = document.getElementById('guestStepperPlus');
+            if (guestMinus) guestMinus.addEventListener('click', () => stepQty('guestStepper', -1));
+            if (guestPlus) guestPlus.addEventListener('click', () => stepQty('guestStepper', 1));
+
+            const childMinus = document.getElementById('childrenStepperMinus');
+            const childPlus = document.getElementById('childrenStepperPlus');
+            if (childMinus) childMinus.addEventListener('click', () => stepQty('childrenStepper', -1));
+            if (childPlus) childPlus.addEventListener('click', () => stepQty('childrenStepper', 1));
+
+            const guestsSelect = document.getElementById('guests');
+            if (guestsSelect) guestsSelect.addEventListener('change', () => updateQtyStepperDisplay('guestStepper'));
+
+            const numChildrenInput = document.getElementById('num_children');
+            if (numChildrenInput) numChildrenInput.addEventListener('input', () => updateQtyStepperDisplay('childrenStepper'));
         });
     </script>
     
