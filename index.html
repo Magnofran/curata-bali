@@ -43,7 +43,7 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    min-height: 100vh;
+    min-height: 100dvh; /* Upgraded to dynamic viewport height */
     position: relative;
     margin: 0;
 }
@@ -380,7 +380,8 @@
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         max-width: 640px;
         width: 95%;
-        height: 90vh;
+        height: 90dvh; /* Upgraded to dynamic viewport height */
+        max-height: -webkit-fill-available; /* Apple iOS Safari fallback */
         flex-direction: column;
     }
     
@@ -455,7 +456,7 @@
 
 @media (max-width: 480px) {
     .modal-body {
-        padding: 1.5rem 1rem;
+        padding: 1.5rem 1rem 3.5rem 1rem; /* Added bottom scroll buffer to push the submit button up */
     }
 }
 
@@ -588,7 +589,7 @@
         #customCode { display: none; width: 80px; flex: none; padding: 0.85rem 0.5rem; text-align: center; }
 
         /* Footer & Map */
-        .site-footer { background-color: var(--surface); border-top: 1px solid var(--border-light); padding: 3rem 2rem; margin-top: 2rem; text-align: center; }
+        .site-footer { background-color: var(--surface); border-top: 1px solid var(--border-light); padding: 3rem 2rem 6rem 2rem; margin-top: 2rem; text-align: center; } /* Added bottom scroll buffer */
         .footer-content { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
         .trust-badge {
             display: flex;
@@ -2912,7 +2913,7 @@
 <!-- Apex Upgrade: Floating WhatsApp -->
     <a href="https://wa.me/6281234567890" target="_blank" style="
         position: fixed;
-        bottom: 20px;
+        bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px)); /* Protects against iPhone bottom home bar */
         right: 20px;
         background-color: var(--text-dark);
         color: white;
