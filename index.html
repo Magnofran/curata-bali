@@ -1586,7 +1586,9 @@
 
            <!-- Dynamic Scaled Logistics Block -->
             <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-                <!-- Injected via JS when guests >= 5 -->
+                <strong id="logisticsBlockTitle" style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;"></strong>
+                <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
+                <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
             </div>
 
             <!-- Moved: Booking Logistics Second -->
@@ -2002,7 +2004,10 @@
 
             // 5. Inclusions
             document.getElementById('inclusionsTitle').textContent = config.incTitle;
-            document.getElementById('inclusionsList').innerHTML = config.incHTML;
+            document.getElementById('inclusionsList').innerHTML = config.incHTML + `
+                <li id="dynamicIncTeam" style="display: none; background: var(--surface); border-color: var(--text-dark);"></li>
+                <li id="dynamicIncFleet" style="display: none; background: var(--surface); border-color: var(--text-dark);"></li>
+            `;
 
             // 6. Pre-Booking Guidance Integration
             const guidanceSection = document.getElementById('guidance-section');
@@ -2406,8 +2411,10 @@
             const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
             const config = packageData[packageID];
             const logisticsBlock = document.getElementById('dynamicLogisticsBlock');
-            const inclusionsList = document.getElementById('inclusionsList');
+            const logisticsBlockTitle = document.getElementById('logisticsBlockTitle');
             const inlineNotice = document.getElementById('inlineFleetNotice');
+            const dynIncTeam = document.getElementById('dynamicIncTeam');
+            const dynIncFleet = document.getElementById('dynamicIncFleet');
 
             // Dynamically build Add-on Guests dropdown to match Primary Guest Count
             const massageGuestsSelect = document.getElementById('massage_guests');
@@ -2422,9 +2429,6 @@
             // Restrict logic to standard tour deployments (exclude in-villa wellness/family)
             if (!logisticsBlock || config.formMode !== 'standard') return;
 
-            // Reset inclusions to baseline before calculating dynamic additions
-            inclusionsList.innerHTML = config.incHTML;
-            
             // Apex 1:4 Ratio Calculation
             const hostCount = Math.ceil(guestCount / 4);
 
@@ -2438,15 +2442,19 @@
                 const inlineTitle = isSyndicate ? "✦ Multi-Vehicle Convoy Allocated" : "✦ Scaled Logistics Allocated";
                 const inlineDesc = "Your group size automatically activates our expanded deployment for absolute comfort.";
 
-                inclusionsList.innerHTML += `<li style="background: var(--surface); border-color: var(--text-dark);">✓ Scaled Concierge Team (${hostCount} Hosts)</li>`;
-                inclusionsList.innerHTML += `<li style="background: var(--surface); border-color: var(--text-dark);">✓ Synchronized Multi-Vehicle Fleet</li>`;
+                // Non-destructively update the inclusions list
+                if (dynIncTeam) {
+                    dynIncTeam.textContent = `✓ Scaled Concierge Team (${hostCount} Hosts)`;
+                    dynIncTeam.style.display = 'flex';
+                }
+                if (dynIncFleet) {
+                    dynIncFleet.textContent = `✓ Synchronized Multi-Vehicle Fleet`;
+                    dynIncFleet.style.display = 'flex';
+                }
 
+                // Non-destructively update the Logistics Block
+                if (logisticsBlockTitle) logisticsBlockTitle.textContent = protocolTitle;
                 logisticsBlock.style.display = 'block';
-                logisticsBlock.innerHTML = `
-                    <strong style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;">${protocolTitle}</strong>
-                    <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
-                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
-                `;
 
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
@@ -2456,6 +2464,9 @@
                 }
 
             } else {
+                // Revert to baseline non-destructively
+                if (dynIncTeam) dynIncTeam.style.display = 'none';
+                if (dynIncFleet) dynIncFleet.style.display = 'none';
                 logisticsBlock.style.display = 'none';
                 
                 if (inlineNotice) {
