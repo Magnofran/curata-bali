@@ -452,6 +452,7 @@
         overflow-y: auto;
         flex-grow: 1;
         -webkit-overflow-scrolling: touch;
+        overflow-anchor: none; /* Bulletproofs against scroll-jumping during live DOM updates */
     }
 
 @media (max-width: 480px) {
@@ -832,9 +833,10 @@
             border-bottom: 2px solid var(--text-dark);
         }
         .qty-stepper-btn {
+            position: relative; /* Required to anchor the expanded hit area */
             flex-shrink: 0;
-            width: 38px; /* Scaled down slightly to match input height */
-            height: 38px; /* Scaled down slightly to match input height */
+            width: 38px; /* Visually remains tight */
+            height: 38px; /* Visually remains tight */
             border: 1px solid var(--border-light);
             background: var(--surface);
             color: var(--text-dark);
@@ -850,6 +852,17 @@
             -webkit-user-select: none;
             user-select: none;
             transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+        }
+        /* Apex UX: Project a massive invisible tap target 10px outside the visual button */
+        .qty-stepper-btn::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            bottom: -10px;
+            left: -10px;
+            border-radius: 50%;
+            z-index: 1;
         }
         .qty-stepper-btn:active {
             transform: scale(0.9);
@@ -1584,14 +1597,7 @@
                 </ul>
             </div>
 
-           <!-- Dynamic Scaled Logistics Block -->
-            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-                <strong id="logisticsBlockTitle" style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;"></strong>
-                <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
-                <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
-            </div>
-
-            <!-- Moved: Booking Logistics Second -->
+           <!-- Moved: Booking Logistics Second -->
             <div class="operational-directive" id="modalDirective">
                 <!-- Injected via JS -->
             </div>          
@@ -1772,6 +1778,13 @@
                     <label for="notes">Special Requirements / Notes</label>
                     <textarea id="notes" name="notes" rows="3" placeholder="Dietary restrictions, preferred activities, etc."></textarea>
                 </div>
+
+		<!-- Dynamic Scaled Logistics Block (Moved below the interaction layer to prevent viewport scroll jumping) -->
+            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                <strong id="logisticsBlockTitle" style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;"></strong>
+                <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
+                <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
+            </div>
 
 		<!-- Apex Investment Summary -->
         <div id="investmentSummary" style="display: none; margin-bottom: 1.5rem; padding: 1.5rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--accent-vibrant);">
