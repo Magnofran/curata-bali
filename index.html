@@ -1753,7 +1753,7 @@
                         </div>
                         <div class="col">
                             <label for="care_days">Number of Days</label>
-                            <input type="number" id="care_days" name="care_days" min="1" max="15" placeholder="e.g., 3" inputmode="numeric" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <input type="number" id="care_days" name="care_days" min="1" max="15" value="1" required placeholder="e.g., 3" inputmode="numeric" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                         </div>
                     </div>
                     
@@ -1830,7 +1830,8 @@
                 incHTML: `<li>✓ Private high-priest ritual</li><li>✓ Sacred jungle spring visit</li><li>✓ Private-chef catered lunch</li><li>✓ Heritage dance performance</li><li>✓ Hands-on coconut oil workshop</li><li>✓ Private round-trip transport</li>`,
                 showDressCode: true,
                 dressCodeHTML: `Traditional temple attire required (Sarong provided). Modest clothing is essential for temple entry.`,
-                formMode: 'standard'
+                formMode: 'standard',
+                fullPayment: true
             },
             // 2. THE RE-POSITIONED UBUD
             'Package A': {
@@ -2587,7 +2588,7 @@
             }
 
             const grandTotal = total + addonTotal;
-            const requiresFullPayment = (config.formMode === 'massage' || config.formMode === 'family');
+            const requiresFullPayment = (config.formMode === 'massage' || config.formMode === 'family' || config.fullPayment === true);
             const depositRequired = requiresFullPayment ? grandTotal : (grandTotal * 0.5);
 
             // Harvest and format Live Calendar selections
