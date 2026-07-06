@@ -851,6 +851,7 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
+            touch-action: manipulation; /* Apex UX: Disables double-tap-to-zoom on rapid taps */
             transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
         }
         /* Apex UX: Project a massive invisible tap target 10px outside the visual button */
@@ -2473,7 +2474,7 @@
                     inlineNotice.style.display = 'block';
                     inlineNotice.style.background = 'var(--text-dark)';
                     inlineNotice.style.color = '#ffffff';
-                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details above.`;
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details below.`;
                 }
 
             } else {
