@@ -1828,7 +1828,7 @@
                 timeMax: '09:00',
                 timeHelper: 'Ancestral journeys require a morning start to ensure private temple rituals occur during the quietest hours.',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>72-Hour Notice</strong> required to guarantee availability.</li><li><strong>Exclusive Access</strong> private temple rituals are booked with local high priests.</li><li><strong>Bespoke Catering</strong> the lunch menu is curated by a private chef; please note dietary requirements.</li><li><strong>Full Payment</strong> required to secure the high priest, chef, and artisanal facilitators.</li></ul>`,
-                guestMax: 10, guestPlaceholder: '2',
+                guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
                 incHTML: `<li>✓ Private high-priest ritual</li><li>✓ Sacred jungle spring visit</li><li>✓ Private-chef catered lunch</li><li>✓ Heritage dance performance</li><li>✓ Hands-on coconut oil workshop</li><li>✓ Private round-trip transport</li>`,
                 showDressCode: true,
@@ -1992,7 +1992,7 @@
             // 4. Guest Configurations
             const guestInput = document.getElementById('guests');
             let guestOptions = '<option value="" disabled selected>Select Guests</option>';
-            const maxLimit = Math.min(config.guestMax || 15, 15); 
+            const maxLimit = config.guestMax || 20; /* Allows individual configs to dictate the cap */
             for (let i = 1; i <= maxLimit; i++) {
                 guestOptions += `<option value="${i}">${i} Guest${i > 1 ? 's' : ''}</option>`;
             }
@@ -2947,4 +2947,3 @@
     </a>
 </body>
   </html>
-
