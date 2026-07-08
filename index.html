@@ -3110,6 +3110,20 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
         searchParams.append(key, value);
     }
 
+    // --- APEX UPGRADE: CAPTURE THE LIVE ITINERARY EXACTLY AS SHOWN ---
+    searchParams.append('receipt_datetime', document.getElementById('summary-date-time').innerHTML);
+    searchParams.append('receipt_protocol', document.getElementById('summary-protocol').innerHTML);
+    searchParams.append('receipt_subtotal', document.getElementById('summary-subtotal').innerText);
+    
+    // NEW: Capture the Wellness Add-on dynamically if they selected it
+    const addonRow = document.getElementById('summary-addon-row');
+    if (addonRow && addonRow.style.display !== 'none') {
+        searchParams.append('receipt_addon_label', document.getElementById('summary-addon-label').innerHTML);
+        searchParams.append('receipt_addon_total', document.getElementById('summary-addon-total').innerText);
+    }
+
+    searchParams.append('receipt_deposit', document.getElementById('summary-deposit-total').innerText);
+
     // 3. Send pristine data directly to n8n
     fetch('https://n8n.teakal.com/webhook/fde5faca-95a5-4198-a3ba-6f3fab04e4a0', {
         method: 'POST',
