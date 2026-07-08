@@ -1054,6 +1054,31 @@
             }
         }
 
+	/* Apex Guest Reflections Carousel */
+        .reviews-carousel {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1.5rem;
+        }
+        .reviews-carousel::-webkit-scrollbar { display: none; }
+        .review-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 1.75rem; /* Increased padding to beautifully clear the navigation arrows */
+            box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+            .review-item { flex: 0 0 calc(33.333% - 1.33rem); } /* Shows exactly 3 across on desktop */
+        }
+
         /* Seamless Exploration Carousel (Mobile) */
         .exploration-grid {
             display: flex;
@@ -1117,8 +1142,8 @@
             background: var(--border-light);
         }
         
-        .explore-nav-btn.left { left: -10px; }
-        .explore-nav-btn.right { right: -10px; }
+        .explore-nav-btn.left { left: -20px; }
+        .explore-nav-btn.right { right: -20px; }
         
         .explore-nav-btn.hidden {
             opacity: 0;
@@ -1262,13 +1287,13 @@
             </div>
         </div>
     </section>
-	
+
     <section class="packages-section">
         <div class="section-header">
             <h2>Select Experience</h2>
             <div class="carousel-nav">
                 <button class="carousel-btn" id="scrollLeft" aria-label="Scroll Left">&larr;</button>
-                <button class="carousel-btn" id="scrollRight" aria-label="Scroll Right">&rarr;</button>
+                <button class="carousel-btn pulse-arrow" id="scrollRight" aria-label="Scroll Right">→</button>
             </div>
         </div>
 
@@ -1296,7 +1321,7 @@
                 </div>
             </article>
             <!-- Package A -->
-            <article class="card" onclick="openModal('Package A', 'Ubud Artisan & Design', '$220 / person', 'images/package-a.jpg')">
+            <article class="card" onclick="openModal('Package A', 'Ubud Artisan & Design', '$245 / person', 'images/package-a.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
                     <img src="images/package-a.jpg" alt="Ubud" loading="lazy">
@@ -1310,7 +1335,7 @@
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
-                        <span class="price-value">$220 / person</span>
+                        <span class="price-value">$245 / person</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -1368,7 +1393,7 @@
             </article>
 
 	    <!-- Package D -->
-            <article class="card" onclick="openModal('Package D', 'Nusa Penida Expedition', '$275 / person', 'images/package-d.jpg')">
+            <article class="card" onclick="openModal('Package D', 'Nusa Penida Expedition', '$285 / person', 'images/package-d.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
                     <img src="images/package-d.jpg" alt="Nusa Penida" loading="lazy">
@@ -1382,7 +1407,7 @@
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
-                        <span class="price-value">$275 / person</span>
+                        <span class="price-value">$285 / person</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -1441,6 +1466,60 @@
         </div>   
     </section>
 <section class="map-section">
+
+	<section style="max-width: 1200px; margin: 4rem auto 4rem auto; padding: 0 2rem;">
+        <div class="section-header" style="margin-bottom: 3rem;">
+            <h2 style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Guest Reflections</h2>
+            <div class="carousel-nav">
+                <button class="carousel-btn" id="reviewScrollLeft" aria-label="Scroll Left">←</button>
+                <button class="carousel-btn pulse-arrow" id="reviewScrollRight" aria-label="Scroll Right">→</button>
+            </div>
+        </div>
+        
+        <div class="exploration-wrapper" style="position: relative;">
+            <button class="explore-nav-btn left hidden" id="reviewNavLeft" aria-label="Previous review">←</button>
+            <button class="explore-nav-btn right pulse-arrow" id="reviewNavRight" aria-label="Next review">→</button>
+            
+            <div class="reviews-carousel" id="reviewsGrid">
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"The complete absence of friction. We never touched a schedule, a ticket, or a map. It was exactly as promised—effortless."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Sarah & James</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Tabanan Flagship</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"Traveling with seven people usually means endless waiting and debating. The multi-vehicle setup gave us total freedom. Brilliant operational design."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Michael T.</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">VIP Nightlife</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"Our host felt more like a highly capable friend than a tour guide. They intuitively knew when to engage and when to give us space."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Elena R.</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Uluwatu Surf & Stay</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"Our villa was an hour away from the port, but the transport felt like a luxury lounge. The best private logistics I've experienced."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">David W.</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Nusa Penida Expedition</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"The in-villa massage after a long day of exploring was a masterstroke. Everything was timed to perfection without me saying a word."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Sophia L.</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">In-Villa Wellness</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>	
+
         <div class="map-header">
             <h2>Where We Operate</h2>
         </div>
@@ -1540,7 +1619,7 @@
                         <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Our policy is strictly structured based on how far in advance you secure your reservation to protect our local partners' inventory:</p>
                         <div class="faq-nav">
                             <button class="faq-btn" id="faqScrollLeft" aria-label="Scroll Left">&larr;</button>
-                            <button class="faq-btn" id="faqScrollRight" aria-label="Scroll Right">&rarr;</button>
+                            <button class="faq-btn pulse-arrow" id="faqScrollRight" aria-label="Scroll Right">→</button>
                         </div>
                     </div>
                     
@@ -1563,7 +1642,7 @@
                         </div>
                         <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--accent-vibrant); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
                             <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Same-Day & Mobile Services</strong>
-                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">These services are strictly non-refundable once confirmed due to the immediate allocation of dedicated staff, enforcing our <strong>100% Burn</strong> rule.</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">These services are strictly non-refundable once confirmed due to the immediate allocation of your dedicated specialists.</span>
                         </div>
                     </div>
                     <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Cancellations initiated by us due to severe weather or unsafe conditions are fully refundable.</p>
@@ -1583,9 +1662,9 @@
     <footer class="site-footer">
         <div class="footer-content">
             <div class="trust-badge">
-                <span>Curated Experiences</span>
+                <span>150+ Private Journeys Hosted</span>
                 <span class="badge-separator">•</span>
-                <span>Trusted Local Partners</span>
+                <span>5-Star Guest Satisfaction</span>
             </div>
             <div class="contact-info">
                 <a href="https://wa.me/6285338801241" target="_blank">
@@ -2223,6 +2302,12 @@
             // Lock wellness fields until a duration is explicitly selected
             toggleWellnessFields();
 
+            // Apex UX: Force initial state evaluation for Solo/Fleet notices after hard resets
+            const guestDropdown = document.getElementById('guests');
+            if (guestDropdown) {
+                guestDropdown.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
             modal.showModal();
             document.body.style.overflow = 'hidden'; /* Locks background scrolling */
             
@@ -2533,8 +2618,20 @@
                     inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details below.`;
                 }
 
+            } else if (guestCount === 1) {
+                // Apex UX: Solo Traveler Reframing
+                if (dynIncTeam) dynIncTeam.style.display = 'none';
+                if (dynIncFleet) dynIncFleet.style.display = 'none';
+                logisticsBlock.style.display = 'none';
+                
+                if (inlineNotice) {
+                    inlineNotice.style.display = 'block';
+                    inlineNotice.style.background = 'var(--text-dark)';
+                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four.`;
+                }
             } else {
-                // Revert to baseline non-destructively
+                // Revert to standard baseline non-destructively (2-4 guests)
                 if (dynIncTeam) dynIncTeam.style.display = 'none';
                 if (dynIncFleet) dynIncFleet.style.display = 'none';
                 logisticsBlock.style.display = 'none';
@@ -2618,8 +2715,17 @@
                 protocolText = `✓ Premium Mobile Therapists Dispatched`;
             } else {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
-                total = basePrice * guestCount;
-                document.getElementById('summary-line-item').textContent = `Experience for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
+                
+                // Apex UX: Solo Traveler Supplement Integration
+                let appliedPrice = basePrice;
+                let soloNote = "";
+                if (guestCount === 1) {
+                    appliedPrice = basePrice + 100;
+                    soloNote = "<br><span style='font-size: 0.75rem; color: var(--text-muted);'>Solo supplement applied</span>";
+                }
+                
+                total = appliedPrice * guestCount;
+                document.getElementById('summary-line-item').innerHTML = `Experience for ${guestCount} Guest${guestCount > 1 ? 's' : ''}${soloNote}`;
                 
                 const hostCount = Math.ceil(guestCount / 4);
                 if (guestCount >= 5) {
@@ -2919,6 +3025,7 @@
 
                 scrollRightBtn.addEventListener('click', () => {
                     carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                    scrollRightBtn.classList.remove('pulse-arrow');
                 });
             }
 
@@ -2939,9 +3046,73 @@
 
                 faqScrollRight.addEventListener('click', () => {
                     faqCarousel.scrollBy({ left: getFaqScrollAmount(), behavior: 'smooth' });
+                    faqScrollRight.classList.remove('pulse-arrow');
                 });
             }
 
+	// Reviews Carousel Navigation Logic
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            const reviewLeft = document.getElementById('reviewNavLeft');
+            const reviewRight = document.getElementById('reviewNavRight');
+            const reviewScrollLeft = document.getElementById('reviewScrollLeft');
+            const reviewScrollRight = document.getElementById('reviewScrollRight');
+
+            if (reviewsGrid) {
+                // Dynamically calculates the scroll distance for desktop clicks
+                const getReviewScrollAmount = () => {
+                    const reviewItem = reviewsGrid.querySelector('.review-item');
+                    return reviewItem ? reviewItem.offsetWidth + 32 : 350; 
+                };
+
+                const updateReviewArrows = () => {
+                    const scrollLeft = Math.ceil(reviewsGrid.scrollLeft);
+                    const maxScroll = Math.floor(reviewsGrid.scrollWidth - reviewsGrid.clientWidth);
+                    
+                    if (reviewLeft && reviewRight) {
+                        if (scrollLeft <= 5) {
+                            reviewLeft.classList.add('hidden');
+                        } else {
+                            reviewLeft.classList.remove('hidden');
+                        }
+                        
+                        if (scrollLeft >= maxScroll - 5) {
+                            reviewRight.classList.add('hidden');
+                            reviewRight.classList.remove('pulse-arrow');
+                        } else {
+                            reviewRight.classList.remove('hidden');
+                            if (scrollLeft > 5) {
+                                reviewRight.classList.remove('pulse-arrow');
+                            }
+                        }
+                    }
+                };
+
+                reviewsGrid.addEventListener('scroll', updateReviewArrows);
+                window.addEventListener('resize', updateReviewArrows); 
+
+                // Mobile floating arrow bindings
+                if (reviewLeft) reviewLeft.addEventListener('click', () => {
+                    reviewsGrid.scrollBy({ left: -reviewsGrid.clientWidth, behavior: 'smooth' });
+                });
+
+                if (reviewRight) reviewRight.addEventListener('click', () => {
+                    reviewsGrid.scrollBy({ left: reviewsGrid.clientWidth, behavior: 'smooth' });
+                    reviewRight.classList.remove('pulse-arrow');
+                });
+                
+                // Desktop top navigation bindings
+                if (reviewScrollLeft) reviewScrollLeft.addEventListener('click', () => {
+                    reviewsGrid.scrollBy({ left: -getReviewScrollAmount(), behavior: 'smooth' });
+                });
+
+                if (reviewScrollRight) reviewScrollRight.addEventListener('click', () => {
+                    reviewsGrid.scrollBy({ left: getReviewScrollAmount(), behavior: 'smooth' });
+                    reviewScrollRight.classList.remove('pulse-arrow');
+                });
+                
+                setTimeout(updateReviewArrows, 100);
+            }
+	
             // Seamless Exploration Mobile Navigation Logic
             const exploreGrid = document.getElementById('exploreGrid');
             const exploreLeft = document.getElementById('exploreNavLeft');
