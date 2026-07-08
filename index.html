@@ -3081,14 +3081,36 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
     btn.style.opacity = '0.8';
     btn.style.pointerEvents = 'none';
 
-    // 2. Package the Data
+    // 2. Package & Clean the Data (The "Smart Filter")
     const formData = new FormData(this);
     const searchParams = new URLSearchParams();
-    for (const pair of formData.entries()) {
-        searchParams.append(pair[0], pair[1]);
+    
+    // Identify which UI modules are actively visible to the user right now
+    const isFamilyVisible = document.getElementById('family-section').style.display === 'block';
+    const isWellnessVisible = document.getElementById('wellness-section').style.display === 'block';
+    const isWellnessOptedIn = formData.get('massage_duration') !== 'None';
+
+    const familyFields = ['num_children', 'children_ages', 'care_schedule', 'start_time', 'care_days'];
+    const wellnessFields = ['massage_duration', 'massage_guests', 'massage_style', 'massage_time'];
+
+    for (const [key, value] of formData.entries()) {
+        // Drop completely empty fields to keep the payload clean
+        if (!value || value.trim() === '') continue;
+
+        // Drop Family data if the Family module is hidden
+        if (!isFamilyVisible && familyFields.includes(key)) continue;
+
+        // Drop Standard Tour data if the Family module IS active
+        if (isFamilyVisible && (key === 'guests' || key === 'time')) continue;
+
+        // Drop Wellness data if it is hidden, or if they explicitly selected "None"
+        if ((!isWellnessVisible || !isWellnessOptedIn) && wellnessFields.includes(key)) continue;
+
+        // If it passes the filters, attach it to the payload
+        searchParams.append(key, value);
     }
 
-    // 3. Send direct to n8n (Switched to PRODUCTION URL)
+    // 3. Send pristine data directly to n8n
     fetch('https://n8n.teakal.com/webhook/fde5faca-95a5-4198-a3ba-6f3fab04e4a0', {
         method: 'POST',
         body: searchParams
