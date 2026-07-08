@@ -3024,7 +3024,7 @@ window.addEventListener('load', function() {
     // Deep Link Checker: Automatically opens package if URL contains #Package-AA etc.
     if (window.location.hash) {
         const targetId = decodeURIComponent(window.location.hash.substring(1)); 
-        const packageCard = document.querySelector(`.card[onclick*="${targetId}"]`);
+        const packageCard = document.querySelector(`.card[onclick*="'${targetId}'"]`);
         if (packageCard) {
             setTimeout(() => {
                 packageCard.click();
