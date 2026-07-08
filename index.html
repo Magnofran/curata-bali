@@ -1661,10 +1661,7 @@
                 <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Complete the form below. Our concierge team will review your selection and contact you to finalize your itinerary.</p>
             </div>
             
-            <form action="https://api.web3forms.com/submit" method="POST">
-                <input type="hidden" name="access_key" value="ca3a2e58-8851-4818-b216-7a7febeeeb05">
-                
-                <input type="hidden" name="webhook" value="https://n8n.teakal.com/webhook-test/fde5faca-95a5-4198-a3ba-6f3fab04e4a0">
+            <form id="vurataBookingForm">
                 
                 <div class="form-group">
                     <label for="selectedPackage">Selected Experience</label>
@@ -1865,13 +1862,7 @@
             </div>
         </div>
 
-                <button type="submit" class="submit-btn" onclick="
-                    if(this.form.checkValidity()) {
-                        this.innerHTML = 'Securely Transmitting...';
-                        this.style.opacity = '0.8';
-                        this.style.pointerEvents = 'none';
-                    }
-                ">Submit Booking Request</button>
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Booking Request</button>
             </form>
         </div>
     </dialog>
@@ -3061,6 +3052,59 @@ async function sharePackage(packageId, packageName) {
         });
     }
 }
+</script>
+
+<script>
+document.getElementById('vurataBookingForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Stops the page from reloading
+    
+    const btn = document.getElementById('submitBtn');
+    const originalText = btn.innerHTML;
+    
+    // 1. Loading State
+    btn.innerHTML = 'Securely Transmitting...';
+    btn.style.opacity = '0.8';
+    btn.style.pointerEvents = 'none';
+
+    // 2. Package the Data
+    const formData = new FormData(this);
+    const searchParams = new URLSearchParams();
+    for (const pair of formData.entries()) {
+        searchParams.append(pair[0], pair[1]);
+    }
+
+    // 3. Send direct to n8n
+    fetch('https://n8n.teakal.com/webhook-test/fde5faca-95a5-4198-a3ba-6f3fab04e4a0', {
+        method: 'POST',
+        body: searchParams
+    }).then(response => {
+        // 4. Success State (Turns Green)
+        btn.innerHTML = 'Request Received ✓';
+        btn.style.background = '#10B981'; 
+        btn.style.color = '#ffffff';
+        
+        // 5. Close modal and reset form after 2 seconds
+        setTimeout(() => {
+            closeModal();
+            this.reset();
+            btn.innerHTML = originalText;
+            btn.style.background = 'var(--accent-vibrant)';
+            btn.style.color = 'var(--text-dark)';
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+        }, 2000);
+    }).catch(error => {
+        // 6. Error State (Turns Red)
+        btn.innerHTML = 'Error. Please Try Again.';
+        btn.style.background = '#EF4444'; 
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = 'var(--accent-vibrant)';
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+        }, 3000);
+    });
+});
 </script>
 </body>
   </html>
