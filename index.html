@@ -1661,6 +1661,13 @@
                 <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Complete the form below. Our concierge team will review your selection and contact you to finalize your itinerary.</p>
             </div>
             
+	<div id="bookingSuccessState" style="display: none; text-align: center; padding: 4rem 1rem; animation: modalEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                <div style="width: 72px; height: 72px; background: var(--text-dark); color: var(--accent-vibrant); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem auto;">✓</div>
+                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.25rem; color: var(--text-dark); margin-bottom: 0.75rem; line-height: 1.1;">Request Received</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1rem; max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.6;">Your dedicated concierge is reviewing your itinerary and will reach out via WhatsApp shortly to finalize your arrangements.</p>
+                <button type="button" class="submit-btn" onclick="closeModal()" style="background: var(--surface); border: 1px solid var(--border-light); color: var(--text-dark); width: auto; padding: 0.85rem 2rem;">Return to Packages</button>
+            </div>
+
             <form id="vurataBookingForm">
                 
                 <div class="form-group">
@@ -2242,6 +2249,12 @@
             if (window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(10); /* Lighter tick for closing */
             }
+            
+            // Apex UX: Restore the form visibility in the background 400ms later so the user doesn't see it pop during the close animation
+            setTimeout(() => {
+                document.getElementById('vurataBookingForm').style.display = 'block';
+                document.getElementById('bookingSuccessState').style.display = 'none';
+            }, 400);
         }
 
         function checkConciergeRatio(childCount) {
@@ -3056,9 +3069,11 @@ async function sharePackage(packageId, packageName) {
 
 <script>
 document.getElementById('vurataBookingForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Stops the page from reloading
+    e.preventDefault(); 
     
+    const formEl = this;
     const btn = document.getElementById('submitBtn');
+    const successScreen = document.getElementById('bookingSuccessState');
     const originalText = btn.innerHTML;
     
     // 1. Loading State
@@ -3073,28 +3088,23 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
         searchParams.append(pair[0], pair[1]);
     }
 
-    // 3. Send direct to n8n
-    fetch('https://n8n.teakal.com/webhook-test/fde5faca-95a5-4198-a3ba-6f3fab04e4a0', {
+    // 3. Send direct to n8n (Switched to PRODUCTION URL)
+    fetch('https://n8n.teakal.com/webhook/fde5faca-95a5-4198-a3ba-6f3fab04e4a0', {
         method: 'POST',
         body: searchParams
     }).then(response => {
-        // 4. Success State (Turns Green)
-        btn.innerHTML = 'Request Received ✓';
-        btn.style.background = '#10B981'; 
-        btn.style.color = '#ffffff';
+        // 4. Success UX: Hide Form, Show Persistent Success Screen
+        formEl.style.display = 'none';
+        successScreen.style.display = 'block';
         
-        // 5. Close modal and reset form after 2 seconds
-        setTimeout(() => {
-            closeModal();
-            this.reset();
-            btn.innerHTML = originalText;
-            btn.style.background = 'var(--accent-vibrant)';
-            btn.style.color = 'var(--text-dark)';
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'auto';
-        }, 2000);
+        // Reset the button immediately in the background for next time
+        btn.innerHTML = originalText;
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+        formEl.reset();
+
     }).catch(error => {
-        // 6. Error State (Turns Red)
+        // 5. Error State
         btn.innerHTML = 'Error. Please Try Again.';
         btn.style.background = '#EF4444'; 
         setTimeout(() => {
