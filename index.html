@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <script>
+    (function() {
+        try {
+            var stored = localStorage.getItem('vurata-theme');
+            var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+    })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curated Bali Experiences</title>
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -25,6 +33,28 @@
             --radius-lg: 0px; 
             --radius-md: 0px;
             --shadow-soft: none; 
+            --ink-solid: #0f172a;   /* Always-dark badges (price tag, WhatsApp button) — stays constant in both themes */
+            --tint-soft: rgba(15, 23, 42, 0.03);
+            --tint-focus: rgba(15, 23, 42, 0.06);
+            --tint-border: rgba(15, 23, 42, 0.25);
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #0f1115;
+            --surface: #1a1d23;
+            --text-dark: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-vibrant: #D8BD8F;
+            --accent-hover: #C2A679;
+            --border-light: #2b2f38;
+            --tint-soft: rgba(255, 255, 255, 0.04);
+            --tint-focus: rgba(255, 255, 255, 0.08);
+            --tint-border: rgba(255, 255, 255, 0.18);
+            color-scheme: dark; /* lets native date-picker icons and scrollbars invert automatically */
+        }
+
+        [data-theme="dark"] select {
+            background-image: url('data:image/svg+xml;utf8,<svg fill=%22%23f1f5f9%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>') !important;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,7 +98,7 @@
             border: none;
             border-bottom: 2px solid var(--border-light);
             border-radius: 0;
-            background: rgba(15, 23, 42, 0.03);
+            background: var(--tint-soft);
             font-family: inherit !important;
             font-size: 0.95rem !important;
             font-weight: 500;
@@ -79,7 +109,7 @@
         }
 
         input:focus, textarea:focus, select:focus {
-            background: rgba(15, 23, 42, 0.06);
+            background: var(--tint-focus);
             border-bottom: 2px solid var(--text-dark); /* Deep ink focus state instead of red */
         }
 
@@ -214,7 +244,7 @@
         
         .carousel-btn:hover {
             background: var(--text-dark);
-            color: #ffffff;
+            color: var(--surface);
             border-color: var(--text-dark);
         }
 
@@ -240,7 +270,7 @@
             box-shadow: var(--shadow-soft);
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            border: 1px solid rgba(15, 23, 42, 0.25);
+            border: 1px solid var(--tint-border);
             display: flex;
             flex-direction: column;
         }
@@ -272,7 +302,7 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: var(--text-dark);
+            background: var(--ink-solid);
             color: #ffffff;
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
@@ -410,7 +440,7 @@
     @keyframes systemRecalculate {
         0% { opacity: 0.3; transform: scale(0.96) translateY(2px); color: var(--accent-vibrant); }
         40% { opacity: 1; transform: scale(1.01) translateY(0); }
-        100% { opacity: 1; transform: scale(1); color: #ffffff; }
+        100% { opacity: 1; transform: scale(1); color: var(--surface); }
     }
 
     .recalculate-flash {
@@ -439,20 +469,21 @@
     .modal-header img { width: 100%; height: 100%; object-fit: cover; }
 
     .close-btn {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: rgba(255,255,255,0.9);
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-    }
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: var(--ink-solid); /* Ensures the 'X' is always dark */
+        }
 
     .modal-body {
         padding: 2rem 1.25rem;
@@ -535,7 +566,7 @@
             width: 100%;
             padding: 0.85rem;
             background: var(--accent-vibrant);
-            color: var(--text-dark); /* Contrast optimized for neon green */
+            color: var(--ink-solid); /* Always keeps the font dark in both themes */
             border: none;
             border-radius: var(--radius-md);
             font-size: 1rem;
@@ -663,7 +694,7 @@
         }
         
         .badge-popular {
-            background: var(--text-dark);
+            background: var(--ink-solid);
             color: #fff;
         }
 
@@ -762,7 +793,7 @@
         
         .faq-btn:hover {
             background: var(--text-dark);
-            color: #ffffff;
+            color: var(--surface);
             border-color: var(--text-dark);
         }
 
@@ -815,7 +846,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
-            background: rgba(15, 23, 42, 0.03);
+            background: var(--tint-soft);
             border-bottom: 2px solid var(--border-light);
             padding: 0.15rem 0.5rem; /* Reduced to match the newly slimmed inputs */
             transition: border-color 0.2s ease;
@@ -888,7 +919,7 @@
         
         .Vurata-difference {
             padding: 8rem 2rem;
-            background-color: #FAFAFA;
+            background-color: var(--bg-base);
             text-align: center;
         }
 
@@ -902,7 +933,7 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             font-size: 0.8rem;
-            color: #888;
+            color: var(--text-muted);
             display: block;
             margin-bottom: 1.5rem;
         }
@@ -929,7 +960,7 @@
 
         .difference-philosophy p {
             font-size: 1.1rem;
-            color: #666;
+            color: var(--text-muted);
             line-height: 1.7;
         }
 
@@ -937,13 +968,13 @@
         .editorial-comparison {
             max-width: 850px;
             margin: 0 auto;
-            border-top: 1px solid #E5E5E5;
+            border-top: 1px solid var(--border-light);
         }
 
         .editorial-row {
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #E5E5E5;
+            border-bottom: 1px solid var(--border-light);
             padding: 2.5rem 0;
         }
 
@@ -951,14 +982,14 @@
             flex: 1;
             text-align: right;
             padding-right: 3rem;
-            color: #888;
+            color: var(--text-muted);
             font-size: 1.05rem;
         }
 
         .col-center {
             width: 40px;
             text-align: center;
-            color: #CCC;
+            color: var(--text-muted);
             font-size: 1.5rem;
             font-weight: 300;
         }
@@ -975,7 +1006,7 @@
         /* Table Header Formatting */
         .editorial-row.header-row {
             padding: 1.5rem 0;
-            border-bottom: 1px solid #CCC;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .header-row .col-left, .header-row .col-right {
@@ -986,7 +1017,7 @@
         }
 
         .header-row .col-left {
-            color: #999;
+            color: var(--text-muted);
         }
 
         .header-row .col-right {
@@ -1010,7 +1041,7 @@
 
         .footnote {
             font-size: 0.9rem;
-            color: #888;
+            color: var(--text-muted);
             line-height: 1.6;
             font-style: italic;
         }
@@ -1128,6 +1159,12 @@
 
         .explore-nav-btn:active {
             background: var(--border-light);
+        }
+
+	.explore-nav-btn:hover {
+            background: var(--text-dark);
+            color: var(--surface);
+            border-color: var(--text-dark);
         }
         
         .explore-nav-btn.left { left: -20px; }
@@ -1253,22 +1290,22 @@
             
             <div class="exploration-grid" id="exploreGrid">
                 <div class="exploration-step">
-                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
                     <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Choose Experience</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Browse our curated experiences and pick your favorite.</p>
                 </div>
                 <div class="exploration-step">
-                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
                     <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Request Reservation</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Share your preferences, dates, and party size.</p>
                 </div>
                 <div class="exploration-step">
-                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">3</span>
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">3</span>
                     <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Concierge Confirmation</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">We confirm availability and send your deposit link.</p>
                 </div>
                 <div class="exploration-step">
-                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: #fff; border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">4</span>
+                    <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">4</span>
                     <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Enjoy Bali</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Meet your private host and settle the balance upon pickup.</p>
                 </div>
@@ -1288,7 +1325,7 @@
         <div class="carousel" id="packagesCarousel">
 	<article class="card" onclick="openModal('Package AA', 'Tabanan Ancestral Origins', '$285 / person', 'images/package-0a.jpg')">
                 <div class="card-img-wrapper">
-                    <span class="card-badge badge-popular" style="background: var(--text-dark); color: #fff;">Signature Flagship</span>
+                    <span class="card-badge badge-popular" style="background: var(--text-dark); color: var(--surface);">Signature Flagship</span>
                     <img src="images/package-0a.jpg" alt="Tabanan Temple" loading="lazy">
                 </div>
                 <div class="card-content">
@@ -1793,9 +1830,8 @@
                                 <button type="button" class="qty-stepper-btn" id="guestStepperPlus" aria-label="Increase number of guests">&plus;</button>
                             </div>
                             <!-- Apex Inline Reveal -->
-                            <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--text-dark); color: #ffffff; border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-                                <!-- Injected via JS -->
-                            </div>
+                            <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--text-dark); color: var(--surface); border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                                </div>
                             <!-- Standalone Massage Ratio Note -->
                             <p id="guestMassageNote" style="display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; font-style: italic;">*Standard: 1 specialist per 2 guests (sequential sessions). For simultaneous sessions, please request multiple specialists in the <strong>Special Requirements</strong> section below.</p>
                         </div>
@@ -2601,7 +2637,7 @@
                 const protocolTitle = isSyndicate ? "Expanded Group Coordination" : "Dedicated Convoy Secured";
                 
                 // Apex UX: Distinct luxury tones for each tier's notice
-                const inlineColor = isSyndicate ? "#ffffff" : "#94a3b8"; // Platinum White for 9+, Soft Slate for 5-8
+                const inlineColor = isSyndicate ? "var(--surface)" : "#94a3b8"; // Platinum White for 9+, Soft Slate for 5-8
                 
                 const inlineTitle = isSyndicate ? "✦ Multi-Vehicle Convoy Allocated" : "✦ Scaled Logistics Allocated";
                 const inlineDesc = "Your group size automatically activates our expanded deployment for absolute comfort.";
@@ -2623,7 +2659,7 @@
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
                     inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.style.color = 'var(--surface)';
                     inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details below.`;
                 }
 
@@ -2636,7 +2672,7 @@
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
                     inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.style.color = 'var(--surface)';
                     inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four.`;
                 }
             } else {
@@ -2648,7 +2684,7 @@
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
                     inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = '#ffffff';
+                    inlineNotice.style.color = 'var(--surface)';
                     inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Private Logistics Confirmed</strong>Your personal operational footprint is set. A premium vehicle and <strong>1 dedicated host</strong> are allocated strictly for your group's comfort.`;
                 }
             }
@@ -3171,12 +3207,125 @@
         });
 		
     </script>
+
+<style>
+        /* Force the native select menu to stretch invisibly over our custom button */
+        .gtranslate_wrapper select {
+            width: 44px !important;
+            height: 44px !important;
+            cursor: pointer;
+            opacity: 0.0001 !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <div style="
+        position: fixed;
+        top: max(20px, calc(env(safe-area-inset-top) + 20px));
+        right: 74px;
+        background-color: var(--ink-solid);
+        color: white;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        z-index: 1000;
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        
+        <div class="gtranslate_wrapper" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"></div>
+    </div>
+    
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "en",
+            "native_language_names": true,
+            "detect_browser_language": true,
+            "languages": ["en", "zh-CN", "ru", "ja", "ko", "id", "fr", "de", "es"],
+            "wrapper_selector": ".gtranslate_wrapper"
+        }
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+
+<!-- Apex Upgrade: Dark Mode Toggle -->
+    <button id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" style="
+        position: fixed;
+        top: max(20px, calc(env(safe-area-inset-top) + 20px));
+        right: 20px;
+        background-color: var(--ink-solid);
+        color: white;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        z-index: 1000;
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <svg id="themeIconSun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg id="themeIconMoon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <script>
+        (function() {
+            const btn = document.getElementById('themeToggle');
+            const sunIcon = document.getElementById('themeIconSun');
+            const moonIcon = document.getElementById('themeIconMoon');
+
+            function reflectIcon() {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                sunIcon.style.display = isDark ? 'none' : 'block';
+                moonIcon.style.display = isDark ? 'block' : 'none';
+                btn.setAttribute('aria-pressed', String(isDark));
+            }
+            reflectIcon();
+
+            btn.addEventListener('click', function() {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('vurata-theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('vurata-theme', 'dark');
+                }
+                reflectIcon();
+                if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(10);
+            });
+        })();
+    </script>
+
 <!-- Apex Upgrade: Floating WhatsApp -->
     <a href="https://wa.me/6285338801241" target="_blank" style="
         position: fixed;
         bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px)); /* Protects against iPhone bottom home bar */
         right: 20px;
-        background-color: var(--text-dark);
+        background-color: var(--ink-solid);
         color: white;
         padding: 10px 20px;
         border-radius: 30px;
