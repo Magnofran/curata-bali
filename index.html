@@ -3094,11 +3094,11 @@
 
                 // Mobile floating arrow bindings
                 if (reviewLeft) reviewLeft.addEventListener('click', () => {
-                    reviewsGrid.scrollBy({ left: -reviewsGrid.clientWidth, behavior: 'smooth' });
+                    reviewsGrid.scrollBy({ left: -getReviewScrollAmount(), behavior: 'smooth' });
                 });
 
                 if (reviewRight) reviewRight.addEventListener('click', () => {
-                    reviewsGrid.scrollBy({ left: reviewsGrid.clientWidth, behavior: 'smooth' });
+                    reviewsGrid.scrollBy({ left: getReviewScrollAmount(), behavior: 'smooth' });
                     reviewRight.classList.remove('pulse-arrow');
                 });
                 
