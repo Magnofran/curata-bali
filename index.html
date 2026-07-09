@@ -1412,7 +1412,7 @@
                 </div>
                 <div class="card-content">
                     <h3>In-Villa Massage</h3>
-                    <p class="card-subtitle">Complete relaxation without leaving your accommodation. Premium mobile therapists.</p>
+                    <p class="card-subtitle">Round-the-clock relaxation delivered directly to your accommodation. Premium mobile therapists available 24/7 for late-flight arrivals, early mornings, and seamless recovery.</p>
                     <div class="card-meta">
                         <span>⏱ Flexible • 45 to 90 Mins</span>
                         <span>👥 Best for Relaxation</span>
@@ -1436,10 +1436,10 @@
                 </div>
                 <div class="card-content">
                     <h3>Family Concierge & Care</h3>
-                    <p class="card-subtitle">Professional in-villa childcare and family support for complete peace of mind.</p>
+                    <p class="card-subtitle">Professional in-villa childcare and dedicated companionship for elderly or accessible-needs relatives, ensuring complete peace of mind.</p>
                     <div class="card-meta">
                         <span>⏱ Shift Modules & Live-In</span>
-                        <span>👥 Best for Parents & Families</span>
+                        <span>👥 Best for Multi-Generational Families</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1500,6 +1500,13 @@
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                         <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Sophia L.</span>
                         <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">In-Villa Wellness</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 1.5rem; font-style: italic;">"Traveling with a toddler and a parent requiring assistance usually means someone has to stay behind. The photo updates completely dissolved my anxiety. For the first time, I didn't manage our vacation—I actually experienced it."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Marcus & Claire</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Family Concierge</span>
                     </div>
                 </div>
             </div>
@@ -1793,15 +1800,15 @@
                             <p id="guestMassageNote" style="display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; font-style: italic;">*Standard: 1 specialist per 2 guests (sequential sessions). For simultaneous sessions, please request multiple specialists in the <strong>Special Requirements</strong> section below.</p>
                         </div>
                         <div id="family-guest-col" style="display: none;">
-                            <label for="num_children">Number of Children</label>
+                            <label for="num_children">Children / Assisted Guests</label>
                             <input type="number" id="num_children" name="num_children" min="1" max="10" placeholder="e.g., 2" inputmode="numeric" oninput="checkConciergeRatio(this.value)">
                             <!-- Apex UX: Mobile-only stepper replaces the native number input's spinner -->
                             <div class="qty-stepper" id="childrenStepper" role="group" aria-label="Number of children">
                                 <button type="button" class="qty-stepper-btn" id="childrenStepperMinus" aria-label="Decrease number of children">&minus;</button>
-                                <span class="qty-stepper-value" id="childrenStepperValue">Number of Children</span>
+                                <span class="qty-stepper-value" id="childrenStepperValue">Select Number</span>
                                 <button type="button" class="qty-stepper-btn" id="childrenStepperPlus" aria-label="Increase number of children">&plus;</button>
                             </div>
-                            <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 children per concierge applies. Your request will automatically reflect the required additional staff.</p>
+                            <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 care guests per concierge applies. Your request will automatically reflect the required additional staff.</p>
                         </div>
                     </div>
                 </div>
@@ -1809,8 +1816,8 @@
                 <div class="form-group row">
                     <!-- Hidden block for Ages and the Safety Warning -->
                     <div class="col" id="family-ages-col" style="display: none;">
-                        <label for="children_ages">Ages of Children</label>
-                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 8" oninput="this.value = this.value.replace(/[^0-9,\s]/g, '');">
+                        <label for="children_ages">Ages (Children / Assisted Guests)</label>
+                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 68" oninput="this.value = this.value.replace(/[^0-9,\s]/g, '');">
                     </div>
 
                     <!-- Global Date & Time Block -->
@@ -2042,20 +2049,20 @@
                 dateLabel: 'Date & Preferred Time',
                 timeMin: '00:00',
                 timeMax: '23:30',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>6-Hour Notice</strong> required to guarantee therapist availability.</li><li><strong>In-Villa Service</strong> your therapist is dispatched directly to your villa or hotel.</li><li><strong>Full Payment Required</strong> to reserve your therapist and appointment time.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>6-Hour Notice</strong> required to guarantee therapist availability.</li><li><strong>Direct Dispatch</strong> Your therapist travels directly to your villa or hotel, transforming your space into a private sanctuary.</li><li style="grid-column: 1 / -1;"><strong>Full Payment</strong> Confirms your booking and secures your therapist's time and dispatch.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'Session Includes',
-                incHTML: `<li>✓ Certified therapist</li><li>✓ Massage table (if required)</li><li>✓ Premium massage oils</li><li>✓ Fresh towels</li><li>✓ Villa or hotel visit</li>`,
+                incHTML: `<li>✓ Certified Balinese wellness therapist</li><li>✓ Bespoke focus-area consultation</li><li>✓ Professional massage table (if required)</li><li>✓ Premium botanical massage oils</li><li>✓ Curated aromatherapy elements</li><li>✓ Fresh treatment linens</li><li>✓ Direct-to-accommodation travel</li>`,
                 showDressCode: false,
                 formMode: 'massage'
             },
             'Package F': {
                 delayDays: 3,
                 dateLabel: 'Start Date',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>72-Hour Notice</strong> required to assign the most suitable caregiver.</li><li><strong>Full Payment Required</strong> to reserve your caregiver and preferred schedule.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>72-Hour Notice</strong> required to assign the most suitable specialist based on your family's exact needs (e.g., infant care vs. elderly companionship).</li><li><strong>Bespoke Matching</strong> Please detail any specific mobility, dietary, or care requirements in the notes below so we can perfectly pair your concierge.</li><li style="grid-column: 1 / -1;"><strong>Full Payment</strong> Confirms your booking and locks in your dedicated caregiver for the requested schedule.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'Service Includes',
-                incHTML: `<li>✓ Supervised childcare</li><li>✓ Children's activities and play</li><li>✓ Family support and meal assistance</li><li>✓ Bedtime routines</li><li>✓ Swimming supervision (upon request)</li><li>✓ Flexible scheduling</li>`,
+                incHTML: `<li>✓ Professional in-villa childcare</li><li>✓ Elderly companionship & accessible support</li><li>✓ Children's activities & play coordination</li><li>✓ Family meal assistance & routines</li><li>✓ Real-time WhatsApp check-ins & photo updates</li><li>✓ Dedicated care-area tidying & organization</li><li>✓ Active pool & water safety supervision</li><li>✓ Complete peace of mind for the family</li>`,
                 showDressCode: false,
                 formMode: 'family'
             }
@@ -2142,7 +2149,7 @@
 
             // Apex UX: Boot the mobile steppers to match package constraints
             initQtyStepper('guestStepper', 1, maxLimit, config.formMode === 'family', 'Guest');
-            initQtyStepper('childrenStepper', 1, 10, null, 'Child', 'Children');
+            initQtyStepper('childrenStepper', 1, 10, null, 'Care Guest', 'Care Guests');
 
             // 5. Inclusions
             document.getElementById('inclusionsTitle').textContent = config.incTitle;
@@ -2691,7 +2698,7 @@
                 
                 document.getElementById('summary-line-item').innerHTML = `${days} ${shiftName}${days > 1 ? 's' : ''} • ${conciergesNeeded} Caregiver${conciergesNeeded > 1 ? 's' : ''}`;
                 
-                const childLabel = childCount === 1 ? "1 Child" : `${childCount} Children`;
+                const childLabel = childCount === 1 ? "1 Care Guest" : `${childCount} Care Guests`;
                 protocolText = `✓ ${conciergesNeeded} Professional Concierge${conciergesNeeded > 1 ? 's' : ''} Assigned for ${childLabel}`;
 
                 // Apex UX: Inject explicit operational footnote for Live-In deployments
@@ -2942,7 +2949,7 @@
             const val = parseInt(target.value, 10);
 
             if (!val) {
-                valueEl.textContent = (stepper.dataset.target === 'guests') ? 'Select Guests' : 'Number of Children';
+                valueEl.textContent = (stepper.dataset.target === 'guests') ? 'Select Guests' : 'Select Number';
                 minusBtn.disabled = true;
                 plusBtn.disabled = false;
                 return;
