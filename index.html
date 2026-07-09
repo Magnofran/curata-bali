@@ -1333,14 +1333,14 @@
             </article>
 
             <!-- Package B -->
-            <article class="card" onclick="openModal('Package B', 'Uluwatu Surf & Stay', '$245 / person', 'images/package-b.jpg')">
+            <article class="card" onclick="openModal('Package B', 'Uluwatu Coastal Escape', '$245 / person', 'images/package-b.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
                     <img src="images/package-b.jpg" alt="Uluwatu" loading="lazy">
                 </div>
                 <div class="card-content">
-                    <h3>Uluwatu Surf & Stay</h3>
-                    <p class="card-subtitle">Stunning cliffside views and premium ocean access, guided throughout by your personal host.</p>
+                    <h3>Uluwatu Coastal Escape</h3>
+                    <p class="card-subtitle">A sun-drenched journey along Bali's dramatic southern peninsula. Select your preferred luxury beach club and explore hidden limestone coves at your own perfect pace.</p>
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 8 Hours</span>
                         <span>👥 Best for Couples & Groups</span>
@@ -1997,13 +1997,13 @@
                 durationHours: 8,
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
-                timeMin: '06:00',
-                timeMax: '10:00',
-                timeHelper: 'Coastal excursions require a morning departure (06:00 AM – 10:00 AM) to pace the 8-hour schedule perfectly for sunset.',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>48-Hour Notice</strong> required to guarantee availability.</li><li><strong>50% Deposit</strong> confirms your booking — balance due at the start of your experience.</li><li><strong>Guided Throughout</strong> your host handles entrances, photos, and logistics along the way.</li></ul>`,
+                timeMin: '10:00',
+                timeMax: '13:00', /* Pushed later so an 8-hour day naturally ends at sunset */
+                timeHelper: 'Coastal excursions require a late morning or early afternoon departure to pace the 8-hour schedule perfectly for the Uluwatu sunset.',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 6 sweeping coastal destinations. You simply choose 2 or 3 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your preferred luxury beach club reservation and your sunset arrival at Uluwatu Temple are pre-arranged and perfectly timed.</li><li><strong>Dining on Your Terms</strong> To keep your day completely flexible, meals and any specific beach club minimum-spends are out-of-pocket.</li><li><strong>50% Deposit</strong> confirms your booking — the balance is settled when your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
-                incTitle: 'Package Includes',
-                incHTML: `<li>✓ Uluwatu Temple (entrance included)</li><li>✓ Cliff viewpoints</li><li>✓ Beach Club stop</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Reef-safe sun care & botanical insect shield</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
+                incTitle: 'The Journey Includes',
+                incHTML: `<li>✓ Premium Beach Club or Lounge access (Client Selected)</li><li>✓ 2 to 3 Curated Coastal Destinations (Client Selected)</li><li>✓ Sunset at Uluwatu Temple</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Reef-safe sun care & botanical insect shield</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
                 showDressCode: false,
                 formMode: 'standard'
             },
