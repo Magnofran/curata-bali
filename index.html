@@ -1098,6 +1098,19 @@
             } 
         }
 
+	/* Apex UX: Lock review quotes to 4 lines with internal scroll for geometric symmetry */
+        .review-item p {
+            height: 6.72rem; /* Exactly 4 lines (1.05rem font * 1.6 line-height * 4) */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain; /* Prevents scroll-chaining on mobile */
+            scrollbar-width: none;
+        }
+        
+        .review-item p::-webkit-scrollbar { 
+            display: none; 
+        }
+
         /* Seamless Exploration Carousel (Mobile) */
         .exploration-grid {
             display: flex;
@@ -1296,7 +1309,7 @@
                 </div>
                 <div class="exploration-step">
                     <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">2</span>
-                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Submit Request</h4>
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem;">Request Reservation</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Share your preferences, dates, and party size.</p>
                 </div>
                 <div class="exploration-step">
@@ -1505,7 +1518,7 @@
             
             <div class="reviews-carousel" id="reviewsGrid">
                 <div class="review-item">
-                    <p style="font-family: 'Inter', sans-serif; font-size: 1.05rem; color: var(--text-dark); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"The complete absence of friction. We never touched a schedule, a ticket, or a map. It was exactly as promised—effortless."</p>
+                    <p style="font-family: 'Inter', sans-serif; font-size: 1.05rem; color: var(--text-dark); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"The complete absence of friction. We never worried about a schedule, a ticket, or a map. Actually, the only map we touched was to show our host a café we wanted to try and which crowded stops we preferred to skip. Total autonomy, exactly as promised—effortless."</p>
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                         <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Sarah & James</span>
                         <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Tabanan Flagship</span>
@@ -1544,6 +1557,13 @@
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                         <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Marcus & Claire</span>
                         <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Family Concierge</span>
+                    </div>
+                </div>
+                <div class="review-item">
+                    <p style="font-family: 'Inter', sans-serif; font-size: 1.05rem; color: var(--text-dark); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"We were worried our trip would feel like just another well-trodden itinerary. Instead, it felt like we had a sibling or best friend living here. From the moment our host and driver picked us up, everything felt different. We were invited to a private morning offering, spent time with local artisans we'd never have found on our own, and experienced Bali in a way that felt personal rather than planned. We weren't tourists—we felt like insiders."</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark);">Julian & Beatrice</span>
+                        <span style="font-size: 0.75rem; color: var(--accent-vibrant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Tabanan Flagship</span>
                     </div>
                 </div>
             </div>
