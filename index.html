@@ -131,7 +131,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem;
+            padding: 2rem 1.25rem; /* Reclaimed horizontal space for mobile text wrapping */
             background: url('images/hero.jpg') center/cover no-repeat;
         }
 
@@ -158,7 +158,7 @@
         }
 
         .hero-content p {
-            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem); /* Dropped mobile baseline slightly to lock to 3 lines */
             color: rgba(255, 255, 255, 0.9);
             font-weight: 400;
             line-height: 1.4; /* Tightened from 1.6 */
@@ -666,7 +666,7 @@
         .map-header { margin-bottom: 1.5rem; border-bottom: 2px solid var(--text-dark); padding-bottom: 0.5rem; display: inline-block; }
         .map-header h2 { font-size: 1.5rem; letter-spacing: -0.02em; }
         .map-container { width: 100%; height: 450px; border: 1px solid var(--border-light); background: var(--bg-base); position: relative; overflow: hidden; }
-        .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%) contrast(110%); transition: filter 0.5s ease; }
+        .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%) brightness(75%) contrast(130%); transition: filter 0.5s ease; }
         .map-container:hover iframe, .map-container:active iframe { filter: grayscale(0%) contrast(100%); }
 
         /* Enhancements Block */
@@ -1565,8 +1565,8 @@
     </section>
 
     <!-- Apex Upgrade: FAQ Section -->
-    <section style="max-width: 800px; margin: 4rem auto; padding: 0 2rem;">
-        <div style="text-align: center; margin-bottom: 3rem;">
+    <section style="max-width: 800px; margin: 6rem auto 4rem auto; padding: 0 2rem;">
+        <div style="text-align: center; margin-bottom: 1.35rem;">
             <h2 style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Everything You Need to Know</h2>
         </div>
         
@@ -3224,15 +3224,16 @@
         position: fixed;
         top: max(20px, calc(env(safe-area-inset-top) + 20px));
         right: 74px;
-        background-color: var(--ink-solid);
-        color: white;
+        background-color: var(--surface);
+        color: var(--text-dark);
+        border: 1px solid var(--border-light);
         width: 44px;
         height: 44px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         z-index: 1000;
         transition: transform 0.2s;
     " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
@@ -3262,17 +3263,17 @@
         position: fixed;
         top: max(20px, calc(env(safe-area-inset-top) + 20px));
         right: 20px;
-        background-color: var(--ink-solid);
-        color: white;
+        background-color: var(--surface);
+        color: var(--text-dark);
         width: 44px;
         height: 44px;
-        border: none;
+        border: 1px solid var(--border-light);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         z-index: 1000;
         transition: transform 0.2s;
     " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
@@ -3325,8 +3326,9 @@
         position: fixed;
         bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px)); /* Protects against iPhone bottom home bar */
         right: 20px;
-        background-color: var(--ink-solid);
-        color: white;
+        background-color: var(--surface);
+        color: var(--text-dark);
+        border: 1px solid var(--border-light);
         padding: 10px 20px;
         border-radius: 30px;
         display: flex;
@@ -3335,7 +3337,7 @@
         text-decoration: none;
         font-weight: 600;
         font-size: 0.9rem;
-        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         z-index: 1000;
         transition: transform 0.2s;
     " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
@@ -3349,11 +3351,14 @@
 window.addEventListener('load', function() {
     const mask = document.getElementById('v-mask');
     if (mask) {
-        mask.style.opacity = '0';
-        mask.style.visibility = 'hidden';
+        // Apex UX: Artificial luxury delay ensures the browser has fully painted all assets before revealing
         setTimeout(() => {
-            mask.remove();
-        }, 600); // Cleanly drops the element out of the DOM after fade
+            mask.style.opacity = '0';
+            mask.style.visibility = 'hidden';
+            setTimeout(() => {
+                mask.remove();
+            }, 600); // Cleanly drops the element out of the DOM after fade
+        }, 400); 
     }
     
     // Deep Link Checker: Automatically opens package if URL contains #Package-AA etc.
