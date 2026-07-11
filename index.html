@@ -242,10 +242,17 @@
             font-size: 1.2rem;
         }
         
-        .carousel-btn:hover {
-            background: var(--text-dark);
-            color: var(--surface);
-            border-color: var(--text-dark);
+        .carousel-btn:active {
+            background: var(--border-light);
+        }
+        
+        /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
+        @media (hover: hover) and (pointer: fine) {
+            .carousel-btn:hover {
+                background: var(--text-dark);
+                color: var(--surface);
+                border-color: var(--text-dark);
+            }
         }
 
         .carousel {
@@ -814,10 +821,17 @@
             font-size: 0.9rem;
         }
         
-        .faq-btn:hover {
-            background: var(--text-dark);
-            color: var(--surface);
-            border-color: var(--text-dark);
+        .faq-btn:active {
+            background: var(--border-light);
+        }
+        
+        /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
+        @media (hover: hover) and (pointer: fine) {
+            .faq-btn:hover {
+                background: var(--text-dark);
+                color: var(--surface);
+                border-color: var(--text-dark);
+            }
         }
 
         /* Apex Accordion FAQ */
@@ -1197,10 +1211,13 @@
             background: var(--border-light);
         }
 
-	.explore-nav-btn:hover {
-            background: var(--text-dark);
-            color: var(--surface);
-            border-color: var(--text-dark);
+        /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
+        @media (hover: hover) and (pointer: fine) {
+            .explore-nav-btn:hover {
+                background: var(--text-dark);
+                color: var(--surface);
+                border-color: var(--text-dark);
+            }
         }
         
         .explore-nav-btn.left { left: -20px; }
