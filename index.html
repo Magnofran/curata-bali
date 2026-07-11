@@ -284,10 +284,13 @@
             .card { flex: 0 0 28%; } 
         }
 
-        .card:hover {
-            transform: translate(-4px, -4px); 
-            box-shadow: 8px 8px 0px var(--text-dark);
-            border-color: var(--text-dark);
+        /* Apex UX: Restricts hover animations strictly to mouse users to prevent 'sticky taps' on mobile */
+        @media (hover: hover) and (pointer: fine) {
+            .card:hover {
+                transform: translate(-4px, -4px); 
+                box-shadow: 8px 8px 0px var(--text-dark);
+                border-color: var(--text-dark);
+            }
         }
 
         .card-img-wrapper {
@@ -483,6 +486,15 @@
             justify-content: center;
             z-index: 10;
             color: var(--ink-solid); /* Ensures the 'X' is always dark */
+        }
+
+	/* Apex UX: Projects an invisible 52px hit-area for effortless mobile closing */
+        .close-btn::before {
+            content: '';
+            position: absolute;
+            top: -10px; right: -10px; bottom: -10px; left: -10px;
+            border-radius: 50%;
+            z-index: 1;
         }
 
     .modal-body {
