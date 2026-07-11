@@ -242,10 +242,6 @@
             font-size: 1.2rem;
         }
         
-        .carousel-btn:active {
-            background: var(--border-light);
-        }
-        
         /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
         @media (hover: hover) and (pointer: fine) {
             .carousel-btn:hover {
@@ -821,10 +817,6 @@
             font-size: 0.9rem;
         }
         
-        .faq-btn:active {
-            background: var(--border-light);
-        }
-        
         /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
         @media (hover: hover) and (pointer: fine) {
             .faq-btn:hover {
@@ -1207,10 +1199,6 @@
             font-size: 1.2rem;
         }
 
-        .explore-nav-btn:active {
-            background: var(--border-light);
-        }
-
         /* Apex UX: Restricts hover to mouse-only to prevent sticky taps */
         @media (hover: hover) and (pointer: fine) {
             .explore-nav-btn:hover {
@@ -1218,6 +1206,13 @@
                 color: var(--surface);
                 border-color: var(--text-dark);
             }
+        }
+
+/* Apex UX: Universal class for instant tactile tap feedback on mobile */
+        .tactile-pressed {
+            background: var(--border-light) !important;
+            transform: scale(0.95) !important;
+            transition: none !important; /* Forces instant visual response */
         }
         
         .explore-nav-btn.left { left: -20px; }
@@ -3264,6 +3259,23 @@
                 // Initialize the correct arrow state on load
                 setTimeout(updateExploreArrows, 100);
             }
+            
+            // Apex UX: Instant Tactile Feedback for Mobile Arrows (Bypasses CSS :active delay)
+            const arrowButtons = document.querySelectorAll('.carousel-btn, .faq-btn, .explore-nav-btn');
+            
+            arrowButtons.forEach(btn => {
+                btn.addEventListener('touchstart', function() {
+                    this.classList.add('tactile-pressed');
+                }, {passive: true});
+
+                btn.addEventListener('touchend', function() {
+                    this.classList.remove('tactile-pressed');
+                }, {passive: true});
+
+                btn.addEventListener('touchcancel', function() {
+                    this.classList.remove('tactile-pressed');
+                }, {passive: true});
+            });
         });
 		
     </script>
