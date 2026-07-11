@@ -131,8 +131,24 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem 1.25rem; /* Reclaimed horizontal space for mobile text wrapping */
+            padding: 2rem 1.25rem;
+            overflow: hidden; /* Apex UX: Contains the background drift so it doesn't break the page boundaries */
+            background-color: var(--text-dark); /* Failsafe background */
+        }
+
+        /* Apex UX: Cinematic Drift (Living Background) */
+        @keyframes cinematicDrift {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        .main-hero::after {
+            content: '';
+            position: absolute;
+            inset: -20px; /* Slight bleed to prevent white edges during the zoom */
             background: url('images/hero.jpg') center/cover no-repeat;
+            z-index: 0;
+            animation: cinematicDrift 25s linear infinite alternate;
         }
 
         .main-hero::before {
@@ -140,6 +156,7 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.8));
+            z-index: 1; /* Protects the gradient overlay above the moving image */
         }
 
         .hero-content {
