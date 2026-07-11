@@ -1210,8 +1210,9 @@
 
 /* Apex UX: Universal class for instant tactile tap feedback on mobile */
         .tactile-pressed {
-            background: var(--border-light) !important;
-            transform: scale(0.95) !important;
+            background: var(--text-dark) !important;
+            color: var(--surface) !important;
+            border-color: var(--text-dark) !important;
             transition: none !important; /* Forces instant visual response */
         }
         
@@ -3269,11 +3270,13 @@
                 }, {passive: true});
 
                 btn.addEventListener('touchend', function() {
-                    this.classList.remove('tactile-pressed');
+                    const el = this;
+                    setTimeout(() => el.classList.remove('tactile-pressed'), 120); // 120ms holds the blink just long enough for the eye to register
                 }, {passive: true});
 
                 btn.addEventListener('touchcancel', function() {
-                    this.classList.remove('tactile-pressed');
+                    const el = this;
+                    setTimeout(() => el.classList.remove('tactile-pressed'), 120);
                 }, {passive: true});
             });
         });
