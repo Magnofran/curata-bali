@@ -290,7 +290,7 @@
             -webkit-overflow-scrolling: touch;
             align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
             overflow-y: hidden !important; /* Strips vertical scroll from the track */
-            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
+            touch-action: pan-x pan-y !important; /* Apex UX: Restores vertical page scrolling while protecting the track */
         }
         .carousel::-webkit-scrollbar, .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -1163,7 +1163,7 @@
             padding-bottom: 1.5rem;
             align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
             overflow-y: hidden !important; /* Strips vertical scroll from the track */
-            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
+            touch-action: pan-x pan-y !important; /* Apex UX: Restores vertical page scrolling while protecting the track */
         }
         .reviews-carousel::-webkit-scrollbar { display: none; }
         .review-item {
@@ -1208,7 +1208,7 @@
             scrollbar-width: none;
             align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
             overflow-y: hidden !important; /* Strips vertical scroll from the track */
-            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
+            touch-action: pan-x pan-y !important; /* Apex UX: Restores vertical page scrolling while protecting the track */
         }
         
         .exploration-grid::-webkit-scrollbar { 
