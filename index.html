@@ -1258,6 +1258,25 @@
             }
         }
 
+/* Apex UX: The Continuous Awakening (Scroll Reveals) */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        
+        .reveal-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Creates the organic "waterfall" effect for items sitting in a row */
+        .exploration-step:nth-child(1) { transition-delay: 0.0s; }
+        .exploration-step:nth-child(2) { transition-delay: 0.1s; }
+        .exploration-step:nth-child(3) { transition-delay: 0.2s; }
+        .exploration-step:nth-child(4) { transition-delay: 0.3s; }
+
 /* Apex UX: Universal class for instant tactile tap feedback on mobile */
         .tactile-pressed {
             background: var(--text-dark) !important;
@@ -3471,6 +3490,36 @@
         </svg>
         Chat with Concierge
     </a>
+
+<script>
+// Apex UX: The Awakening Engine (Intersection Observer)
+document.addEventListener("DOMContentLoaded", () => {
+    // Defines the camera lens: Triggers slightly before the element hits the bottom edge
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -50px 0px', 
+        threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // The element is in view -> execute the cinematic drift
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Unobserve so it only happens once per page load
+            }
+        });
+    }, observerOptions);
+
+    // Auto-attach the invisible 'reveal-up' state to your major narrative elements
+    const targets = document.querySelectorAll('.difference-hero, .difference-philosophy, .editorial-row, .exploration-step, .section-header, .review-item, .map-container');
+    
+    targets.forEach(el => {
+        el.classList.add('reveal-up');
+        observer.observe(el);
+    });
+});
+</script>
 
 <script>
 window.addEventListener('load', function() {
