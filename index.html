@@ -288,6 +288,9 @@
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
+            align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
+            overflow-y: hidden !important; /* Strips vertical scroll from the track */
+            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
         }
         .carousel::-webkit-scrollbar, .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -1158,6 +1161,9 @@
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 1.5rem;
+            align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
+            overflow-y: hidden !important; /* Strips vertical scroll from the track */
+            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
         }
         .reviews-carousel::-webkit-scrollbar { display: none; }
         .review-item {
@@ -1184,6 +1190,7 @@
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-y: contain; /* Prevents scroll-chaining on mobile */
             scrollbar-width: none;
+            touch-action: pan-y pan-x !important; /* Apex UX: Overrides the track's lock to allow internal vertical reading */
         }
         
         .review-item p::-webkit-scrollbar { 
@@ -1199,6 +1206,9 @@
             padding-bottom: 1.5rem;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            align-items: stretch !important; /* Apex UX: Locks geometry to prevent internal wobble */
+            overflow-y: hidden !important; /* Strips vertical scroll from the track */
+            touch-action: pan-x !important; /* Tells mobile browsers to ONLY swipe left/right here */
         }
         
         .exploration-grid::-webkit-scrollbar { 
