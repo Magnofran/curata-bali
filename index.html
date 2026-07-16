@@ -225,6 +225,33 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+/* Proof Strip (Trust Stat Band) */
+        .proof-strip {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 1.5rem;
+        }
+        .proof-strip-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+        }
+        .proof-sep { color: var(--accent-vibrant); font-weight: 400; }
+        @media (max-width: 480px) {
+            .proof-sep { display: none; }
+            .proof-strip-inner { flex-direction: column; gap: 0.5rem; }
+        }
+
         /* Carousel Section */
         .packages-section { padding: 4rem 0; max-width: 1400px; margin: 0 auto; }
         .section-header { 
@@ -1103,7 +1130,9 @@
         /* Footer & Footnote */
         .difference-footer {
             max-width: 600px;
-            margin: 5rem auto 0 auto;
+            margin: 4rem auto 0 auto;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-light);
         }
 
         .signature-line {
@@ -1116,10 +1145,21 @@
         }
 
         .footnote {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+            font-weight: 500;
+            font-style: normal;
+            color: var(--text-dark);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+        }
+
+        .footnote-accent {
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--accent-vibrant);
+            margin: 0 auto 1.5rem auto;
         }
 
         /* Mobile Adjustments */
@@ -1348,6 +1388,16 @@
         <a href="#Vurata-difference" class="scroll-indicator">Explore</a>
     </header>
 
+<section class="proof-strip" aria-label="Vurata at a glance">
+        <div class="proof-strip-inner">
+            <span>1 Dedicated Host per 4 Guests</span>
+            <span class="proof-sep">•</span>
+            <span>150+ Private Journeys Hosted</span>
+            <span class="proof-sep">•</span>
+            <span>Always Private, Never Shared</span>
+        </div>
+    </section>
+
 	<!-- The Vurata Difference Section -->
     <section id="Vurata-difference" class="Vurata-difference">
         <div class="container">
@@ -1401,7 +1451,8 @@
 
             <div class="difference-footer">
                 <h4 class="signature-line">Everything arranged. Nothing shared.</h4>
-                <p class="footnote">One to four guests are paired with their own dedicated host and private chauffeur—so a party of 20 still moves as five effortless groups of four, not one crowded one.</p>
+                <span class="footnote-accent" aria-hidden="true"></span>
+                <p class="footnote">One to four guests are paired with their own dedicated host and private chauffeur—so a party of <span style="color: var(--accent-vibrant);">20</span> still moves as <span style="color: var(--accent-vibrant);">five</span> effortless groups of <span style="color: var(--accent-vibrant);">four</span>, not one crowded one.</p>
             </div>
 
         </div>
@@ -1462,6 +1513,7 @@
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 10 Hours</span>
                         <span>👥 Best for Cultural Purists</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1485,6 +1537,7 @@
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 9 Hours</span>
                         <span>👥 Best for Creatives & Designers</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1509,6 +1562,7 @@
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 8 Hours</span>
                         <span>👥 Best for Couples & Groups</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1533,6 +1587,7 @@
                     <div class="card-meta">
                         <span>⏱ Evening • Approx. 8 Hours</span>
                         <span>👥 Best for Groups & Celebrations</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1557,6 +1612,7 @@
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 10 Hours</span>
                         <span>👥 Best for Adventure Seekers</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
                         <span class="price-label">Starting at</span>
@@ -1715,6 +1771,13 @@
                 </div>
             </details>
 
+<details class="faq-item">
+                <summary class="faq-summary">We are a large group. Will we be transported in a minibus?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Absolutely not. Minibuses inherently compromise comfort and restrict access to Bali's more exclusive, hidden locations due to narrow infrastructure. For groups of 5 or more, your group is automatically assigned additional premium vehicles and dedicated hosts. We replace the standard group-tour model with a coordinated fleet of premium vehicles and a scaled concierge team (<strong>1 dedicated host per 4 guests</strong>). This allows your group to travel comfortably together or separate during the day whenever needed—for example, if some guests wish to return to the villa while others continue exploring.</p>
+                </div>
+            </details>
+
             <details class="faq-item">
                 <summary class="faq-summary">Can we customize an experience?</summary>
                 <div class="faq-content">
@@ -1754,13 +1817,6 @@
                 <summary class="faq-summary">Are meals and personal purchases included?</summary>
                 <div class="faq-content">
                     <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No. To provide you with total flexibility, meals, dining, shopping, and VIP venue tables are out-of-pocket. Your host will happily provide recommendations and facilitate reservations, but your package strictly covers the stated logistics, transport, and expert curation.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-summary">We are a large group. Will we be transported in a minibus?</summary>
-                <div class="faq-content">
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Absolutely not. Minibuses inherently compromise comfort and restrict access to Bali's more exclusive, hidden locations due to narrow infrastructure. For groups of 5 or more, your group is automatically assigned additional premium vehicles and dedicated hosts. We replace the standard group-tour model with a coordinated fleet of premium vehicles and a scaled concierge team (<strong>1 dedicated host per 4 guests</strong>). This allows your group to travel comfortably together or separate during the day whenever needed—for example, if some guests wish to return to the villa while others continue exploring.</p>
                 </div>
             </details>
 
