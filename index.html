@@ -113,6 +113,27 @@
             border-bottom: 2px solid var(--text-dark); /* Deep ink focus state instead of red */
         }
 
+/* Apex UX: Mobile-only calendar icon fix for Date & Pick-Up Time fields.
+           -webkit-appearance: none (set globally above) hides the native calendar icon
+           on mobile browsers. We draw our own icon and make the native picker hit-target
+           invisible-but-clickable underneath it. */
+        @media (hover: none) and (pointer: coarse) {
+            input[type="date"] {
+                background-image: url('data:image/svg+xml;utf8,<svg fill=%22%2364748b%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z%22/></svg>');
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 1.35rem;
+                padding-right: 2.75rem;
+            }
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                opacity: 0;
+                cursor: pointer;
+            }
+            [data-theme="dark"] input[type="date"] {
+                background-image: url('data:image/svg+xml;utf8,<svg fill=%22%2394a3b8%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z%22/></svg>');
+            }
+        }
+
         /* Legacy negative tracking removed to allow Serif fonts to breathe */
         
         label, .card-tag, .trust-badge {
@@ -394,8 +415,8 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 0.5rem;
         }
         .directive-list li {
@@ -409,11 +430,6 @@
             color: var(--text-muted);
             line-height: 1.5;
             border-left: 2px solid var(--text-dark); /* Harmonized structural anchor */
-        }
-        
-        /* Apex Structural Span for Odd Items */
-        .directive-list li:last-child:nth-child(odd) {
-            grid-column: 1 / -1;
         }
         
         .directive-list li strong {
@@ -674,13 +690,7 @@
             .split-input-group input {
                 width: 100% !important;
             }
-            .directive-list {
-                grid-template-columns: 1fr;
             }
-            .directive-list li:last-child:nth-child(odd) {
-                grid-column: auto; /* Releases the full-width span on mobile */
-            }
-        }
 
         /* Custom Input */
         #customCode { display: none; width: 80px; flex: none; padding: 0.85rem 0.5rem; text-align: center; }
@@ -735,6 +745,51 @@
         .social-links a:hover { color: var(--accent-vibrant); }
         .social-icon { width: 24px; height: 24px; fill: currentColor; }
         .footer-copyright { margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Apex UX: Institutional desktop footer. Reintroduces the wordmark for grounding
+           and arranges the footer as a structured, full-width row instead of a narrow
+           centered stack, matching the 1400px content grid used elsewhere on the page.
+           The mobile stacked layout below this breakpoint is untouched. */
+        .footer-wordmark { display: none; }
+
+        @media (min-width: 1024px) {
+            .footer-content {
+                max-width: 1400px;
+                display: grid;
+                grid-template-columns: 1fr auto auto;
+                grid-template-areas:
+                    "brand contact social"
+                    "copy copy copy";
+                align-items: center;
+                column-gap: 4rem;
+                row-gap: 2.5rem;
+            }
+            .footer-brand {
+                grid-area: brand;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .footer-wordmark {
+                display: block;
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1.65rem;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                color: var(--text-dark);
+                margin-bottom: 0.6rem;
+            }
+            .contact-info { grid-area: contact; }
+            .social-links { grid-area: social; }
+            .footer-copyright {
+                grid-area: copy;
+                margin-top: 0;
+                padding-top: 2rem;
+                border-top: 1px solid var(--border-light);
+                text-align: center;
+            }
+        }
 
         .map-section { max-width: 1400px; margin: 2rem auto 4rem auto; padding: 0 2rem; }
         .map-header { margin-bottom: 1.5rem; border-bottom: 2px solid var(--text-dark); padding-bottom: 0.5rem; display: inline-block; }
@@ -1892,10 +1947,13 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <div class="trust-badge">
-                <span>150+ Private Journeys Hosted</span>
-                <span class="badge-separator">•</span>
-                <span>5-Star Guest Satisfaction</span>
+            <div class="footer-brand">
+                <span class="footer-wordmark">Vurata</span>
+                <div class="trust-badge">
+                    <span>150+ Private Journeys Hosted</span>
+                    <span class="badge-separator">•</span>
+                    <span>5-Star Guest Satisfaction</span>
+                </div>
             </div>
             <div class="contact-info">
                 <a href="https://wa.me/628138775758" target="_blank">
@@ -2149,7 +2207,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 </div>
 
 		<!-- Dynamic Scaled Logistics Block (Moved below the interaction layer to prevent viewport scroll jumping) -->
-            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: var(--tint-focus); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
                 
                 <!-- Dynamic Highlights Re-anchored to prevent top-viewport scroll jumping -->
                 <div id="dynamicIncTeam" style="display: none; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.35rem;"></div>
@@ -2161,7 +2219,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             </div>
 
 		<!-- Apex Investment Summary -->
-        <div id="investmentSummary" style="display: none; margin-bottom: 1.5rem; padding: 1.5rem; background: rgba(15, 23, 42, 0.02); border: 1px solid var(--border-light); border-left: 3px solid var(--accent-vibrant);">
+        <div id="investmentSummary" style="display: none; margin-bottom: 1.5rem; padding: 1.5rem; background: var(--tint-focus); border: 1px solid var(--border-light); border-left: 3px solid var(--accent-vibrant);">
             <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 1rem;">Live Itinerary & Investment</strong>
             
             <!-- Itinerary Details -->
@@ -2210,7 +2268,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 timeMax: '09:00',
                 timeHelper: 'Ancestral journeys require a morning start to ensure private temple rituals occur during the quietest hours.',
                 contextHTML: '"While typical tours follow the exhausted path of crowded landmarks, we navigate the island\'s untouched interior. This is a deeply personal, fully autonomous journey into Bali\'s heritage—anchored by private access and uncompromised quiet."',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 exclusive local destinations. You simply choose 3 or 4 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your private high-priest ritual and sunset arrival at Tanah Lot are pre-arranged and perfectly timed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed and flexible, meals are out-of-pocket, allowing you to decide exactly where and when you'd like to stop for lunch.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>72-Hour Notice</strong> required to arrange private temple access and confirm your host's availability.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 exclusive local destinations. You simply choose 3 or 4 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your private high-priest ritual and sunset arrival at Tanah Lot are pre-arranged and perfectly timed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed and flexible, meals are out-of-pocket, allowing you to decide exactly where and when you'd like to stop for lunch.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
                 incHTML: `<li>✓ Private high-priest ritual</li><li>✓ 3-4 Curated Destinations (Your Choice)</li><li>✓ 1 Master-craft workshop (Your Choice)</li><li>✓ Sunset at Tanah Lot</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
@@ -2228,7 +2286,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 timeMax: '09:00',
                 timeHelper: 'Cross-island drives require an early start to balance time in Ubud with the tranquil coastal light of the East.',
                 contextHTML: '"Why choose between the jungle and the coast? This dynamic itinerary fuses the vibrant artisan culture of Ubud with the quiet, untouched black sands of Amed—creating a seamless, cross-island joyride tailored entirely to your rhythm."',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a curated list of 8 to 10 exclusive stops spanning Ubud and East Bali. You select 3 to 4 to shape your day—from hidden jungle waterfalls to coastal artisan villages—and your host handles the navigation.</li><li><strong>Core Experiences</strong> Your selected master-craft studio session in Ubud is pre-arranged and perfectly timed before heading East.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket. Stop for a jungle lunch or wait for fresh coastal seafood—it's up to you.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>48-Hour Notice</strong> required to confirm your master-craft workshop and host availability.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a curated list of 8 to 10 exclusive stops spanning Ubud and East Bali. You select 3 to 4 to shape your day—from hidden jungle waterfalls to coastal artisan villages—and your host handles the navigation.</li><li><strong>Core Experiences</strong> Your selected master-craft studio session in Ubud is pre-arranged and perfectly timed before heading East.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket. Stop for a jungle lunch or wait for fresh coastal seafood—it's up to you.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Immersion Includes',
                 incHTML: `<li>✓ 1 Master-craft workshop (Your Choice)</li><li>✓ 3-4 Curated Destinations (Ubud & Amed)</li><li>✓ Scenic cross-island routing</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
@@ -2243,7 +2301,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 timeMax: '13:00', /* Pushed later so an 8-hour day naturally ends at sunset */
                 timeHelper: 'Coastal excursions require a late morning or early afternoon departure to pace the 8-hour schedule perfectly for the Uluwatu sunset.',
                 contextHTML: '"The southern peninsula is defined by dramatic cliffs and elite beach clubs, but navigating it shouldn\'t require a rigid schedule. We secure your access and handle the logistics, allowing you to chase the perfect sunset at your own fluid pace."',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 6 sweeping coastal destinations. You simply choose 2 or 3 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your preferred luxury beach club reservation and your sunset arrival at Uluwatu Temple are pre-arranged and perfectly timed.</li><li><strong>Dining on Your Terms</strong> To keep your day completely flexible, meals and any specific beach club minimum-spends are out-of-pocket.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>48-Hour Notice</strong> required to confirm your beach club reservation and host availability.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 6 sweeping coastal destinations. You simply choose 2 or 3 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your preferred luxury beach club reservation and your sunset arrival at Uluwatu Temple are pre-arranged and perfectly timed.</li><li><strong>Dining on Your Terms</strong> To keep your day completely flexible, meals and any specific beach club minimum-spends are out-of-pocket.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
                 incHTML: `<li>✓ Premium Beach Club or Lounge (Your Choice)</li><li>✓ 2-3 Curated Coastal Destinations (Your Choice)</li><li>✓ Sunset at Uluwatu Temple</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
@@ -2258,7 +2316,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 timeMax: '19:00',
                 timeHelper: 'Nightlife experiences initiate in the late afternoon or early evening (04:00 PM – 07:00 PM) to ensure seamless venue entry and optimal pacing.',
                 contextHTML: '"We explicitly bypass the overcrowded, commercialized tourist traps. Instead, your host navigates you through a hand-picked circuit of high-end, atmospheric venues where the elite actually spend their time."',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 elite, non-touristy beach clubs and late-night venues. You select 3 to 4 to shape your night.</li><li><strong>VIP Tables Excluded</strong> The package covers your host's curation and access. Table minimums and bottle service are paid directly to the venue.</li><li><strong>Table Reservations</strong> Note your interest below. Post-booking, you can choose exactly which of your selected venues you'd like to anchor with a private table.</li><li><strong>Large Groups (9-15 Guests)</strong> Large-scale deployments require specialized venue negotiation.</li><li style="grid-column: 1 / -1;"><strong>Groups Exceeding 15 Guests</strong> To maintain our private concierge standard, groups larger than 15 guests should be submitted as an additional booking request. Our concierge team will automatically link both submissions.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>48-Hour Notice</strong> required to confirm venue access and your dedicated nightlife host.</li><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 elite, non-touristy beach clubs and late-night venues. You select 3 to 4 to shape your night.</li><li><strong>VIP Tables Excluded</strong> The package covers your host's curation and access. Table minimums and bottle service are paid directly to the venue.</li><li><strong>Table Reservations</strong> Note your interest below. Post-booking, you can choose exactly which of your selected venues you'd like to anchor with a private table.</li><li><strong>Large Groups (9-15 Guests)</strong> Large-scale deployments require specialized venue negotiation.</li><li style="grid-column: 1 / -1;"><strong>Groups Exceeding 15 Guests</strong> To maintain our private concierge standard, groups larger than 15 guests should be submitted as an additional booking request. Our concierge team will automatically link both submissions.</li></ul>`,
                 transparencyHTML: `This package secures your host’s specialized curation, logistics, and private transport.<br><br>To grant you absolute financial autonomy throughout the night, any VIP table minimums, dining, or extended beverage consumption are settled independently by you directly with the venues.`,
                 guestMax: 15, guestPlaceholder: '1-15',
                 incTitle: 'Night Includes',
@@ -2275,7 +2333,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 timeMax: '09:00', /* Adjusted to standard early morning fast-boat windows */
                 timeHelper: 'Island crossings require a morning departure (06:00 AM – 09:00 AM) to perfectly align with private port transfers and fast-boat schedules.',
                 contextHTML: '"Nusa Penida offers Bali\'s most dramatic landscapes, but reaching them often involves chaotic port logistics and rigid group tours. We replace that friction with a seamlessly managed, private expedition—so you only focus on the view."',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your concierge will share a private list of 6 dramatic coastal viewpoints and island lounges. You choose 3 or 4 to shape your day, and your local guide handles the navigation.</li><li><strong>Seamless Logistics</strong> Fast-boat ticketing, port transfers, and your dedicated island vehicle are entirely pre-arranged and managed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket, allowing you to decide exactly where to stop for lunch overlooking the ocean.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li style="grid-column: 1 / -1;"><strong>Want a Private Yacht Charter?</strong> Note it in the Special Requirements below, and our concierge team will provide tailored marine charter options instead of the standard fast-boat transfer.</li></ul>`,
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>48-Hour Notice</strong> required to confirm fast-boat tickets and port logistics.</li><li><strong>Flexible Itinerary</strong> After booking, your concierge will share a private list of 6 dramatic coastal viewpoints and island lounges. You choose 3 or 4 to shape your day, and your local guide handles the navigation.</li><li><strong>Seamless Logistics</strong> Fast-boat ticketing, port transfers, and your dedicated island vehicle are entirely pre-arranged and managed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket, allowing you to decide exactly where to stop for lunch overlooking the ocean.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li style="grid-column: 1 / -1;"><strong>Want a Private Yacht Charter?</strong> Note it in the Special Requirements below, and our concierge team will provide tailored marine charter options instead of the standard fast-boat transfer.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Expedition Includes',
                 incHTML: `<li>✓ VIP fast-boat tickets & priority boarding</li><li>✓ Private porter service at Sanur port</li><li>✓ Island entry taxes & destination parking</li><li>✓ 3-4 Curated Destinations (Your Choice)</li><li>✓ Dedicated premium island vehicle & guide</li><li>✓ Premium snorkeling gear (upon request)</li><li>✓ UV-blocking sun umbrellas</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
@@ -2662,23 +2720,21 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
         function buildTimeDropdown() {
             if (!dateInputEl.value) return;
 
+            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
+            const config = packageData[packageID];
+
             // Universal UX Fallback for Non-Compliant Browsers
             const minAllowedDate = dateInputEl.getAttribute('min');
             if (dateInputEl.value < minAllowedDate) {
                 dateInputEl.value = ''; // Instantly wipe invalid selection
                 timeSelectEl.innerHTML = '<option value="" disabled selected>Select Date First</option>';
                 
-                // Accessible & Visible Error State
+                // Accessible & Visible Error State — Apex UX: stays visible until the user picks a valid date (no auto-hide)
+                const noticeHours = (config && typeof config.delayDays === 'number' ? config.delayDays : 2) * 24;
                 dateInputEl.style.borderBottom = '2px solid #FF0000'; // Hard red visual cue
-                timeHelperTextEl.textContent = 'Please select a valid future date based on the required notice period.';
+                timeHelperTextEl.textContent = `Bookings must be made at least ${noticeHours} hours in advance. Please select a later date.`;
                 timeHelperTextEl.style.color = '#FF0000';
                 timeHelperTextEl.style.display = 'block';
-
-                setTimeout(() => { 
-                    dateInputEl.style.borderBottom = ''; // Resets to global CSS baseline
-                    timeHelperTextEl.style.color = 'var(--text-muted)';
-                    timeHelperTextEl.style.display = 'none';
-                }, 3500);
                 
                 if (window.navigator && window.navigator.vibrate) {
                     window.navigator.vibrate([20, 50, 20]); // Hardware error tick (Android only)
@@ -2686,8 +2742,15 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 return; // Halt execution
             }
 
-            const packageID = document.getElementById('selectedPackage').value.split(' - ')[0];
-            const config = packageData[packageID];
+            // Valid date selected: clear the error state and restore this package's normal helper text (if any)
+            dateInputEl.style.borderBottom = '';
+            if (config && config.timeMin && config.timeMax) {
+                timeHelperTextEl.textContent = config.timeHelper;
+                timeHelperTextEl.style.color = 'var(--text-muted)';
+                timeHelperTextEl.style.display = 'block';
+            } else {
+                timeHelperTextEl.style.display = 'none';
+            }
             
             // Base operational hours (07:00 AM - 10:00 PM) unless the package restricts them
             let startHour = config && config.timeMin ? parseInt(config.timeMin.split(':')[0]) : 7;
