@@ -1526,17 +1526,17 @@
                 </div>
             </article>
             <!-- Package A -->
-            <article class="card" onclick="openModal('Package A', 'Ubud Artisan Immersion', '$245 / person', 'images/package-a.jpg')">
+            <article class="card" onclick="openModal('Package A', 'Ubud to Amed Immersion', '$245 / person', 'images/package-a.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
-                    <img src="images/package-a.jpg" alt="Ubud" loading="lazy">
+                    <img src="images/package-a.jpg" alt="Ubud & Amed" loading="lazy">
                 </div>
                 <div class="card-content">
-                    <h3>Ubud Artisan Immersion</h3>
-                    <p class="card-subtitle">A deeply personal immersion into Bali's creative heart. Choose your preferred master-craft workshop, explore hidden jungle waterfalls & ancient temples at your own pace.</p>
+                    <h3>Ubud to Amed Immersion</h3>
+                    <p class="card-subtitle">A fluid, cross-island journey. Select your preferred master-craft workshops in Bali's creative center before escaping to the untouched black sands and profound quiet of the northeast coast.</p>
                     <div class="card-meta">
-                        <span>⏱ Full Day • Approx. 9 Hours</span>
-                        <span>👥 Best for Creatives & Designers</span>
+                        <span>⏱ Full Day • Approx. 10 Hours</span>
+                        <span>👥 Best for Creatives & Explorers</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
                     <div class="price-block">
@@ -1545,7 +1545,7 @@
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
-                        <button onclick="sharePackage('Package A', 'Ubud Artisan & Design'); event.stopPropagation();" style="background:none; border:none; cursor:pointer; padding:4px; display:inline-flex; align-items:center; gap:4px; color:var(--text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg><span style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase;">Share</span></button>
+                        <button onclick="sharePackage('Package A', 'Ubud to Amed Immersion'); event.stopPropagation();" style="background:none; border:none; cursor:pointer; padding:4px; display:inline-flex; align-items:center; gap:4px; color:var(--text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg><span style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase;">Share</span></button>
                     </div>
                 </div>
             </article>
@@ -1942,6 +1942,8 @@
             </div>
             <p id="modalPrice" style="font-size: 1.15rem; font-weight: 600; color: var(--text-dark); margin-top:0.25rem; margin-bottom: 1.5rem;"></p>
             
+            <p id="modalContext" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; font-style: italic; border-left: 2px solid var(--accent-vibrant); padding-left: 1rem; display: none;"></p>
+            
             <!-- Moved: Inclusions First -->
             <div id="modalInclusions" style="margin-bottom: 2rem;">
                 <strong id="inclusionsTitle" style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; color: var(--text-dark);">What's Included</strong>
@@ -1964,9 +1966,11 @@
             </div>
 
             <!-- Apex Booking Threshold -->
-            <div style="margin-bottom: 2.5rem; padding: 1.5rem; border: none; background: var(--border-light); text-align: center;">
-                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark); margin-bottom: 0.75rem;">Booking Details</strong>
-                <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.5;">Complete the form below. Our concierge team will review your selection and contact you to finalize your itinerary.</p>
+            <div style="margin-bottom: 2.5rem; padding: 1.5rem; border: none; background: var(--border-light); text-align: center; border-top: 2px solid var(--accent-vibrant);">
+                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark); margin-bottom: 0.75rem;">The Vurata Standard</strong>
+                <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.5;">
+We don't do pre-packaged bus tours. Share your preferences below, and your dedicated concierge and private host will curate an experience tailored entirely to your pace, interests, and travel style.
+</p>
             </div>
             
 	<div id="bookingSuccessState" style="display: none; text-align: center; padding: 4rem 1rem; animation: modalEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
@@ -2203,6 +2207,7 @@
                 timeMin: '07:00',
                 timeMax: '09:00',
                 timeHelper: 'Ancestral journeys require a morning start to ensure private temple rituals occur during the quietest hours.',
+                contextHTML: '"While typical tours follow the exhausted path of crowded landmarks, we navigate the island\'s untouched interior. This is a deeply personal, fully autonomous journey into Bali\'s heritage—anchored by private access and uncompromised quiet."',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 exclusive local destinations. You simply choose 3 or 4 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your private high-priest ritual and sunset arrival at Tanah Lot are pre-arranged and perfectly timed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed and flexible, meals are out-of-pocket, allowing you to decide exactly where and when you'd like to stop for lunch.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
@@ -2212,18 +2217,19 @@
                 formMode: 'standard',
                 fullPayment: false /* Reverted to 50% deposit to match standard joyrides */
             },
-            // 2. THE RE-POSITIONED UBUD
+            // 2. THE UBUD & AMED FUSION
             'Package A': {
-                durationHours: 9,
+                durationHours: 10,
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
-                timeMin: '08:00',
-                timeMax: '10:00',
-                timeHelper: 'Artisan immersions are best enjoyed with a morning start to beat the creative workshops\' peak crowds.',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 curated cultural and scenic destinations. You simply choose your preferred hands-on workshop and 2 to 3 scenic stops to shape your day.</li><li><strong>Core Experiences</strong> Your selected master-craft studio session (e.g., silver, clay, or perfumery) is pre-arranged and perfectly timed for your arrival.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket, allowing you to decide exactly where to stop for lunch.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
+                timeMin: '07:00',
+                timeMax: '09:00',
+                timeHelper: 'Cross-island drives require an early start to balance time in Ubud with the tranquil coastal light of the East.',
+                contextHTML: '"Why choose between the jungle and the coast? This dynamic itinerary fuses the vibrant artisan culture of Ubud with the quiet, untouched black sands of Amed—creating a seamless, cross-island joyride tailored entirely to your rhythm."',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a curated list of 8 to 10 exclusive stops spanning Ubud and East Bali. You select 3 to 4 to shape your day—from hidden jungle waterfalls to coastal artisan villages—and your host handles the navigation.</li><li><strong>Core Experiences</strong> Your selected master-craft studio session in Ubud is pre-arranged and perfectly timed before heading East.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket. Stop for a jungle lunch or wait for fresh coastal seafood—it's up to you.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Immersion Includes',
-                incHTML: `<li>✓ 1 Master-craft workshop (Client Selected)</li><li>✓ 2 to 3 Curated Destinations (Client Selected)</li><li>✓ Scenic farm-to-table lunch routing</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Reef-safe sun care & botanical insect shield</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
+                incHTML: `<li>✓ 1 Master-craft workshop (Client Selected)</li><li>✓ 3 to 4 Curated Destinations (Ubud & Amed)</li><li>✓ Scenic cross-island routing</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Reef-safe sun care & botanical insect shield</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
                 showDressCode: false,
                 formMode: 'standard'
             },
@@ -2234,6 +2240,7 @@
                 timeMin: '10:00',
                 timeMax: '13:00', /* Pushed later so an 8-hour day naturally ends at sunset */
                 timeHelper: 'Coastal excursions require a late morning or early afternoon departure to pace the 8-hour schedule perfectly for the Uluwatu sunset.',
+                contextHTML: '"The southern peninsula is defined by dramatic cliffs and elite beach clubs, but navigating it shouldn\'t require a rigid schedule. We secure your access and handle the logistics, allowing you to chase the perfect sunset at your own fluid pace."',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 6 sweeping coastal destinations. You simply choose 2 or 3 to shape your day, and your host handles the rest.</li><li><strong>Core Experiences</strong> Your preferred luxury beach club reservation and your sunset arrival at Uluwatu Temple are pre-arranged and perfectly timed.</li><li><strong>Dining on Your Terms</strong> To keep your day completely flexible, meals and any specific beach club minimum-spends are out-of-pocket.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
@@ -2246,13 +2253,14 @@
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
                 timeMin: '16:00',
-                timeMax: '19:00', /* Opened up to 4 PM start for those who want to maximize sunset beach clubs */
+                timeMax: '19:00',
                 timeHelper: 'Nightlife experiences initiate in the late afternoon or early evening (04:00 PM – 07:00 PM) to ensure seamless venue entry and optimal pacing.',
-                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 elite beach clubs and late-night venues. You select 3 to 4 to shape your night, allowing for an effortless 1.5 to 2 hours per stop.</li><li><strong>VIP Tables Excluded</strong> The package covers your host's curation and access. Table minimums and bottle service are paid directly to the venue.</li><li><strong>Table Reservations</strong> Note your interest below. Post-booking, you can choose exactly which of your selected venues you'd like to anchor with a private table (often saved for the final stop).</li><li><strong>Large Groups (9-15 Guests)</strong> Large-scale deployments require specialized venue negotiation (e.g., dual VIP sections). Our synchronized multi-vehicle protocol ensures absolute flexibility.</li><li style="grid-column: 1 / -1;"><strong>Groups Exceeding 15 Guests</strong> To maintain our private concierge standard and ensure seamless venue coordination, groups larger than 15 guests should be submitted as an additional booking request by another member of your party. In the <strong>Special Requirements</strong> section, simply reference the primary booking name. Our concierge team will automatically link both submissions and coordinate them as a single event.</li></ul>`,
+                contextHTML: '"We explicitly bypass the overcrowded, commercialized tourist traps. Instead, your host navigates you through a hand-picked circuit of high-end, atmospheric venues where the elite actually spend their time."',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li><strong>Flexible Itinerary</strong> After booking, your host will share a private list of 8 elite, non-touristy beach clubs and late-night venues. You select 3 to 4 to shape your night.</li><li><strong>VIP Tables Excluded</strong> The package covers your host's curation and access. Table minimums and bottle service are paid directly to the venue.</li><li><strong>Table Reservations</strong> Note your interest below. Post-booking, you can choose exactly which of your selected venues you'd like to anchor with a private table.</li><li><strong>Large Groups (9-15 Guests)</strong> Large-scale deployments require specialized venue negotiation.</li><li style="grid-column: 1 / -1;"><strong>Groups Exceeding 15 Guests</strong> To maintain our private concierge standard, groups larger than 15 guests should be submitted as an additional booking request. Our concierge team will automatically link both submissions.</li></ul>`,
                 transparencyHTML: `This package secures your host’s specialized curation, logistics, and private transport.<br><br>To grant you absolute financial autonomy throughout the night, any VIP table minimums, dining, or extended beverage consumption are settled independently by you directly with the venues.`,
                 guestMax: 15, guestPlaceholder: '1-15',
                 incTitle: 'Night Includes',
-                incHTML: `<li>✓ 3 selected house cocktails/beverages (1 per venue)</li><li>✓ Fast-track entry where available</li><li>✓ 3 to 4 Curated Venues (Client Selected)</li><li>✓ Optional late-night culinary cooldown stop</li><li>✓ VIP table facilitation (upon request)</li><li>✓ Private driver & personal nightlife host</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical insect shield</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
+                incHTML: `<li>✓ 3 selected house cocktails/beverages (1 per venue)</li><li>✓ Fast-track entry where available</li><li>✓ 3 to 4 Curated Venues (Client Selected)</li><li>✓ Optional late-night culinary cooldown stop</li><li>✓ VIP table facilitation (upon request)</li><li>✓ Private driver & personal nightlife host</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Premium Energy Drinks (2x Red Bull Per Guest)</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Curated Provisions Box (Sweet & Savory, Per Guest)</li>`,
                 showDressCode: true,
                 dressCodeHTML: `Smart casual or upscale nightlife attire.<br><br>• No singlets, no flip-flops, no sportswear.<br>• Closed shoes or fashionable sandals recommended.<br><br>Some venues reserve the right to refuse entry if dress standards are not met.`,
                 formMode: 'standard'
@@ -2264,6 +2272,7 @@
                 timeMin: '06:00',
                 timeMax: '09:00', /* Adjusted to standard early morning fast-boat windows */
                 timeHelper: 'Island crossings require a morning departure (06:00 AM – 09:00 AM) to perfectly align with private port transfers and fast-boat schedules.',
+                contextHTML: '"Nusa Penida offers Bali\'s most dramatic landscapes, but reaching them often involves chaotic port logistics and rigid group tours. We replace that friction with a seamlessly managed, private expedition—so you only focus on the view."',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>Flexible Itinerary</strong> After booking, your concierge will share a private list of 6 dramatic coastal viewpoints and island lounges. You choose 3 or 4 to shape your day, and your local guide handles the navigation.</li><li><strong>Seamless Logistics</strong> Fast-boat ticketing, port transfers, and your dedicated island vehicle are entirely pre-arranged and managed for you.</li><li><strong>Dining on Your Terms</strong> To keep your day completely relaxed, meals are out-of-pocket, allowing you to decide exactly where to stop for lunch overlooking the ocean.</li><li><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li><li style="grid-column: 1 / -1;"><strong>Want a Private Yacht Charter?</strong> Note it in the Special Requirements below, and our concierge team will provide tailored marine charter options instead of the standard fast-boat transfer.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Expedition Includes',
@@ -2276,6 +2285,7 @@
                 dateLabel: 'Date & Preferred Time',
                 timeMin: '00:00',
                 timeMax: '23:30',
+                contextHTML: '"True luxury is never having to leave your sanctuary. Whether you are recovering from a long flight at midnight or unwinding after a full day of exploration, our premium mobile therapists transform your accommodation into a private, on-demand spa."',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>6-Hour Notice</strong> required to guarantee therapist availability.</li><li><strong>Direct Dispatch</strong> Your therapist travels directly to your villa or hotel, transforming your space into a private sanctuary.</li><li style="grid-column: 1 / -1;"><strong>Full Payment</strong> Confirms your booking and secures your therapist's time and dispatch.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'Session Includes',
@@ -2286,6 +2296,7 @@
             'Package F': {
                 delayDays: 3,
                 dateLabel: 'Start Date',
+                contextHTML: '"Absolute peace of mind requires structural support. By providing dedicated, professional companionship for your children or elderly relatives, we ensure your entire family experiences Bali comfortably—without compromise."',
                 directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li><strong>72-Hour Notice</strong> required to assign the most suitable specialist based on your family's exact needs (e.g., infant care vs. elderly companionship).</li><li><strong>Bespoke Matching</strong> Please detail any specific mobility, dietary, or care requirements in the notes below so we can perfectly pair your concierge.</li><li style="grid-column: 1 / -1;"><strong>Full Payment</strong> Confirms your booking and locks in your dedicated caregiver for the requested schedule.</li></ul>`,
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'Service Includes',
@@ -2337,6 +2348,15 @@
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalPrice').textContent = price;
             document.getElementById('selectedPackage').value = `${packageID} - ${title}`;
+
+            // Inject Micro-Story Context
+            const contextEl = document.getElementById('modalContext');
+            if (config.contextHTML) {
+                contextEl.innerHTML = config.contextHTML;
+                contextEl.style.display = 'block';
+            } else {
+                contextEl.style.display = 'none';
+            }
 
             // 2. Directives & Dynamic Labels
             document.getElementById('modalDirective').innerHTML = config.directiveHTML;
