@@ -1547,7 +1547,7 @@
         </div>
     </section>
 
-    <section class="packages-section">
+    <section class="packages-section" id="selectExperience">
         <div class="section-header">
             <h2>Select Experience</h2>
             <div class="carousel-nav">
@@ -2581,6 +2581,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     <option value="60 Minutes ($75/pp)">60 Minutes ($75/pp)</option>
                     <option value="90 Minutes ($105/pp)">90 Minutes ($105/pp)</option>
                 `;
+                document.getElementById('massage_duration').required = true;
             } else {
                 timeSelect.style.display = 'block';
                 timeSelect.required = true;
@@ -2613,6 +2614,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
                     <option value="90 Minutes (+$90/pp)">90 Minutes (+ $90/pp)</option>
                 `;
+                document.getElementById('massage_duration').required = false;
             }
 
             // Lock wellness fields until a duration is explicitly selected
