@@ -1731,6 +1731,1163 @@
             </article>
         </div>   
     </section>
+
+<section class="ib-section" id="baliIntel" aria-label="Bali intelligence briefing">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+        <style>
+            /* --- REAL SATELLITE MAP STYLING --- */
+            #ibMap { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; background: #0d0e13 !important; outline: none !important; }
+            .leaflet-tile-pane { filter: grayscale(100%) brightness(35%) contrast(120%) sepia(10%) hue-rotate(5deg); }
+            .leaflet-control-attribution { display: none !important; }
+            .ib-section { position: relative; background: #0a0b0e; color: #e9e4da; padding: 0; overflow: hidden; isolation: isolate; margin-top: 6rem; margin-bottom: 10rem; }
+            .ib-section::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 700px 500px at 78% 30%, rgba(216,189,143,0.08), transparent 70%), radial-gradient(ellipse 500px 500px at 10% 90%, rgba(216,189,143,0.04), transparent 70%); }
+            
+            .ib-stage { display: flex; flex-direction: column; width: 100%; }
+            @media (min-width: 640px) {
+                .ib-stage {
+                    display: block;
+                    position: relative;
+                    height: 75vh; /* Expands to feel like a massive immersive terminal */
+                    min-height: 600px;
+                    max-height: 850px;
+                }
+            }
+            
+            /* --- THE COVER LAYER (FIRST INTERACTION) --- */
+            .ib-cover-layer {
+                position: absolute;
+                inset: 0;
+                /* Increased center transparency and swapped to a circle for better mobile framing */
+                background: radial-gradient(circle at 50% 50%, rgba(10,11,14,0.2) 0%, rgba(10,11,14,0.75) 60%, rgba(10,11,14,0.97) 100%);
+                /* Reduced blur so the satellite geography is discernible */
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                z-index: 50;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                transition: opacity 1s ease, transform 1s ease;
+            }
+            .ib-cover-layer.is-hidden {
+                opacity: 0;
+                pointer-events: none;
+                transform: scale(1.02);
+            }
+            .ib-cover-title {
+                font-family: 'Cormorant Garamond', serif;
+                font-weight: 600;
+                font-size: clamp(2rem, 5vw, 3.2rem);
+                line-height: 1;
+                color: #f6f2ea;
+                margin-bottom: 0.75rem;
+            }
+            .ib-cover-title span {
+                display: block;
+                font-size: clamp(0.95rem, 3vw, 1.45rem);
+                font-weight: 500;
+                color: #d8bd8f;
+                font-style: italic;
+                margin-top: 0.35rem;
+            }
+            .ib-cover-sub {
+                font-family: 'Inter', sans-serif;
+                font-size: 0.92rem;
+                color: #9a978d;
+                line-height: 1.6;
+                max-width: 450px;
+                margin: 0 auto 2.5rem;
+            }
+            .ib-cover-btn {
+                background: rgba(216, 189, 143, 0.08);
+                border: 1px solid #d8bd8f;
+                color: #d8bd8f;
+                padding: 0.85rem 2.5rem;
+                font-family: 'Inter', sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.2em;
+                font-size: 0.75rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .ib-cover-btn:hover {
+                background: #d8bd8f;
+                color: #050608;
+                box-shadow: 0 0 25px rgba(216, 189, 143, 0.4);
+            }
+
+/* --- Q1: radar pulses + text legibility over the live map --- */
+            .ib-cover-title,
+            .ib-cover-sub,
+            .ib-cover-btn {
+                position: relative;
+                z-index: 1;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+            }
+            .ib-cover-radar { position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; z-index: 0; pointer-events: none; }
+            .ib-cover-radar-ring { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; border: 1px solid rgba(216,189,143,0.35); animation: ibCoverRadarPulse 3.6s cubic-bezier(0.16,1,0.3,1) infinite; }
+            .ib-cover-radar-ring:nth-child(2) { animation-delay: 1.2s; }
+            .ib-cover-radar-ring:nth-child(3) { animation-delay: 2.4s; }
+            @keyframes ibCoverRadarPulse {
+                0% { transform: scale(0.4); opacity: 0; }
+                15% { opacity: 0.75; }
+                100% { transform: scale(9); opacity: 0; }
+            }
+
+            /* --- Q2: compact block on mobile until Initialize Terminal is tapped --- */
+            @media (max-width: 640px) {
+                .ib-section {
+                    max-height: clamp(380px, 55vh, 480px);
+                    transition: max-height 1s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+            }
+
+           .ib-viewport { position: relative; width: 100%; aspect-ratio: 1 / 1; border: none; border-radius: 0; overflow: visible; background: transparent; z-index: 1; }
+           .ib-viewport-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+            @media (max-width: 768px) { .ib-viewport { aspect-ratio: 4 / 4.2; } }
+            @media (min-width: 640px) {
+                .ib-viewport {
+                    position: absolute;
+                    inset: 0;
+                    width: auto;
+                    height: auto;
+                    aspect-ratio: unset;
+                }
+            }
+            .ib-viewport-sweep { position: absolute; inset: -20%; pointer-events: none; opacity: 0; background: conic-gradient(from 0deg, transparent 0deg, #d8bd8f 8deg, transparent 55deg); animation: ibSweep 14s linear infinite; z-index: 1; transition: opacity 0.8s ease; }
+
+/* Radar visibility: hidden during travel, active only when locked on Bali */
+.ib-viewport.is-bali:not(.is-traveling) .ib-viewport-sweep { opacity: 0.15; }
+@keyframes ibSweep { to { transform: rotate(360deg); } }
+
+/* Orbital anchor for the sweeping radar */
+.ib-radar-origin { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; transform: translate(-50%, -50%); z-index: 2; pointer-events: none; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease; opacity: 0; }
+.ib-radar-origin::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(216,189,143,0.35); animation: ibRadarOriginSpin 20s linear infinite; }
+.ib-radar-origin::after { content: ''; position: absolute; width: 4px; height: 4px; background: #d8bd8f; border-radius: 50%; box-shadow: 0 0 12px rgba(216,189,143,1); }
+@keyframes ibRadarOriginSpin { to { transform: rotate(360deg); } }
+
+/* Show the orbital anchor only when locked onto the island AND settled */
+.ib-viewport.is-bali:not(.is-traveling) .ib-radar-origin { opacity: 1; transition-delay: 0.2s; }
+
+            .ib-grid-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+            .ib-grid-line { stroke: rgba(255,255,255,0.05); stroke-width: 0.2; }
+
+            .ib-scene { position: absolute; inset: 0; z-index: 2; }
+            .ib-scene--indonesia { transform-origin: 59% 63%; transition: opacity 0.9s ease, transform 1.15s cubic-bezier(0.7,0,0.84,0); }
+            .ib-scene--bali { opacity: 0; pointer-events: none; transform: scale(0.55); transform-origin: center; transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1); }
+            .ib-viewport.is-bali .ib-scene--indonesia { opacity: 0; transform: scale(11); pointer-events: none; }
+            .ib-viewport.is-bali .ib-scene--bali { opacity: 1; transform: scale(1); pointer-events: auto; transition-delay: 2.6s; }
+            @media (min-width: 640px) {
+                /* Constrains the HUD overlay and viewport clip to the left area so all elements share a single master anchor */
+                .ib-scene--bali, .ib-viewport.is-bali .ib-viewport-clip, .ib-viewport.is-bali .ib-reticle { right: calc(clamp(250px, 22%, 310px) + 2.5rem); }
+            }
+
+            #ibMap { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; background: #0d0e13 !important; outline: none !important; }
+            /* Converts raw satellite imagery into a cinematic tactical feed */
+            .leaflet-tile-pane { filter: grayscale(80%) brightness(55%) contrast(115%) sepia(15%) hue-rotate(5deg); }
+            .leaflet-control-attribution { display: none !important; }
+            
+            .ib-map { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+@media (max-width: 640px) {
+                #ibMap {
+                    height: auto;
+                    top: 0;
+                    bottom: 0;
+                }
+                .ib-viewport.is-bali #ibMap {
+                    top: -50vh;
+                    bottom: -50vh;
+                    top: -65lvh;
+                    bottom: -65lvh;
+                }
+            }
+
+            .ib-hud-corner { position: absolute; font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: rgba(216,189,143,0.55); z-index: 3; pointer-events: none; text-shadow: 0 1px 4px #000; }
+            .ib-hud-corner--tl { top: 0.9rem; left: 1rem; }
+            .ib-hud-corner--br { bottom: 0.9rem; right: 1rem; text-align: right; }
+.ib-hud-corner--bl { bottom: 0.9rem; left: 1rem; }
+@media (max-width: 480px) { .ib-hud-corner { font-size: 0.56rem; } }
+
+            .ib-pulse-btn { position: absolute; width: 52px; height: 52px; transform: translate(-50%, -50%); background: none; border: none; cursor: pointer; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; }
+            .ib-pulse-btn:focus-visible { outline: 2px solid #d8bd8f; outline-offset: 4px; border-radius: 50%; }
+            .ib-pulse-dot-wrap { position: relative; width: 10px; height: 10px; flex-shrink: 0; }
+            .ib-pulse-dot { position: absolute; inset: 0; border-radius: 50%; background: #d8bd8f; box-shadow: 0 0 8px rgba(216,189,143,0.8); transition: all 0.3s ease; }
+            .ib-pulse-halo { position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #d8bd8f; opacity: 0.4; animation: ibPulseRing 3s ease-in-out infinite; }
+            @keyframes ibPulseRing { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(2.1); opacity: 0; } }
+            .ib-pulse-btn:hover .ib-pulse-dot { background: #fff; box-shadow: 0 0 14px #d8bd8f; }
+
+            .ib-target-btn { top: 50%; left: 50%; transition: opacity 0.8s ease; }
+            .ib-viewport.is-bali .ib-target-btn, .ib-viewport.is-traveling .ib-target-btn, .ib-viewport.is-traveling-up .ib-target-btn { opacity: 0; pointer-events: none; }
+            .ib-target-label { position: absolute; top: 100%; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #f6f2ea; margin-top: 0.5rem; white-space: nowrap; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+            .ib-scene-hint { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #cfcbc0; letter-spacing: 0.08em; z-index: 3; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8); text-transform: uppercase; font-weight: 500; pointer-events: none; animation: ibHintFade 2.4s ease-in-out infinite; }
+            @keyframes ibHintFade { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+            .ib-return-btn { position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%); z-index: 5; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cfcbc0; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; padding: 0.45rem 0.8rem; border-radius: 999px; cursor: pointer; transition: all 0.25s ease; }
+            .ib-return-btn:hover { border-color: rgba(216,189,143,0.5); color: #f6f2ea; }
+
+            .ib-island-shape, .ib-island-contour { fill: rgba(216,189,143,0.06); stroke: rgba(216,189,143,0.35); stroke-width: 0.35; transform-box: fill-box; transform-origin: center; }
+
+            .ib-node { position: absolute; transform: translate(-50%, -50%); background: none; border: none; cursor: pointer; z-index: 4; display: flex; flex-direction: column; align-items: center; padding: 0; width: 108px; transition: opacity 0.3s ease; }
+            .ib-node:focus-visible { outline: 2px solid #d8bd8f; outline-offset: 4px; }
+            .ib-node-code { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: #8b887e; margin-top: 0.5rem; }
+            .ib-node-title { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; color: #e9e4da; text-align: center; line-height: 1.3; margin-top: 0.15rem; transition: color 0.25s ease; }
+            .ib-node:hover .ib-node-title, .ib-node.is-active .ib-node-title { color: #d8bd8f; }
+            .ib-node.is-active .ib-pulse-dot { background: #fff; box-shadow: 0 0 14px #d8bd8f; }
+            @media (max-width: 480px) { .ib-node { width: 84px; } .ib-node-title { font-size: 0.64rem; } .ib-node-code { font-size: 0.55rem; } }
+
+.ib-map-pulse-icon, .ib-map-ambient-icon { position: relative; pointer-events: none; }
+            .ib-map-pulse-icon { width: 16px; height: 16px; }
+            .ib-map-pulse-core { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.9); }
+            .ib-map-pulse-ring { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; border: 1px solid #00e5ff; opacity: 0.6; animation: ibMapPulseRing 2.6s ease-out infinite; }
+            .ib-map-ambient-icon { width: 10px; height: 10px; opacity: 0.55; }
+            .ib-map-ambient-core { position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 6px rgba(0,229,255,0.6); }
+            .ib-map-ambient-ring { position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%; border: 1px solid rgba(0,229,255,0.5); animation: ibMapPulseRing 3.6s ease-out infinite; }
+            @keyframes ibMapPulseRing { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(4.5); opacity: 0; } }
+
+            .ib-reticle { position: absolute; top: 50%; left: 0; right: 0; width: 110px; height: 110px; margin: -55px auto 0 auto; z-index: 6; pointer-events: none; opacity: 0; }
+            .ib-viewport.is-locking .ib-reticle { animation: ibReticleClose 1.4s ease-out 2.2s forwards; }
+            @keyframes ibReticleClose { 0% { transform: scale(3.4); opacity: 0.9; } 50% { transform: scale(1); opacity: 0.85; } 85% { transform: scale(1); opacity: 0.85; } 100% { transform: scale(1); opacity: 0; } }
+            .ib-reticle-corner { position: absolute; width: 20px; height: 20px; border: 1.5px solid #d8bd8f; }
+            .ib-reticle-corner--tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+            .ib-reticle-corner--tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+            .ib-reticle-corner--bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+            .ib-reticle-corner--br { bottom: 0; right: 0; border-left: none; border-top: none; }
+            .ib-flashline { position: absolute; top: 50%; left: 0; width: 100%; height: 1.5px; background: #d8bd8f; box-shadow: 0 0 16px rgba(216,189,143,0.9); z-index: 6; opacity: 0; transform: scaleX(0); pointer-events: none; }
+            .ib-viewport.is-locking .ib-flashline { animation: ibFlash 0.95s ease-out 1.85s forwards; }
+            @keyframes ibFlash { 0% { opacity: 0; transform: scaleX(0); } 35% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0; transform: scaleX(1); } }
+
+            .ib-panel { background: rgba(8, 10, 14, 0.58); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 1rem; margin: 1.5rem auto 2.5rem; width: min(310px, 100% - 2.5rem); height: clamp(280px, 45vh, 340px); height: clamp(280px, 45svh, 340px); display: none; flex-direction: column; position: relative; overflow: hidden; opacity: 0; pointer-events: none; z-index: 5; }
+            .ib-viewport.is-bali ~ .ib-panel { display: flex; animation: ibPanelFadeIn 0.8s ease 2.8s forwards; pointer-events: auto; }
+            @keyframes ibPanelFadeIn { to { opacity: 1; } }
+
+            @media (min-width: 640px) {
+                .ib-panel {
+                    display: flex; /* Always display flex on desktop since it floats absolutely */
+                    position: absolute;
+                    top: 50%;
+                    margin: 0; /* Reset mobile margin */
+                    transform: translate(18px, -50%);
+                    left: auto;
+                    right: 2.5rem;
+                    width: clamp(250px, 22%, 310px);
+                    max-width: calc(100% - 5rem);
+                    height: clamp(340px, 50vh, 460px);
+                    height: clamp(340px, 50svh, 460px);
+                    border-radius: 6px;
+                    background: rgba(10, 11, 14, 0.82);
+                    backdrop-filter: blur(16px);
+                    -webkit-backdrop-filter: blur(16px);
+                    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(216,189,143,0.18);
+                    z-index: 5;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s ease, transform 0.3s ease; /* Fast, instant fade out when unlocked */
+                }
+                .ib-viewport.is-bali ~ .ib-panel {
+                    animation: none; /* Override mobile fade-in animation */
+                    opacity: 1;
+                    pointer-events: auto;
+                    transform: translate(0, -50%);
+                    transition: opacity 0.8s ease 2.8s, transform 0.8s ease 2.8s; /* Slow, cinematic fade in when locking on Bali */
+                }
+            }
+            
+            .ib-panel-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+            .ib-panel-content > :not(.ib-scroll-area) { flex-shrink: 0; }
+            .ib-scroll-area { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(216,189,143,0.3) transparent; padding-right: 0.15rem; min-height: 0; }
+            .ib-scroll-area::-webkit-scrollbar { width: 4px; }
+            .ib-scroll-area::-webkit-scrollbar-thumb { background: rgba(216,189,143,0.3); border-radius: 4px; }
+            .ib-standby-title { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: #f6f2ea; margin-bottom: 0.5rem; }
+            .ib-standby-text { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #9a978d; line-height: 1.5; margin: 0; }
+
+            .ib-back-link { display: inline-flex; align-items: center; gap: 0.35rem; background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; color: #8b887e; padding: 0; margin-bottom: 1rem; transition: color 0.2s ease; }
+            .ib-back-link:hover { color: #d8bd8f; }
+
+            .ib-index-title { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8b887e; margin-bottom: 0.85rem; }
+            .ib-index-row { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 0.6rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 0.75rem 0.85rem; margin-bottom: 0.5rem; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+            .ib-index-row:hover { border-color: rgba(216,189,143,0.4); background: rgba(216,189,143,0.04); }
+            .ib-index-row-code { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.85rem; font-weight: 500; color: #d8bd8f; margin-right: 0.4rem; display: inline-block; transform: translateY(-1px); }
+            .ib-index-row-main { flex: 1; min-width: 0; }
+            .ib-index-row-title { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: #f6f2ea; line-height: 1.2; display: flex; align-items: center; }
+            .ib-index-row-desc { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #8b887e; margin-top: 0.15rem; }
+            .ib-index-row-count { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.6rem; color: #6b6860; flex-shrink: 0; }
+
+            .ib-cat-row { display: flex; width: 100%; align-items: baseline; gap: 0.6rem; background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0.6rem 0; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+            .ib-cat-row:hover { padding-left: 0.35rem; }
+            .ib-cat-row:hover .ib-cat-row-title { color: #d8bd8f; }
+            .ib-cat-row-code { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.6rem; color: #6b6860; flex-shrink: 0; }
+            .ib-cat-row-title { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; color: #e9e4da; transition: color 0.2s ease; }
+
+            .ib-file-tag { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.6rem; letter-spacing: 0.08em; color: #d8bd8f; margin-bottom: 0.5rem; }
+            .ib-cat-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: #f6f2ea; line-height: 1.15; margin-bottom: 0.35rem; }
+            .ib-scroll-hint { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.55rem; letter-spacing: 0.15em; color: #d8bd8f; margin-bottom: 0.5rem; animation: ibScrollBlink 2.5s infinite; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+            .ib-scroll-hint.is-visible { visibility: visible; opacity: 1; }
+            .ib-scroll-hint.is-faded { opacity: 0 !important; pointer-events: none; }
+            @keyframes ibScrollBlink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+            .ib-bullet-list { list-style: none; margin: 0 0 1.25rem; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+            .ib-bullet-list li { 
+                display: block; 
+                position: relative;
+                padding-left: 0.45rem; 
+                border-left: 2px solid rgba(216,189,143,0.3); 
+                font-family: 'Inter', sans-serif; 
+                font-size: 0.8rem; 
+                color: #cfcbc0; 
+                line-height: 1.5; 
+                transition: border-color 0.3s ease;
+            }
+            .ib-bullet-list li:hover {
+                border-left-color: #d8bd8f;
+                color: #f6f2ea;
+            }
+            .ib-next-link { display: inline-flex; align-items: center; gap: 0.4rem; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; color: #d8bd8f; background: none; border: none; cursor: pointer; padding: 0; }
+            .ib-next-link:hover { color: #f6f2ea; }
+
+            .ib-cta-meta { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.55rem; letter-spacing: 0.08em; color: #6b6860; margin-bottom: 0.25rem; }
+
+/* --- CINEMATIC ATMOSPHERIC TRANSITIONS --- */
+            .ib-atmosphere-fx { position: absolute; inset: -20%; pointer-events: none; z-index: 2; background: radial-gradient(circle at center, rgba(200, 225, 255, 0.55) 0%, rgba(160, 200, 255, 0.25) 35%, rgba(255,255,255,0) 68%); opacity: 0; mix-blend-mode: screen; transform: scale(0.1); filter: blur(0px); }
+            
+            .ib-viewport.is-traveling #ibMap { animation: ibReentryShake 2.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards; will-change: filter, transform; }
+            .ib-viewport.is-traveling .ib-atmosphere-fx { animation: ibCloudBreak 2.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards; }
+            
+            .ib-viewport.is-traveling-up #ibMap { animation: ibAscentShake 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; will-change: filter, transform; }
+            .ib-viewport.is-traveling-up .ib-atmosphere-fx { animation: ibCloudAscent 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+            @keyframes ibReentryShake {
+                0% { filter: blur(0px) brightness(100%); transform: scale(1) translate(0, 0); }
+                12% { filter: blur(2px) brightness(122%); transform: scale(1.015) translate(-1px, 1px); }
+                28% { filter: blur(5px) brightness(145%) contrast(115%); transform: scale(1.03) translate(2px, -2px); }
+                45% { filter: blur(7px) brightness(168%) contrast(125%); transform: scale(1.045) translate(-3px, 2px); }
+                62% { filter: blur(4px) brightness(130%) contrast(112%); transform: scale(1.02) translate(2px, -1px); }
+                78% { filter: blur(1.5px) brightness(108%); transform: scale(1.008) translate(-1px, 1px); }
+                92% { filter: blur(0px) brightness(100%); transform: scale(1.012) translate(0, 0); }
+                100% { filter: blur(0px) brightness(100%) contrast(100%); transform: scale(1) translate(0, 0); }
+            }
+
+            @keyframes ibAscentShake {
+                0% { filter: blur(0px) brightness(100%); transform: scale(1) translate(0, 0); }
+                10% { filter: blur(1px) brightness(112%); transform: scale(1.008) translate(1px, -1px); }
+                35% { filter: blur(6px) brightness(155%) contrast(122%); transform: scale(1.035) translate(-2px, 2px); }
+                65% { filter: blur(4px) brightness(128%) contrast(114%); transform: scale(1.015) translate(2px, -1px); }
+                85% { filter: blur(1px) brightness(105%); transform: scale(1.005) translate(-1px, 1px); }
+                100% { filter: blur(0px) brightness(100%) contrast(100%); transform: scale(1) translate(0, 0); }
+            }
+
+            @keyframes ibCloudBreak {
+                0% { opacity: 0; transform: scale(0.1); filter: blur(0px); }
+                18% { opacity: 0.65; transform: scale(1.1); filter: blur(2px); }
+                42% { opacity: 1; transform: scale(2.6); filter: blur(3px); background: radial-gradient(circle at center, rgba(255, 240, 220, 0.85) 0%, rgba(180, 220, 255, 0.35) 40%, rgba(255,255,255,0) 68%); }
+                70% { opacity: 0.35; transform: scale(4.2); filter: blur(1px); }
+                100% { opacity: 0; transform: scale(6); filter: blur(0px); }
+            }
+
+            @keyframes ibCloudAscent {
+                0% { opacity: 0; transform: scale(6); filter: blur(0px); }
+                22% { opacity: 0.4; transform: scale(4.2); filter: blur(1px); }
+                48% { opacity: 1; transform: scale(2.8); filter: blur(3px); background: radial-gradient(circle at center, rgba(255, 240, 220, 0.85) 0%, rgba(180, 220, 255, 0.35) 40%, rgba(255,255,255,0) 68%); }
+                75% { opacity: 0.55; transform: scale(1.2); filter: blur(2px); }
+                100% { opacity: 0; transform: scale(0.1); filter: blur(0px); }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .ib-scene--indonesia, .ib-scene--bali { transition: opacity 0.3s ease !important; transform: none !important; }
+                .ib-viewport.is-bali .ib-scene--indonesia { transform: none !important; }
+                .ib-viewport.is-bali .ib-scene--bali { transform: none !important; }
+                .ib-viewport-sweep, .ib-pulse-halo, .ib-scene-hint { animation: none !important; }
+                .ib-reticle, .ib-flashline, .ib-atmosphere-fx { display: none !important; }
+                .ib-map-pulse-ring, .ib-map-ambient-ring { animation: none !important; }
+.ib-cover-radar-ring { animation: none !important; opacity: 0.35; }
+                .ib-section { transition: none !important; }
+            }
+
+            /* --- MOBILE DENSITY & SECTOR CARD REFINEMENTS --- */
+            @media (max-width: 640px) {
+                /* 3px horizontal margin from device edges (auto left/right margins split the remaining 6px evenly). Desktop-proportioned 310px cap preserved. */
+                .ib-panel { margin: 1.25rem auto 2rem; padding: 0.85rem; width: min(310px, 100% - 6px); }
+                
+                /* Extend right side of scroll area to maximize horizontal space */
+                .ib-scroll-area { padding-right: 0.25rem; }
+                
+                /* Delay text wrapping on Sector cards by reducing right padding and gap */
+                .ib-index-row { padding: 0.7rem 0.4rem 0.7rem 0.75rem; gap: 0.4rem; margin-bottom: 0.4rem; }
+                
+                /* Vertical height reductions (compacting the layout) */
+                .ib-back-link { margin-bottom: 0.5rem; }
+                .ib-cat-topbar { margin-bottom: 0.25rem !important; gap: 0.25rem !important; }
+                .ib-cat-title { font-size: 1.3rem; margin-bottom: 0.25rem; line-height: 1.1; }
+                .ib-bullet-list { margin: 0 0 1rem; gap: 0.65rem; }
+                .ib-bullet-list li { line-height: 1.35; font-size: 0.78rem; }
+                .ib-index-title { margin-bottom: 0.6rem; }
+                .ib-cat-row { padding: 0.5rem 0; gap: 0.4rem; }
+                .ib-panel-cta { margin-top: 0.4rem; padding-top: 0.4rem; }
+                .ib-cta-line { margin: 0 0 0.4rem; }
+            }
+
+            /* --- INTERMEDIATE (TABLET/SMALL DESKTOP) LAYOUT REFINEMENTS --- */
+            @media (min-width: 640px) and (max-width: 1024px) {
+                /* Compress vertical height to remove excess whitespace */
+                .ib-stage { height: 65vh; min-height: 520px; max-height: 700px; }
+                
+                /* Shift the panel, synchronize the anchor, and make width proportionally responsive */
+                .ib-panel { 
+                    right: 1rem; 
+                    width: clamp(260px, 38vw, 320px);
+                }
+                .ib-scene--bali, .ib-viewport.is-bali .ib-viewport-clip, .ib-viewport.is-bali .ib-reticle { 
+                    /* Adds a responsive 2vw gap between the master anchor and the briefing panel */
+                    right: calc(clamp(260px, 38vw, 320px) + 1rem + 2vw); 
+                }
+            }
+        </style>
+
+        <div class="ib-stage">
+                <div class="ib-cover-layer" id="ibCoverLayer">
+                    <div class="ib-cover-radar" aria-hidden="true">
+                        <span class="ib-cover-radar-ring"></span>
+                        <span class="ib-cover-radar-ring"></span>
+                        <span class="ib-cover-radar-ring"></span>
+                    </div>
+                    <h2 class="ib-cover-title">17,508 Islands.<span>Discover the only one you need.</span></h2>
+                    <p class="ib-cover-sub">Vurata intelligence terminal<br>Discover Bali at your own pace.</p>
+                    <button type="button" class="ib-cover-btn" id="ibCoverBtn">Initialize Terminal</button>
+                    <div class="ib-hud-corner ib-hud-corner--bl">© 2026 VURATA</div>
+                </div>
+
+                <div class="ib-viewport" id="ibViewport">
+                    <div id="ibMap"></div>
+                    <div class="ib-atmosphere-fx" aria-hidden="true"></div>
+                    <div class="ib-viewport-clip">
+                        <div class="ib-viewport-sweep" aria-hidden="true"></div>
+                        <div class="ib-radar-origin" aria-hidden="true"></div>
+                        <svg class="ib-grid-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                            <line class="ib-grid-line" x1="0" y1="20" x2="100" y2="20"></line>
+                            <line class="ib-grid-line" x1="0" y1="40" x2="100" y2="40"></line>
+                            <line class="ib-grid-line" x1="0" y1="60" x2="100" y2="60"></line>
+                            <line class="ib-grid-line" x1="0" y1="80" x2="100" y2="80"></line>
+                            <line class="ib-grid-line" x1="20" y1="0" x2="20" y2="100"></line>
+                            <line class="ib-grid-line" x1="40" y1="0" x2="40" y2="100"></line>
+                            <line class="ib-grid-line" x1="60" y1="0" x2="60" y2="100"></line>
+                            <line class="ib-grid-line" x1="80" y1="0" x2="80" y2="100"></line>
+                        </svg>
+                    </div>
+
+                    <div class="ib-scene ib-scene--indonesia" id="ibSceneIndonesia">
+                        <div class="ib-hud-corner ib-hud-corner--tl">REGION // SOUTHEAST ASIA</div>
+                        <div class="ib-hud-corner ib-hud-corner--br">8.3405° S · 115.0920° E</div>
+                        <button type="button" class="ib-pulse-btn ib-target-btn" id="ibTargetBtn" aria-label="Zoom into Bali">
+                            <span class="ib-pulse-dot-wrap"><span class="ib-pulse-halo"></span><span class="ib-pulse-dot"></span></span>
+                            <span class="ib-target-label">Bali</span>
+                        </button>
+                        <p class="ib-scene-hint">Tap Bali to begin the briefing</p>
+                    </div>
+
+                    <div class="ib-scene ib-scene--bali" id="ibSceneBali" aria-hidden="true">
+                        <button type="button" class="ib-return-btn" id="ibReturnBtn">← Global View</button>
+                        <div id="ibNodes"></div>
+                    </div>
+
+                    <div class="ib-reticle" aria-hidden="true">
+                        <span class="ib-reticle-corner ib-reticle-corner--tl"></span>
+                        <span class="ib-reticle-corner ib-reticle-corner--tr"></span>
+                        <span class="ib-reticle-corner ib-reticle-corner--bl"></span>
+                        <span class="ib-reticle-corner ib-reticle-corner--br"></span>
+                    </div>
+                    <div class="ib-flashline" aria-hidden="true"></div>
+                </div>
+
+                <aside class="ib-panel" id="ibPanel" aria-live="polite">
+                    <div class="ib-panel-content" id="ibPanelContent">
+                    </div>
+                    
+                </aside>
+            </div>
+
+        <script>
+        (function(){
+            var section = document.getElementById('baliIntel');
+            if (!section) return;
+
+            // Initialize Leaflet Map (Hidden beneath UI overlays)
+            var ibMap = L.map('ibMap', {
+                center: [-8.45, 115.15], // Macro Indonesia View - Centered perfectly on Bali
+                zoom: 4, // Pulled back one level to reveal Australia and mainland Asia
+                zoomControl: false,
+                attributionControl: false,
+                dragging: false, 
+                scrollWheelZoom: false,
+                doubleClickZoom: false
+            });
+
+            // Esri World Imagery (No API key required)
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 18
+            }).addTo(ibMap);
+
+// Keeps Leaflet's internal container-size cache in sync whenever the browser is
+            // resized (e.g. dragging between mobile/tablet/desktop widths without a reload) —
+            // otherwise the map canvas can settle at a stale size and expose its own bare
+            // background along an edge.
+            var ibResizeTimer = null;
+            window.addEventListener('resize', function(){
+                clearTimeout(ibResizeTimer);
+                ibResizeTimer = setTimeout(function(){ ibMap.invalidateSize(false); }, 120);
+            });
+
+            var viewport = document.getElementById('ibViewport');
+            var targetBtn = document.getElementById('ibTargetBtn');
+            var returnBtn = document.getElementById('ibReturnBtn');
+            var nodesContainer = document.getElementById('ibNodes');
+            var sectorLabel = document.getElementById('ibSectorLabel');
+            var panelContent = document.getElementById('ibPanelContent');
+            var exploredCountEl = document.getElementById('ibExploredCount');
+            var totalCountEl = document.getElementById('ibTotalCount');
+            var svgNS = 'http://www.w3.org/2000/svg';
+var coverLayer = document.getElementById('ibCoverLayer');
+            var coverBtn = document.getElementById('ibCoverBtn');
+
+
+            var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var autoAcquireTimer = null; // pending timer for autonomous target acquisition
+            var CLUSTER_ORDER = ['geography', 'culture', 'heritage', 'life'];
+
+            var focusMarker = null;
+            var ambientMarkers = [];
+
+            function ibPulseIcon(kind){
+                var isFocus = kind === 'focus';
+                return L.divIcon({
+                    className: '',
+                    html: '<div class="' + (isFocus ? 'ib-map-pulse-icon' : 'ib-map-ambient-icon') + '">' +
+                        '<span class="' + (isFocus ? 'ib-map-pulse-ring' : 'ib-map-ambient-ring') + '"></span>' +
+                        '<span class="' + (isFocus ? 'ib-map-pulse-core' : 'ib-map-ambient-core') + '"></span>' +
+                        '</div>',
+                    iconSize: [isFocus ? 16 : 10, isFocus ? 16 : 10],
+                    iconAnchor: [isFocus ? 8 : 5, isFocus ? 8 : 5]
+                });
+            }
+
+            function showAmbientMarkers(){
+                if (ambientMarkers.length) return;
+                // Dynamically extract all geographic coordinates from the active intelligence files
+                CLUSTER_ORDER.forEach(function(ck) {
+                    CLUSTERS[ck].categories.forEach(function(cat) {
+                        if (cat.map) {
+                            // Add a tiny random spatial jitter (~1.5km) to prevent exact overlapping
+                            // This causes files sharing the same coordinate to look like a dense, active intelligence cluster
+                            var jitterLat = cat.map.lat + (Math.random() - 0.5) * 0.015;
+                            var jitterLng = cat.map.lng + (Math.random() - 0.5) * 0.015;
+                            var m = L.marker([jitterLat, jitterLng], { icon: ibPulseIcon('ambient'), interactive: false, keyboard: false }).addTo(ibMap);
+                            ambientMarkers.push(m);
+                        }
+                    });
+                });
+            }
+
+            function hideAmbientMarkers(){
+                ambientMarkers.forEach(function(m){ ibMap.removeLayer(m); });
+                ambientMarkers = [];
+            }
+
+            function focusMapOn(coords, zoom){
+                if (!coords) return;
+                if (!focusMarker) {
+                    focusMarker = L.marker(coords, { icon: ibPulseIcon('focus'), interactive: false, keyboard: false }).addTo(ibMap);
+                } else {
+                    focusMarker.setLatLng(coords);
+                }
+                // Routes through the same panel-aware centering used elsewhere so the camera
+                // (and this marker's on-screen position) lands under the radar anchor rather
+                // than raw viewport-center — the marker itself still sits at the true coordinate.
+                ibMap.flyTo(ibDesktopCenter(coords, zoom || 12), zoom || 12, { duration: reduceMotion ? 0 : 1.6, easeLinearity: 0.25 });
+            }
+
+            function clearFocusMarker(){
+                if (focusMarker) { ibMap.removeLayer(focusMarker); focusMarker = null; }
+            }
+
+            var CLUSTERS = {
+                geography: {
+                    code: '01', title: 'Geography & Nature', desc: 'Terrain, climate & wildlife',
+                    nodePos: { left: 15, top: 18 },
+                    categories: [
+                        { key: 'geo', title: 'Geography', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'A single volcanic mountain spine runs roughly east–west across the island',
+                            'Roughly 150km east to west, 90km north to south',
+                            'South: beaches & reef. North & East: volcanic slopes. Center: rice terraces',
+                            'Part of the Lesser Sunda Islands, just east of Java'
+                        ]},
+                        { key: 'climate', title: 'Climate', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Tropical year-round, roughly 26–32°C (79–90°F)',
+                            'Humidity is typically high, especially near the coast',
+                            'Highland areas like Ubud and Munduk run noticeably cooler',
+                            'No true winter — seasons are defined by rainfall, not temperature'
+                        ]},
+                        { key: 'seasons', title: 'Seasons', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Dry Season (Apr–Sep): sunnier days, lower humidity, peak travel months',
+                            'Wet Season (Oct–Mar): lush landscapes, brief tropical downpours',
+                            'Even in wet season, rain rarely lasts all day',
+                            'Shoulder months (April, September) often blend the best of both'
+                        ]},
+                        { key: 'volcanoes', title: 'Volcanoes', map: { lat: -8.2925, lng: 115.4418, zoom: 10 }, bullets: [
+                            'Mount Agung — Bali\'s highest and most sacred peak',
+                            'Mount Batur — a popular sunrise trekking summit',
+                            'Both remain active and continually enrich the island\'s soil',
+                            'Volcanic ash is part of why Bali\'s rice terraces are so fertile'
+                        ]},
+                        { key: 'beaches', title: 'Beaches', map: { lat: -8.8291, lng: 115.0886, zoom: 11 }, bullets: [
+                            'Kuta & Seminyak — lively, famed for sunsets and surf',
+                            'Uluwatu — dramatic clifftop coastline, world-class breaks',
+                            'Amed & Tulamben — black sand, calm water, wreck diving',
+                            'Nusa Penida — turquoise coves reached by boat'
+                        ]},
+                        { key: 'rice', title: 'Rice Terraces & Agriculture', map: { lat: -8.4009, lng: 115.2018, zoom: 11 }, bullets: [
+                            'Subak — a centuries-old cooperative irrigation system',
+                            'Jatiluwih & Tegallalang are among the most iconic terraced landscapes',
+                            'Rice farming still shapes daily rhythms in rural Bali',
+                            'Also home to coffee, cacao and clove plantations'
+                        ]},
+                        { key: 'wildlife', title: 'Wildlife', map: { lat: -8.1667, lng: 114.6333, zoom: 10 }, bullets: [
+                            'The Bali starling is critically endangered and found nowhere else on Earth',
+                            'Long-tailed macaques inhabit several sacred forest sanctuaries',
+                            'Rich coral reefs and manta ray sites off the northeast coast',
+                            'Rice paddies attract herons, kingfishers and native songbirds'
+                        ]},
+                        { key: 'region_south', title: 'Region: The Bukit Peninsula', map: { lat: -8.8291, lng: 115.0886, zoom: 12 }, bullets: [
+                            'Defined by 70m limestone cliffs, contrasting with Bali\'s volcanic soil',
+                            'Renowned for dramatic Indian Ocean sunsets and world-class reef breaks',
+                            'Features a drier, more arid climate compared to the lush interior',
+                            'Home to Uluwatu and the island\'s most elite coastal venues'
+                        ]},
+                        { key: 'region_central', title: 'Region: Central Highlands', map: { lat: -8.5069, lng: 115.2625, zoom: 12 }, bullets: [
+                            'Defined by deep jungle ravines and ancient river valleys around Ubud',
+                            'Noticeably cooler and more humid than the southern coastal zones',
+                            'The historical epicenter of Balinese fine arts and artisan workshops',
+                            'Conceals ancient holy springs and hidden culinary sanctuaries'
+                        ]},
+                        { key: 'region_west', title: 'Region: The Ancestral West', map: { lat: -8.4411, lng: 115.0505, zoom: 11 }, bullets: [
+                            'Tabanan serves as Bali\'s traditional agricultural heartland and "rice bowl"',
+                            'Characterized by sweeping UNESCO-recognized terraces and black sand beaches',
+                            'Remains profoundly spiritual and untouched by heavy southern development',
+                            'Offers the most authentic glimpse into ancestral Balinese rhythms'
+                        ]},
+                        { key: 'region_far_west', title: 'Region: The Western Frontiers', map: { lat: -8.1481, lng: 114.5050, zoom: 10 }, bullets: [
+                            'Encompasses the Jembrana regency and the protected wilderness of West Bali National Park',
+                            'The Prapat Agung peninsula is home to pristine savannahs and the critically endangered Bali Starling',
+                            'Culturally distinct, featuring unique traditions like Makepung (water buffalo racing)',
+                            'Remains largely untouched by mass tourism, offering absolute isolation'
+                        ]},
+                        { key: 'region_north', title: 'Region: The Northern Coast', map: { lat: -8.1423, lng: 114.6599, zoom: 11 }, bullets: [
+                            'Shielded by the central volcanic mountain range, resulting in a noticeably drier microclimate',
+                            'The Java Sea offers flat, mirror-like waters—a stark contrast to the heavy southern swells',
+                            'Pemuteran is globally recognized for its pioneering bio-rock coral reef restoration projects',
+                            'Defined by sweeping black volcanic sand beaches and a profound sense of stillness'
+                        ]}
+                    ]
+                },
+                culture: {
+                    code: '02', title: 'Culture & Tradition', desc: 'Faith, ceremony & custom',
+                    nodePos: { left: 85, top: 18 },
+                    categories: [
+                        { key: 'religions', title: 'Religions', map: { lat: -8.3742, lng: 115.4509, zoom: 12 }, bullets: [
+                            'Balinese Hinduism, practiced by the majority, is distinct from Hinduism in India',
+                            'Blends ancestor worship, animism and Buddhist influence',
+                            'Thousands of temples (pura) anchor daily spiritual life',
+                            'Islam, Christianity and Buddhism are practiced by minority communities'
+                        ]},
+                        { key: 'ceremonies', title: 'Traditional Ceremonies', map: { lat: -8.5069, lng: 115.2625, zoom: 12 }, bullets: [
+                            'Odalan — a temple\'s anniversary festival, held every 210 days',
+                            'Melasti — a purification ceremony at the sea before Nyepi',
+                            'Ngaben — the Balinese Hindu cremation ceremony, a vivid communal event',
+                            'Metatah — a tooth-filing rite of passage into adulthood'
+                        ]},
+                        { key: 'holidays', title: 'Major Holidays', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Nyepi — Balinese New Year, an island-wide Day of Silence',
+                            'Even the international airport pauses for the day',
+                            'Galungan — celebrates the triumph of dharma over adharma',
+                            'Kuningan — closes the Galungan cycle, honoring ancestors'
+                        ]},
+                        { key: 'etiquette', title: 'Cultural Etiquette', map: { lat: -8.6212, lng: 115.0868, zoom: 13 }, bullets: [
+                            'Use your right hand to give, receive and eat',
+                            'Dress modestly and wear a sarong when entering temples',
+                            'Avoid touching someone\'s head, even a child\'s',
+                            'A calm, warm demeanor is deeply valued in Balinese culture'
+                        ]},
+                        { key: 'clothing', title: 'Traditional Clothing', map: { lat: -8.5069, lng: 115.2625, zoom: 12 }, bullets: [
+                            'Kebaya — a fitted blouse worn by women for ceremonies',
+                            'Udeng — a traditional headcloth worn by Balinese men',
+                            'Sarong & sash (selendang) — worn by all genders at temples',
+                            'Colors and cloth patterns can carry ceremonial meaning'
+                        ]},
+                        { key: 'music', title: 'Music & Dance', map: { lat: -8.5928, lng: 115.2721, zoom: 13 }, bullets: [
+                            'Gamelan — a bronze percussion orchestra central to Balinese ceremony',
+                            'Legong — a refined court dance of delicate hand and eye movement',
+                            'Kecak — the hypnotic "monkey chant" fire dance',
+                            'Barong — a dance depicting the eternal fight of good and evil'
+                        ]},
+                        { key: 'arts', title: 'Local Arts & Crafts', map: { lat: -8.5850, lng: 115.2856, zoom: 13 }, bullets: [
+                            'Wood and stone carving are passed through generations of artisans',
+                            'Silverwork is centered in the village of Celuk',
+                            'Batik and handwoven ikat textiles carry regional motifs',
+                            'Ubud remains the island\'s living center for fine arts'
+                        ]},
+                        { key: 'names', title: 'The Naming System', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Balinese people are generally named according to their birth order',
+                            'Firstborn: Wayan, Putu, or Gede. Second: Made or Kadek',
+                            'Third: Nyoman or Komang. Fourth: Ketut',
+                            'If a family has a fifth child, the cycle repeats back to Wayan'
+                        ]},
+                        { key: 'tri_hita_karana', title: 'Core Philosophy: Tri Hita Karana', map: { lat: -8.5069, lng: 115.2625, zoom: 11 }, bullets: [
+                            'The central spiritual and lifestyle philosophy of the Balinese people',
+                            'Translates to the "Three Causes of Well-Being" or harmony',
+                            'Pawongan (Harmony among people) & Palemahan (Harmony with nature)',
+                            'Parahyangan (Harmony with the spiritual realm) dictates all daily life'
+                        ]}
+                    ]
+                },
+                heritage: {
+                    code: '03', title: 'Heritage & Places', desc: 'Temples & iconic sites',
+                    nodePos: { left: 15, top: 82 },
+                    nodePosMobile: { left: 15, top: 86 },
+                    categories: [
+                        { key: 'temples', title: 'Temples', map: { lat: -8.6212, lng: 115.0868, zoom: 13 }, bullets: [
+                            'Tanah Lot — a sea temple perched on a rock formation',
+                            'Uluwatu Temple — a clifftop temple known for sunset performances',
+                            'Besakih — Bali\'s largest and holiest "Mother Temple"',
+                            'Tirta Empul — a sacred spring water purification temple'
+                        ]},
+                        { key: 'architecture', title: 'Balinese Architecture', map: { lat: -8.5069, lng: 115.2625, zoom: 13 }, bullets: [
+                            'Family compounds are built around a household temple (sanggah)',
+                            'Split gates (candi bentar) mark thresholds between worlds',
+                            'Alang-alang thatched roofs and carved stone reliefs are signature details',
+                            'Layout follows Tri Hita Karana — harmony of people, nature and spirit'
+                        ]},
+                        { key: 'unesco', title: 'UNESCO Heritage Sites', map: { lat: -8.3705, lng: 115.1259, zoom: 12 }, bullets: [
+                            'The Subak System is Bali\'s UNESCO-recognized cultural landscape',
+                            'It unites agriculture, temples and philosophy in one living system',
+                            'Reflects the Tri Hita Karana principle of balance',
+                            'A living heritage — the terraces are still farmed and irrigated today'
+                        ]},
+                        { key: 'hidden', title: 'Hidden Gems', map: { lat: -8.4167, lng: 115.4333, zoom: 12 }, bullets: [
+                            'Sidemen Valley — quiet terraces without the commercial footprint of Ubud',
+                            'Kedungu Coast — sweeping rice paddies meeting black sand surf, offering the tranquility that southern hubs have lost',
+                            'Pemuteran\'s Bio-Rock Reefs — an offshore sanctuary in the deep north, perfect for undisturbed diving',
+                            'East Bali\'s back roads hold ancient sites rarely visited by commercial operators'
+                        ]},
+                        { key: 'bali_aga', title: 'The Bali Aga (Indigenous Villages)', map: { lat: -8.4714, lng: 115.5647, zoom: 13 }, bullets: [
+                            'The Bali Aga are the indigenous people of Bali, pre-dating the 14th-century Majapahit Empire',
+                            'Villages like Tenganan operate under ancient laws and highly distinct, fortified layouts',
+                            'Tenganan is the only place in Indonesia that weaves "Geringsing"—a sacred double-ikat textile',
+                            'Trunyan village, on Lake Batur, practices ancient open-air rituals beneath the sacred Taru Menyan tree'
+                        ]},
+                        { key: 'water_palaces', title: 'The Royal Water Palaces', map: { lat: -8.4123, lng: 115.5873, zoom: 13 }, bullets: [
+                            'Built by the late kings of the Karangasem Empire in East Bali',
+                            'Tirta Gangga (Water of the Ganges) features stone paths over sacred, koi-filled spring pools',
+                            'Taman Ujung rests gracefully near the ocean, designed as a tranquil retreat for the royal family',
+                            'The designs showcase a striking, historical blend of Balinese, Chinese, and European architectural influences'
+                        ]},
+                        { key: 'kaja_kelod', title: 'Spiritual Topography (Kaja & Kelod)', map: { lat: -8.3427, lng: 115.5083, zoom: 10 }, bullets: [
+                            'The Balinese orient their world not by North and South, but by the mountains and the sea',
+                            'Kaja (toward the mountain) represents the sacred, higher realm of the gods and ancestors',
+                            'Kelod (toward the sea) represents the lower realm, where negative energies are washed away',
+                            'Every village, temple, and family compound across the island is built strictly along this sacred axis'
+                        ]}
+                    ]
+                },
+                life: {
+                    code: '04', title: 'Life & Essentials', desc: 'People, food & practical intel',
+                    nodePos: { left: 85, top: 82 },
+                    nodePosMobile: { left: 85, top: 86 },
+                    categories: [
+                        { key: 'population', title: 'Population', map: { lat: -8.6705, lng: 115.2126, zoom: 11 }, bullets: [
+                            'Around 4.3 million residents call Bali home',
+                            'Most densely populated in the Denpasar–Kuta–Seminyak corridor',
+                            'Predominantly Balinese Hindu, alongside Javanese, Chinese-Indonesian and expat communities',
+                            'One of Indonesia\'s most culturally distinct provinces'
+                        ]},
+                        { key: 'languages', title: 'Languages Spoken', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Indonesian (Bahasa Indonesia) — official, universally understood',
+                            'Balinese — the everyday local language, with formal and casual registers',
+                            'English is widely spoken across tourism areas',
+                            'A warm "Om Swastiastu" greeting is always appreciated'
+                        ]},
+                        { key: 'cuisine', title: 'Local Cuisine', map: { lat: -8.5069, lng: 115.2625, zoom: 12 }, bullets: [
+                            'Built on rice, fresh spice pastes (bumbu) and coconut',
+                            'Satay, sambal and slow-roasted meats are everyday staples',
+                            'Warungs — small family-run eateries — serve some of the island\'s best food',
+                            'Fresh tropical fruit like mangosteen, salak and rambutan year-round'
+                        ]},
+                        { key: 'dishes', title: 'Signature Dishes', map: { lat: -8.5385, lng: 115.3220, zoom: 12 }, bullets: [
+                            'Babi Guling — whole roasted suckling pig, a ceremonial classic',
+                            'Bebek Betutu — slow-steamed spiced duck wrapped in banana leaf',
+                            'Lawar — minced vegetables, coconut and meat in a spiced dressing',
+                            'Nasi Campur — steamed rice with an array of small dishes'
+                        ]},
+                        { key: 'herbs', title: 'Traditional Herbs & Herbal Medicine', map: { lat: -8.5069, lng: 115.2625, zoom: 12 }, bullets: [
+                            'Jamu — herbal tonics made with turmeric, ginger and tamarind',
+                            'Loloh — traditional Balinese herbal wellness drinks',
+                            'Boreh — a warming herbal paste applied to the skin',
+                            'Deeply tied to the balance between body, mind and spirit'
+                        ]},
+                        { key: 'transport', title: 'Transportation', map: { lat: -8.6905, lng: 115.1729, zoom: 12 }, bullets: [
+                            'Private drivers and hosts are the most comfortable way to explore',
+                            'Traffic can be dense around Kuta, Seminyak and Canggu',
+                            'Ride-hailing apps operate, though restricted in some tourist zones',
+                            'Fast boats connect Bali to the Nusa Islands and Lombok'
+                        ]},
+                        { key: 'currency', title: 'Currency', map: { lat: -8.7183, lng: 115.1686, zoom: 13 }, bullets: [
+                            'The Indonesian Rupiah (IDR) is the official currency',
+                            'Cards are widely accepted in South Bali; cash is preferred at markets and temples',
+                            'ATMs are common — favor bank-branded machines',
+                            'Small notes are useful for donations, parking and warungs'
+                        ]},
+                        { key: 'safety', title: 'Safety', map: { lat: -8.7183, lng: 115.1686, zoom: 13 }, bullets: [
+                            'Bali is generally considered safe for travelers',
+                            'Ocean currents can be strong along the southern coasts — respect local flags',
+                            'Keep an eye on belongings around markets, beaches and scooters',
+                            'A dedicated host and private transport remove most common travel risks'
+                        ]},
+                        { key: 'funfacts', title: 'Fun Facts', map: { lat: -8.4095, lng: 115.1889, zoom: 9 }, bullets: [
+                            'Every village center in Bali is built around its own temple',
+                            'The Balinese calendar runs on a 210-day Pawukon cycle',
+                            'Offerings (canang sari) are set out fresh on the ground each morning',
+                            'Bali is the only Hindu-majority island in the world\'s largest Muslim-majority nation'
+                        ]},
+                        { key: 'connectivity', title: 'Digital Infrastructure', map: { lat: -8.6705, lng: 115.2126, zoom: 11 }, bullets: [
+                            '4G/5G cellular coverage is generally excellent across southern hubs',
+                            'Signals often drop in deep jungle valleys (Ubud) or offshore islands (Nusa Penida)',
+                            'High-speed fiber internet is a standard provision in premium villas',
+                            'Uninterrupted transit requires advanced vehicle setups or Starlink arrays'
+                        ]}
+                    ]
+                }
+            };
+            var fileCounter = 0;
+            var totalFiles = 0;
+            CLUSTER_ORDER.forEach(function(ck){
+                CLUSTERS[ck].categories.forEach(function(cat){
+                    fileCounter++;
+                    cat.fileNo = String(fileCounter).padStart(2, '0');
+                });
+                totalFiles += CLUSTERS[ck].categories.length;
+            });
+            if (totalCountEl) totalCountEl.textContent = totalFiles;
+
+            function buildBaliScene(){
+                var isDesktop = window.innerWidth >= 640;
+                CLUSTER_ORDER.forEach(function(key){
+                    var c = CLUSTERS[key];
+                    var pos = (!isDesktop && c.nodePosMobile) ? c.nodePosMobile : c.nodePos;
+
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'ib-node';
+                    btn.style.left = pos.left + '%';
+                    btn.style.top = pos.top + '%';
+                    btn.setAttribute('aria-label', 'Open ' + c.title + ' briefing');
+                    btn.dataset.cluster = key;
+                    btn.innerHTML =
+                        '<span class="ib-pulse-dot-wrap"><span class="ib-pulse-halo"></span><span class="ib-pulse-dot"></span></span>' +
+                        '<span class="ib-node-code">SECTOR ' + c.code + '</span>' +
+                        '<span class="ib-node-title">' + c.title + '</span>';
+                    btn.addEventListener('click', function(){ openCluster(key); });
+                    nodesContainer.appendChild(btn);
+                    c.nodeEl = btn;
+                });
+            }
+
+            function setActiveCluster(key){
+                CLUSTER_ORDER.forEach(function(ck){
+                    var isActive = ck === key;
+                    CLUSTERS[ck].nodeEl.classList.toggle('is-active', isActive);
+                });
+                if (sectorLabel) sectorLabel.textContent = 'SECTOR: ' + CLUSTERS[key].title.toUpperCase();
+            }
+
+            // Computes a flyTo center that keeps the true geographic anchor (115.15) exactly
+            // aligned with the radar's on-screen position, using the exact CSS panel-width formulas
+            // to ensure perfect synchronization across all responsive breakpoints.
+            function ibDesktopCenter(latlng, zoom){
+                if (window.innerWidth < 640) return latlng;
+                var vw = (viewport && viewport.getBoundingClientRect().width) || window.innerWidth;
+                var panelReserved;
+                
+                if (vw <= 1024) {
+                    // Matches intermediate CSS: calc(clamp(260px, 38vw, 320px) + 1rem + 2vw)
+                    var clampVal = Math.min(320, Math.max(260, vw * 0.38));
+                    panelReserved = clampVal + 16 + (vw * 0.02);
+                } else {
+                    // Matches desktop CSS: calc(clamp(250px, 22%, 310px) + 2.5rem)
+                    var clampVal = Math.min(310, Math.max(250, vw * 0.22));
+                    panelReserved = clampVal + 40;
+                }
+                
+                var pt = ibMap.project(latlng, zoom).add([panelReserved / 2, 0]);
+                return ibMap.unproject(pt, zoom);
+            }
+
+            // Autonomous acquisition scheduler: fires zoomToBali() on its own after `delay`
+            // ms. If the user has already triggered zoomToBali() manually in the meantime
+            // (via ibTargetBtn or a click anywhere in the scene), that call's own
+            // targetBtn.disabled guard makes this one a harmless no-op.
+            function scheduleAutoAcquire(delay){
+                clearTimeout(autoAcquireTimer);
+                autoAcquireTimer = setTimeout(function(){ zoomToBali(); }, delay);
+            }
+
+            function zoomToBali(){
+                if (targetBtn.disabled) return;
+                clearTimeout(autoAcquireTimer);
+                targetBtn.disabled = true;
+
+                // Aligns the true island center exactly under the radar's fixed anchor point
+                var targetCenter = ibDesktopCenter([-8.45, 115.15], 10); // Precisely aligned to radar
+
+                // MOBILE FIX: apply is-bali BEFORE setView/flyTo so the mobile-only #ibMap
+                // resize (top/bottom -50vh, see CSS) is committed and synced to Leaflet via
+                // invalidateSize() before the flight path is calculated. Previously this class
+                // was added AFTER flyTo/setView, so Leaflet computed the descent against the
+                // stale (pre-resize) container size on mobile — producing the shallow-angle
+                // drift and the abrupt snap once invalidateSize() ran at the very end.
+                viewport.classList.add('is-bali');
+                void viewport.offsetWidth;
+                ibMap.invalidateSize(false);
+
+                // SNAP BEFORE DESCENT: Instantly align the camera directly over the target.
+                // At zoom level 4, this lateral micro-adjustment is invisible to the user.
+                // This neutralizes Leaflet's curved flight path, forcing a pure 90° vertical drop.
+                ibMap.setView(targetCenter, ibMap.getZoom(), { animate: false });
+
+                // Trigger Leaflet cinematic flyTo
+                ibMap.flyTo(targetCenter, 10, {
+                    duration: reduceMotion ? 0 : 2.8,
+                    easeLinearity: 0.2
+                });
+
+                if (!reduceMotion) {
+                    viewport.classList.add('is-locking');
+                    viewport.classList.add('is-traveling');
+                }
+                document.getElementById('ibSceneBali').setAttribute('aria-hidden', 'false');
+                
+                var settleDelay = reduceMotion ? 350 : 2800;
+                setTimeout(function(){
+            document.getElementById('ibSceneIndonesia').style.display = 'none';
+            document.getElementById('ibSceneIndonesia').setAttribute('aria-hidden', 'true');
+            viewport.classList.remove('is-locking');
+            viewport.classList.remove('is-traveling');
+            renderIndex();
+            showAmbientMarkers();
+            ibMap.invalidateSize();
+        }, settleDelay);
+            }
+
+            function returnToOverview(){
+                if(typeof icTypewriterInterval !== 'undefined') clearInterval(icTypewriterInterval);
+                hideAmbientMarkers();
+                clearFocusMarker();
+                // Fly back out to the Macro View
+                ibMap.flyTo([-8.45, 115.15], 4, {
+                    duration: reduceMotion ? 0 : 2.4,
+                    easeLinearity: 0.2
+                });
+
+                if (!reduceMotion) viewport.classList.add('is-traveling-up');
+                setTimeout(function(){ viewport.classList.remove('is-traveling-up'); }, 2400);
+                // Hold the global view so the user can orient themselves after an intentional
+                // return, then reacquire Bali on its own if they don't act first. A click on
+                // the Bali label or anywhere in the scene still fires zoomToBali() immediately.
+                scheduleAutoAcquire((reduceMotion ? 0 : 2400) + (reduceMotion ? 400 : 7000));
+
+                document.getElementById('ibSceneIndonesia').style.display = 'block';
+                document.getElementById('ibSceneIndonesia').setAttribute('aria-hidden', 'false');
+                document.getElementById('ibSceneBali').setAttribute('aria-hidden', 'true');
+                void viewport.offsetWidth;
+                viewport.classList.remove('is-bali');
+                targetBtn.disabled = false;
+                
+                // Reset sectors
+                document.querySelectorAll('.ib-node').forEach(function(el) {
+                    el.classList.remove('is-active');
+                });
+                if (sectorLabel) sectorLabel.textContent = 'AWAITING SECTOR SELECT';
+            panelContent.innerHTML = '';
+            ibMap.invalidateSize();
+        }
+function expandTerminal(){
+                if (!coverLayer) return;
+                if (window.innerWidth < 640 && section) {
+                    section.style.maxHeight = section.scrollHeight + 'px';
+                    var onExpandEnd = function(e){
+                        if (e.propertyName === 'max-height') {
+                            section.style.maxHeight = 'none';
+                            section.removeEventListener('transitionend', onExpandEnd);
+                        }
+                    };
+                    section.addEventListener('transitionend', onExpandEnd);
+                }
+                coverLayer.classList.add('is-hidden');
+                // Let the global view (radar + Bali label) settle briefly, then acquire the
+                // target autonomously — no second click required. ~1s cover fade + ~1s hold.
+                scheduleAutoAcquire(reduceMotion ? 150 : 2000);
+            }
+            if (coverBtn) coverBtn.addEventListener('click', expandTerminal);
+            targetBtn.addEventListener('click', zoomToBali);
+            // Click anywhere in the global-view scene — not just the small radar dot — to
+            // skip the autonomous hold and acquire Bali immediately. Safe alongside
+            // targetBtn's own listener above: zoomToBali() no-ops once already triggered.
+            document.getElementById('ibSceneIndonesia').addEventListener('click', zoomToBali);
+            returnBtn.addEventListener('click', returnToOverview);
+
+            function renderIndex(){
+                if(typeof icTypewriterInterval !== 'undefined') clearInterval(icTypewriterInterval);
+                clearFocusMarker();
+                var targetCenter = ibDesktopCenter([-8.45, 115.15], 10); // Precisely aligned to radar
+                ibMap.flyTo(targetCenter, 10, { duration: reduceMotion ? 0 : 1.2, easeLinearity: 0.25 });
+                var html = '<div class="ib-index-title">Select a Briefing Sector</div>' +
+                           '<div class="ib-scroll-hint" aria-hidden="true">[ SCROLL ⭥ ]</div>' +
+                           '<div class="ib-scroll-area">';                
+                CLUSTER_ORDER.forEach(function(key){
+                    var c = CLUSTERS[key];
+                    html += '<button type="button" class="ib-index-row" data-action="open-cluster" data-cluster="' + key + '">' +
+                        '<span class="ib-index-row-main"><span class="ib-index-row-title"><span class="ib-index-row-code">' + c.code + '</span>' + c.title + '</span>' +
+                        '<div class="ib-index-row-desc">' + c.desc + '</div></span>' +
+                        '<span class="ib-index-row-count">' + c.categories.length + ' FILES</span>' +
+                        '</button>';
+                });
+                html += '</div>';
+                panelContent.innerHTML = html;
+
+                setTimeout(function() {
+                    var scrollArea = panelContent.querySelector('.ib-scroll-area');
+                    var scrollHint = panelContent.querySelector('.ib-scroll-hint');
+                    if (scrollArea && scrollHint && scrollArea.scrollHeight > scrollArea.clientHeight) {
+                        scrollHint.classList.add('is-visible');
+                        scrollArea.addEventListener('scroll', function() {
+                            if (scrollArea.scrollTop > 10) scrollHint.classList.add('is-faded');
+                            else scrollHint.classList.remove('is-faded');
+                        }, { passive: true });
+                    }
+                }, 20);
+            }
+
+            function renderClusterList(clusterKey){
+                if(typeof icTypewriterInterval !== 'undefined') clearInterval(icTypewriterInterval);
+                var c = CLUSTERS[clusterKey];
+                setActiveCluster(clusterKey);
+                clearFocusMarker();
+                var targetCenter = ibDesktopCenter([-8.45, 115.15], 10); // Precisely aligned to radar
+                ibMap.flyTo(targetCenter, 10, { duration: reduceMotion ? 0 : 1.2, easeLinearity: 0.25 });
+                var html = '<button type="button" class="ib-back-link" data-action="back-index">← All Sectors</button>';
+                html += '<div class="ib-index-title">Sector ' + c.code + ' — ' + c.title + '</div>' +
+                        '<div class="ib-scroll-hint" aria-hidden="true">[ SCROLL ⭥ ]</div>' +
+                        '<div class="ib-scroll-area">';
+                c.categories.forEach(function(cat){
+                    html += '<button type="button" class="ib-cat-row" data-action="open-category" data-cluster="' + clusterKey + '" data-category="' + cat.key + '">' +
+                        '<span class="ib-cat-row-code">' + cat.fileNo + '</span>' +
+                        '<span class="ib-cat-row-title">' + cat.title + '</span>' +
+                        '</button>';
+                });
+                html += '</div>';
+                panelContent.innerHTML = html;
+
+                setTimeout(function() {
+                    var scrollArea = panelContent.querySelector('.ib-scroll-area');
+                    var scrollHint = panelContent.querySelector('.ib-scroll-hint');
+                    if (scrollArea && scrollHint && scrollArea.scrollHeight > scrollArea.clientHeight) {
+                        scrollHint.classList.add('is-visible');
+                        scrollArea.addEventListener('scroll', function() {
+                            if (scrollArea.scrollTop > 10) scrollHint.classList.add('is-faded');
+                            else scrollHint.classList.remove('is-faded');
+                        }, { passive: true });
+                    }
+                }, 20);
+            }
+
+            function renderCategory(clusterKey, categoryKey){
+                var c = CLUSTERS[clusterKey];
+                var idx = -1;
+                var cat = null;
+                c.categories.forEach(function(item, i){ if (item.key === categoryKey){ idx = i; cat = item; } });
+                if (!cat) return;
+
+                setActiveCluster(clusterKey);
+                
+                if (cat.map) { focusMapOn([cat.map.lat, cat.map.lng], cat.map.zoom); }
+
+                var topBarHTML = '<div class="ib-cat-topbar" style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.15rem;">' +
+                    '<div class="ib-file-tag" style="margin-bottom:0;">FILE ' + cat.fileNo + ' // SECTOR ' + c.code + '</div>' +
+                    '<div class="ib-cta-meta" style="margin-bottom:0; color:#8b887e;">ACTIVE FILE: ' + parseInt(cat.fileNo, 10) + ' / ' + totalFiles + '</div>' +
+                '</div>';
+
+                var bulletsHTML = cat.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('');
+                
+                var prevHTML = '';
+                if (idx > 0) {
+                    var prev = c.categories[idx - 1];
+                    prevHTML = '<button type="button" class="ib-next-link" data-action="open-category" data-cluster="' + clusterKey + '" data-category="' + prev.key + '">← Prev</button>';
+                }
+
+                var nextHTML = '';
+                if (idx + 1 < c.categories.length) {
+                    var next = c.categories[idx + 1];
+                    // Truncate long titles to keep the footer layout clean and symmetrical
+                    var shortTitle = next.title.length > 16 ? next.title.substring(0, 16).trim() + '…' : next.title;
+                    nextHTML = '<button type="button" class="ib-next-link" data-action="open-category" data-cluster="' + clusterKey + '" data-category="' + next.key + '" aria-label="Next: ' + next.title + '">Next: ' + shortTitle + ' →</button>';
+                } else {
+                    nextHTML = '<button type="button" class="ib-next-link" data-action="back-cluster" data-cluster="' + clusterKey + '">Sector Complete ⤴</button>';
+                }
+
+                var footerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; width:100%; border-top:1px solid rgba(255,255,255,0.08); padding-top:0.6rem; padding-bottom:0.25rem; margin-top:0.35rem;">' + prevHTML + '<div style="margin-left:auto;">' + nextHTML + '</div></div>';
+
+                panelContent.innerHTML =
+                    '<button type="button" class="ib-back-link" data-action="back-cluster" data-cluster="' + clusterKey + '">← ' + c.title + '</button>' +
+                    topBarHTML +
+                    '<h3 class="ib-cat-title">' + cat.title + '</h3>' +
+                    '<div class="ib-scroll-hint" aria-hidden="true">[ SCROLL ⭥ ]</div>' +
+                    '<div class="ib-scroll-area"><ul class="ib-bullet-list">' + bulletsHTML + '</ul></div>' +
+                    footerHTML;
+
+                // Dynamically show the scroll hint only if content overflows the viewable area
+                setTimeout(function() {
+                    var scrollArea = panelContent.querySelector('.ib-scroll-area');
+                    var scrollHint = panelContent.querySelector('.ib-scroll-hint');
+                    if (scrollArea && scrollHint && scrollArea.scrollHeight > scrollArea.clientHeight) {
+                        scrollHint.classList.add('is-visible');
+                        
+                        // Fade out the hint gracefully once the user actively scrolls
+                        scrollArea.addEventListener('scroll', function() {
+                            if (scrollArea.scrollTop > 10) scrollHint.classList.add('is-faded');
+                            else scrollHint.classList.remove('is-faded');
+                        }, { passive: true });
+                    }
+                }, 20);
+            }
+
+            function openCluster(key){ renderClusterList(key); }
+            function openCategory(clusterKey, categoryKey){ renderCategory(clusterKey, categoryKey); }
+
+            panelContent.addEventListener('click', function(e){
+                var t = e.target.closest('[data-action]');
+                if (!t) return;
+                var action = t.dataset.action;
+                if (action === 'open-cluster') openCluster(t.dataset.cluster);
+                else if (action === 'back-cluster') renderClusterList(t.dataset.cluster);
+                else if (action === 'back-index') renderIndex();
+                else if (action === 'open-category') openCategory(t.dataset.cluster, t.dataset.category);
+            });
+
+            buildBaliScene();
+        })();
+        </script>
+    </section>
+
 <section style="max-width: 1150px; margin: 4rem auto 8rem auto; padding: 0 2rem;">
         <div class="section-header" style="margin-bottom: 3rem;">
             <h2 style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Guest Reflections</h2>
@@ -1797,20 +2954,6 @@
             </div>
         </div>
     </section>	
-
-<section class="map-section">
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-            <h2 style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Where We Operate</h2>
-        </div>
-        <div class="map-container">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d505963.2687595535!2d115.0232490892917!3d-8.45553424168058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd141d0b3060c41%3A0x27f272c726353d26!2sBali!5e0!3m2!1sen!2sid!4v1690000000000!5m2!1sen!2sid" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
-    </section>
 
     <!-- Apex Upgrade: FAQ Section -->
     <section style="max-width: 800px; margin: 6rem auto 4rem auto; padding: 0 2rem;">
