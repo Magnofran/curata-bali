@@ -1463,7 +1463,7 @@
             </div>
 
             <div class="difference-philosophy">
-                <p>Private hospitality isn't about exclusivity. It's about removing everything that distracts from the experience. From the moment you're collected until you're returned to your accommodation, every detail is quietly coordinated so you can remain present in the experience—not the logistics.</p>
+                <p>Private hospitality isn't about exclusivity. It's about removing everything that distracts from the experience. Whether you're collected for the day or simply welcomed at your door, every detail is quietly coordinated so you can remain present in the experience—not the logistics.</p>
                 <p style="margin-top: 1.25rem;">This same discipline shapes how we operate. Vurata works with a deliberately limited number of clients at any time — the only way we know to coordinate every specialist, host, and partner directly, and confirm each detail against real availability rather than assumed capacity. Where others scale outward, we've chosen to go deeper: fewer experiences, each one considered in full.</p>
             </div>
 
@@ -2997,10 +2997,51 @@ function expandTerminal(){
                 </div>
             </details>
 
+<details class="faq-item">
+                <summary class="faq-summary">What if I want to explore places not included in your experiences?</summary>
+                <div class="faq-content">
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Of course. Our curated experiences are simply a starting point—they're designed to inspire, not define, what's possible. If there's another destination, hidden gem, or part of Bali you'd like to explore, we'd be delighted to tailor an experience around it. Just let us know what you have in mind, and we'll handle the planning.</p>
+                </div>
+            </details>
+
             <details class="faq-item">
                 <summary class="faq-summary">Can you help us during our stay?</summary>
                 <div class="faq-content">
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Absolutely. Throughout your stay in Bali, we can assist with restaurant reservations, VIP club access, transportation, wellness bookings, and last-minute requests. Your concierge is only a WhatsApp message away.</p>
+                    <div class="faq-carousel-header">
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Absolutely. Beyond your booked experience, your concierge can help coordinate the smaller details of your stay too:</p>
+                        <div class="faq-nav">
+                            <button class="faq-btn" id="assistScrollLeft" aria-label="Scroll Left">&larr;</button>
+                            <button class="faq-btn pulse-arrow" id="assistScrollRight" aria-label="Scroll Right">→</button>
+                        </div>
+                    </div>
+
+                    <div id="assistanceCarousel" class="hide-scroll" style="display: flex; gap: 0.75rem; margin: 0.75rem 0; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.25rem;">
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Dining</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Restaurant and beach club reservations, sunset dining, and celebration setups for special occasions.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Transportation</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Airport transfers, inter-island ferries, and private drivers whenever you need to move beyond your itinerary.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Wellness</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">In-villa massage, spa reservations, and yoga sessions arranged around your schedule.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Family</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Babysitting, elderly assistance, and family-friendly recommendations for every generation traveling with you.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Villa Comfort</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Grocery stocking, catering delivery, and thoughtful touches like flowers or decorations before you arrive.</span>
+                        </div>
+                        <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 0 0 240px; scroll-snap-align: start;">
+                            <strong style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Lifestyle</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Laundry service, scooter rentals, photographer recommendations, and last-minute bookings.</span>
+                        </div>
+                    </div>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Don't see what you need? Ask anyway — your concierge is only a WhatsApp message away.</p>
                 </div>
             </details>
 
@@ -4525,6 +4566,27 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 faqScrollRight.addEventListener('click', () => {
                     faqCarousel.scrollBy({ left: getFaqScrollAmount(), behavior: 'smooth' });
                     faqScrollRight.classList.remove('pulse-arrow');
+                });
+            }
+
+// FAQ Assistance Carousel Navigation
+            const assistCarousel = document.getElementById('assistanceCarousel');
+            const assistScrollLeft = document.getElementById('assistScrollLeft');
+            const assistScrollRight = document.getElementById('assistScrollRight');
+
+            if (assistCarousel && assistScrollLeft && assistScrollRight) {
+                const getAssistScrollAmount = () => {
+                    // Calculates based on the 240px flex-basis + 0.75rem (12px) gap
+                    return 252; 
+                };
+
+                assistScrollLeft.addEventListener('click', () => {
+                    assistCarousel.scrollBy({ left: -getAssistScrollAmount(), behavior: 'smooth' });
+                });
+
+                assistScrollRight.addEventListener('click', () => {
+                    assistCarousel.scrollBy({ left: getAssistScrollAmount(), behavior: 'smooth' });
+                    assistScrollRight.classList.remove('pulse-arrow');
                 });
             }
 
