@@ -1928,8 +1928,8 @@
 
             /* --- MOBILE DENSITY & SECTOR CARD REFINEMENTS --- */
             @media (max-width: 640px) {
-                /* 3px horizontal margin from device edges (auto left/right margins split the remaining 6px evenly). Desktop-proportioned 310px cap preserved. */
-                .ib-panel { margin: 1.25rem auto 2rem; padding: 0.85rem; width: min(310px, 100% - 6px); }
+                /* 3px horizontal margin from device edges (auto left/right margins split the remaining 6px evenly). No cap — panel now fills the viewport on mobile. */
+                .ib-panel { margin: 1.25rem auto 2rem; padding: 0.85rem; width: calc(100% - 6px); }
                 
                 /* Extend right side of scroll area to maximize horizontal space */
                 .ib-scroll-area { padding-right: 0.25rem; }
