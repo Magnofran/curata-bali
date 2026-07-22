@@ -246,32 +246,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-/* Proof Strip (Trust Stat Band) */
-        .proof-strip {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border-light);
-            padding: 1rem 1.5rem;
-        }
-        .proof-strip-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 0.6rem 1rem;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-muted);
-        }
-        .proof-sep { color: var(--accent-vibrant); font-weight: 400; }
-        @media (max-width: 480px) {
-            .proof-sep { display: none; }
-            .proof-strip-inner { flex-direction: column; gap: 0.5rem; }
-        }
 
         /* Carousel Section */
         .packages-section { padding: 4rem 0; max-width: 1400px; margin: 0 auto; }
@@ -1442,16 +1416,6 @@
         </div>
         <a href="#Vurata-difference" class="scroll-indicator">Explore</a>
     </header>
-
-<section class="proof-strip" aria-label="Vurata at a glance">
-        <div class="proof-strip-inner">
-            <span>1 Dedicated Host per 4 Guests</span>
-            <span class="proof-sep">•</span>
-            <span>Unrestricted Concierge Access</span>
-            <span class="proof-sep">•</span>
-            <span>Always Private, Never Shared</span>
-        </div>
-    </section>
 
 	<!-- The Vurata Difference Section -->
     <section id="Vurata-difference" class="Vurata-difference">
@@ -3160,7 +3124,11 @@ function expandTerminal(){
             <div class="footer-brand">
                 <span class="footer-wordmark">Vurata</span>
                 <div class="trust-badge">
+                    <span>1 Dedicated Host per 4 Guests</span>
+                    <span class="badge-separator">•</span>
                     <span>Unrestricted Concierge Access</span>
+                    <span class="badge-separator">•</span>
+                    <span>Always Private, Never Shared</span>
                     <span class="badge-separator">•</span>
                     <span>5-Star Guest Satisfaction</span>
                 </div>
