@@ -36,7 +36,7 @@
             --ink-solid: #0f172a;   /* Always-dark badges (price tag, WhatsApp button) — stays constant in both themes */
             --tint-soft: rgba(15, 23, 42, 0.03);
             --tint-focus: rgba(15, 23, 42, 0.06);
-            --tint-border: rgba(15, 23, 42, 0.25);
+            --tint-border: rgba(194, 166, 121, 0.4); /* Soft gold hairline — echoes the briefing panel's accent */
         }
 
         [data-theme="dark"] {
@@ -347,7 +347,7 @@
             .card:hover {
                 transform: translate(-4px, -4px); 
                 box-shadow: 8px 8px 0px var(--text-dark);
-                border-color: var(--text-dark);
+                border-color: var(--accent-vibrant);
             }
         }
 
@@ -673,13 +673,14 @@
         /* Footer & Map */
         .site-footer { background-color: var(--surface); border-top: 1px solid var(--border-light); padding: 3rem 2rem 6rem 2rem; margin-top: 2rem; text-align: center; } /* Added bottom scroll buffer */
         .footer-content { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
-        .trust-badge {
+        .trust-badge,
+        .trust-badge-row {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: left;
             gap: 0.35rem;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.70rem;
+            font-weight: 450;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--text-muted);
@@ -701,6 +702,10 @@
         /* Expands back to the original layout on tablets and desktop */
         @media (min-width: 768px) {
             .trust-badge {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+            .trust-badge-row {
                 flex-direction: row;
                 gap: 0.75rem;
             }
@@ -3125,13 +3130,16 @@ function expandTerminal(){
             <div class="footer-brand">
                 <span class="footer-wordmark">Vurata</span>
                 <div class="trust-badge">
-                    <span>1 Dedicated Host per 4 Guests</span>
-                    <span class="badge-separator">•</span>
-                    <span>Unrestricted Concierge Access</span>
-                    <span class="badge-separator">•</span>
-                    <span>Always Private, Never Shared</span>
-                    <span class="badge-separator">•</span>
-                    <span>5-Star Guest Satisfaction</span>
+                    <div class="trust-badge-row">
+                        <span>Dedicated Host & Driver per 4 Guests</span>
+                        <span class="badge-separator">•</span>
+                        <span>Unrestricted Concierge Access</span>
+                    </div>
+                    <div class="trust-badge-row">
+                        <span>Always Private, Never Shared</span>
+                        <span class="badge-separator">•</span>
+                        <span>5-Star Guest Satisfaction</span>
+                    </div>
                 </div>
             </div>
             <div class="contact-info">
