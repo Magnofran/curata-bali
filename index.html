@@ -3303,6 +3303,20 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     </div>
                 </div>
 
+<div class="form-group row" id="marine-manifest-col" style="display: none;">
+                    <div class="col">
+                        <label for="marine_manifest">Passport / ID Numbers & Nationalities</label>
+                        <textarea id="marine_manifest" name="marine_manifest" rows="2" placeholder="Required for fast-boat manifest. e.g., John Doe - US - 123456789"></textarea>
+                    </div>
+                </div>
+
+                                <div class="form-group row" id="emergency-contact-col" style="display: none;">
+                    <div class="col">
+                        <label for="emergency_contact">Secondary Emergency Contact</label>
+                        <input type="text" id="emergency_contact" name="emergency_contact" placeholder="Name and WhatsApp number (must differ from primary)">
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <!-- Hidden block for Ages and the Safety Warning -->
                     <div class="col" id="family-ages-col" style="display: none;">
@@ -3398,6 +3412,11 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 <div class="form-group">
                     <label for="attribution">Referral ID (Optional)</label>
                     <input type="text" id="attribution" name="attribution" maxlength="100" placeholder="e.g., Wayan, Rep A12, or leave blank">
+                </div>
+
+<div class="form-group">
+                    <label for="medical_notes">Allergies / Medical / Dietary Requirements</label>
+                    <textarea id="medical_notes" name="medical_notes" rows="2" placeholder="Crucial for provisions boxes & catered meals. E.g., Peanut allergy, vegan, mobility issues"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -3713,6 +3732,8 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             const massageGuestsCol = document.getElementById('massage-guests-col');
             const massageTimeCol = document.getElementById('massage-time-col');
             const massageTimeNote = document.getElementById('massage-time-note');
+            const marineManifestCol = document.getElementById('marine-manifest-col');
+            const emergencyContactCol = document.getElementById('emergency-contact-col');
 
             // Apex UX: Dynamic Notes Placeholder
             const notesField = document.getElementById('notes');
@@ -3746,6 +3767,17 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                         ? "Required — your therapist/caregiver is dispatched directly to this address. Open Google Maps, tap Share, and paste the link here."
                         : "Optional — speeds up your booking! If skipped, your concierge will request it on WhatsApp before confirming your host.";
                 }
+            }
+
+// Reset dynamic fields
+            if (marineManifestCol) {
+                marineManifestCol.style.display = (packageID === 'Package D') ? 'flex' : 'none';
+                document.getElementById('marine_manifest').required = (packageID === 'Package D');
+            }
+            
+            if (emergencyContactCol) {
+                emergencyContactCol.style.display = (config.formMode === 'family') ? 'flex' : 'none';
+                document.getElementById('emergency_contact').required = (config.formMode === 'family');
             }
 
             if (config.formMode === 'family') {
@@ -5007,6 +5039,8 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
 
     const familyFields = ['num_children', 'children_ages', 'care_schedule', 'start_time', 'care_days'];
     const wellnessFields = ['massage_duration', 'massage_guests', 'massage_style', 'massage_time'];
+    const familyFields = ['num_children', 'children_ages', 'care_schedule', 'start_time', 'care_days', 'emergency_contact'];
+    const wellnessFields = ['massage_duration', 'massage_guests', 'massage_style', 'massage_time'];
 
     for (const [key, value] of formData.entries()) {
         // Drop completely empty fields to keep the payload clean
@@ -5020,6 +5054,10 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
 
         // Drop Wellness data if it is hidden, or if they explicitly selected "None"
         if ((!isWellnessVisible || !isWellnessOptedIn) && wellnessFields.includes(key)) continue;
+
+// Drop Package D fields if not Package D
+        const selectedPkg = formData.get('package_selection');
+        if ((!selectedPkg || !selectedPkg.startsWith('Package D')) && key === 'marine_manifest') continue;
 
         // If it passes the filters, attach it to the payload
         searchParams.append(key, value);
