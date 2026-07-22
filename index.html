@@ -3291,6 +3291,18 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     </div>
                 </div>
 
+<div class="form-group row">
+                    <div class="col">
+                        <label for="accommodation_name">Villa / Hotel Name</label>
+                        <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
+                    </div>
+                    <div class="col">
+                        <label for="pickup_location">Google Maps Pick-Up Pin</label>
+                        <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
+                        <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up your booking! If skipped, your concierge will request it on WhatsApp before confirming your host.</p>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <!-- Hidden block for Ages and the Safety Warning -->
                     <div class="col" id="family-ages-col" style="display: none;">
@@ -3723,6 +3735,18 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             document.getElementById('num_children').required = false;
             familyAgesCol.style.display = 'none';
             document.getElementById('children_ages').required = false;
+
+// Pick-up location: required for direct-dispatch services (massage/family), optional otherwise
+            const pickupInput = document.getElementById('pickup_location');
+            const pickupHelper = document.getElementById('pickupLocationHelper');
+            if (pickupInput) {
+                pickupInput.required = (config.formMode === 'massage' || config.formMode === 'family');
+                if (pickupHelper) {
+                    pickupHelper.textContent = pickupInput.required
+                        ? "Required — your therapist/caregiver is dispatched directly to this address. Open Google Maps, tap Share, and paste the link here."
+                        : "Optional — speeds up your booking! If skipped, your concierge will request it on WhatsApp before confirming your host.";
+                }
+            }
 
             if (config.formMode === 'family') {
                 standardGuestCol.style.display = 'none';
