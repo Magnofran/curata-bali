@@ -3414,6 +3414,28 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     <input type="text" id="attribution" name="attribution" maxlength="100" placeholder="e.g., Wayan, Rep A12, or leave blank">
                 </div>
 
+<div class="form-group row">
+                    <div class="col">
+                        <label for="special_occasion">Special Occasion</label>
+                        <select id="special_occasion" name="special_occasion" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                            <option value="None" selected>None / Just vacationing</option>
+                            <option value="Honeymoon">Honeymoon</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Other">Other (Specify in notes)</option>
+                        </select>
+                    </div>
+                    <div class="col" id="car-seats-col">
+                        <label for="car_seats">Infants / Toddlers (Car Seats)</label>
+                        <select id="car_seats" name="car_seats" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                            <option value="0" selected>0</option>
+                            <option value="1">1 Required</option>
+                            <option value="2">2 Required</option>
+                            <option value="3+">3+ Required</option>
+                        </select>
+                    </div>
+                </div>
+
 <div class="form-group">
                     <label for="medical_notes">Allergies / Medical / Dietary Requirements</label>
                     <textarea id="medical_notes" name="medical_notes" rows="2" placeholder="Crucial for provisions boxes & catered meals. E.g., Peanut allergy, vegan, mobility issues"></textarea>
@@ -3734,6 +3756,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             const massageTimeNote = document.getElementById('massage-time-note');
             const marineManifestCol = document.getElementById('marine-manifest-col');
             const emergencyContactCol = document.getElementById('emergency-contact-col');
+            const carSeatsCol = document.getElementById('car-seats-col');
 
             // Apex UX: Dynamic Notes Placeholder
             const notesField = document.getElementById('notes');
@@ -3778,6 +3801,11 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             if (emergencyContactCol) {
                 emergencyContactCol.style.display = (config.formMode === 'family') ? 'flex' : 'none';
                 document.getElementById('emergency_contact').required = (config.formMode === 'family');
+            }
+
+if (carSeatsCol) {
+                carSeatsCol.style.display = (config.formMode === 'standard') ? 'block' : 'none';
+                if (config.formMode !== 'standard') document.getElementById('car_seats').value = "0";
             }
 
             if (config.formMode === 'family') {
