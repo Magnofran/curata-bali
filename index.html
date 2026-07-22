@@ -1781,7 +1781,7 @@
             .ib-viewport.is-locking .ib-flashline { animation: ibFlash 0.95s ease-out 1.85s forwards; }
             @keyframes ibFlash { 0% { opacity: 0; transform: scaleX(0); } 35% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0; transform: scaleX(1); } }
 
-            .ib-panel { background: rgba(8, 10, 14, 0.58); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 1rem; margin: 1.5rem auto 2.5rem; width: min(310px, 100% - 2.5rem); height: clamp(280px, 45vh, 340px); height: clamp(280px, 45svh, 340px); display: none; flex-direction: column; position: relative; overflow: hidden; opacity: 0; pointer-events: none; z-index: 5; }
+            .ib-panel { background: rgba(8, 10, 14, 0.58); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); border-radius: 0px; padding: 1rem; margin: 1.5rem auto 2.5rem; width: min(310px, 100% - 2.5rem); height: clamp(280px, 45vh, 340px); height: clamp(280px, 45svh, 340px); display: none; flex-direction: column; position: relative; overflow: hidden; opacity: 0; pointer-events: none; z-index: 5; }
             .ib-viewport.is-bali ~ .ib-panel { display: flex; animation: ibPanelFadeIn 0.8s ease 2.8s forwards; pointer-events: auto; }
             @keyframes ibPanelFadeIn { to { opacity: 1; } }
 
@@ -1798,7 +1798,7 @@
                     max-width: calc(100% - 5rem);
                     height: clamp(340px, 50vh, 460px);
                     height: clamp(340px, 50svh, 460px);
-                    border-radius: 6px;
+                    border-radius: 0px;
                     background: rgba(10, 11, 14, 0.82);
                     backdrop-filter: blur(16px);
                     -webkit-backdrop-filter: blur(16px);
@@ -1829,7 +1829,7 @@
             .ib-back-link:hover { color: #d8bd8f; }
 
             .ib-index-title { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8b887e; margin-bottom: 0.85rem; }
-            .ib-index-row { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 0.6rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 0.75rem 0.85rem; margin-bottom: 0.5rem; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+            .ib-index-row { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 0.6rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 0px; padding: 0.75rem 0.85rem; margin-bottom: 0.5rem; cursor: pointer; text-align: left; transition: all 0.2s ease; }
             .ib-index-row:hover { border-color: rgba(216,189,143,0.4); background: rgba(216,189,143,0.04); }
             .ib-index-row-code { font-family: ui-monospace, 'SF Mono', 'Courier New', monospace; font-size: 0.85rem; font-weight: 500; color: #d8bd8f; margin-right: 0.4rem; display: inline-block; transform: translateY(-1px); }
             .ib-index-row-main { flex: 1; min-width: 0; }
