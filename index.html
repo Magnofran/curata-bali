@@ -740,9 +740,18 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.65rem;
             font-weight: 700;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             color: var(--text-dark);
             margin-bottom: 0.6rem;
+        }
+
+/* Apex UX: Mobile-only — matches the space below the wordmark to the
+           3rem of space the .site-footer padding-top already puts above it. */
+        @media (max-width: 768px) {
+            .footer-wordmark {
+                margin-bottom: 3rem;
+            }
         }
 
         @media (min-width: 1024px) {
@@ -769,7 +778,8 @@
                 font-family: 'Cormorant Garamond', serif;
                 font-size: 1.65rem;
                 font-weight: 700;
-                letter-spacing: 0.06em;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
                 color: var(--text-dark);
                 margin-bottom: 0.6rem;
             }
@@ -1426,7 +1436,7 @@
 
     <header class="main-hero">
         <nav style="position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 2.5rem; display: flex; justify-content: space-between; z-index: 10;">
-            <span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: 0.06em; font-size: 1.65rem; color: #ffffff;">Vurata</span>
+            <span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 1.65rem; color: #ffffff;">Vurata</span>
         </nav>
         
        <div class="hero-content">
