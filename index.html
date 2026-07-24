@@ -604,6 +604,7 @@
         select:invalid, 
         select:has(option[value=""][disabled]:checked),
         select:has(option[value="None"]:checked),
+        select:has(option[value="0"]:checked),
         input[type="date"]:invalid {
             color: #94a3b8;
             font-size: 0.85rem !important; /* Matches the new delicate input placeholders */
@@ -730,7 +731,15 @@
            and arranges the footer as a structured, full-width row instead of a narrow
            centered stack, matching the 1400px content grid used elsewhere on the page.
            The mobile stacked layout below this breakpoint is untouched. */
-        .footer-wordmark { display: none; }
+        .footer-wordmark {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--text-dark);
+            margin-bottom: 0.6rem;
+        }
 
         @media (min-width: 1024px) {
             .footer-content {
@@ -1413,7 +1422,7 @@
 
     <header class="main-hero">
         <nav style="position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 2.5rem; display: flex; justify-content: space-between; z-index: 10;">
-            <span style="color: #ffffff; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.85rem;">Vurata</span>
+            <span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: 0.06em; font-size: 1.65rem; color: #ffffff;">Vurata</span>
         </nav>
         
        <div class="hero-content">
@@ -3431,7 +3440,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                             <option value="0" selected>0</option>
                             <option value="1">1 Required</option>
                             <option value="2">2 Required</option>
-                            <option value="3+">3+ Required</option>
+                            <option value="3">3 Required</option>
                         </select>
                     </div>
                 </div>
