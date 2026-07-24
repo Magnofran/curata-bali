@@ -19,7 +19,11 @@
     <meta property="og:url" content="https://vurata.com/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="images/hero.jpg">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <style>
         /* CSS Reset & Core Variables */
         :root {
@@ -1531,8 +1535,6 @@
 
 
 <section class="ib-section" id="baliIntel" aria-label="Bali intelligence briefing">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
         <style>
             /* --- REAL SATELLITE MAP STYLING --- */
@@ -2008,7 +2010,7 @@
             </div>
 
         <script>
-        (function(){
+        window.addEventListener('DOMContentLoaded', function() {
             var section = document.getElementById('baliIntel');
             if (!section) return;
 
@@ -2695,7 +2697,7 @@ function expandTerminal(){
             });
 
             buildBaliScene();
-        })();
+        });
         </script>
     </section>
 
@@ -2715,7 +2717,7 @@ function expandTerminal(){
 	<article class="card" onclick="openModal('Package AA', 'Tabanan Ancestral Origins', '$285 / person', 'images/package-0a.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge badge-popular" style="background: var(--text-dark); color: var(--surface);">Signature Flagship</span>
-                    <img src="images/package-0a.jpg" alt="Tabanan Temple" loading="lazy">
+                    <img src="images/package-0a.jpg" alt="Tabanan Temple" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>Tabanan Ancestral Origins</h3>
@@ -2739,7 +2741,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package A', 'Ubud to Amed Immersion', '$245 / person', 'images/package-a.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
-                    <img src="images/package-a.jpg" alt="Ubud & Amed" loading="lazy">
+                    <img src="images/package-a.jpg" alt="Ubud & Amed" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>Ubud to Amed Immersion</h3>
@@ -2764,7 +2766,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package B', 'Uluwatu Coastal Escape', '$245 / person', 'images/package-b.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
-                    <img src="images/package-b.jpg" alt="Uluwatu" loading="lazy">
+                    <img src="images/package-b.jpg" alt="Uluwatu" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>Uluwatu Coastal Escape</h3>
@@ -2789,7 +2791,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package C', 'VIP Bali Nightlife', '$250 / guest', 'images/package-c.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge badge-popular">Most Popular</span>
-                    <img src="images/package-c.jpg" alt="VIP Nightlife" loading="lazy">
+                    <img src="images/package-c.jpg" alt="VIP Nightlife" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>VIP Bali Nightlife</h3>
@@ -2814,7 +2816,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package D', 'Nusa Penida Expedition', '$345 / person', 'images/package-d.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Private Experience</span>
-                    <img src="images/package-d.jpg" alt="Nusa Penida" loading="lazy">
+                    <img src="images/package-d.jpg" alt="Nusa Penida" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>Nusa Penida Expedition</h3>
@@ -2839,7 +2841,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package E', 'In-Villa Massage', '$55 / session', 'images/package-e.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">In-Villa Service</span>
-                    <img src="images/package-e.jpg" alt="Wellness" loading="lazy">
+                    <img src="images/package-e.jpg" alt="Wellness" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>In-Villa Massage</h3>
@@ -2864,7 +2866,7 @@ function expandTerminal(){
             <article class="card" onclick="openModal('Package F', 'Family Concierge', '$120 / shift', 'images/package-f.jpg')">
                 <div class="card-img-wrapper">
                     <span class="card-badge">Family Friendly</span>
-                    <img src="images/package-f.jpg" alt="Family Care" loading="lazy">
+                    <img src="images/package-f.jpg" alt="Family Care" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>Family Concierge & Care</h3>
@@ -4854,6 +4856,7 @@ if (carSeatsCol) {
             "wrapper_selector": ".gtranslate_wrapper"
         }
     </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
 
 <!-- Apex Upgrade: Dark Mode Toggle -->
