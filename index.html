@@ -1507,9 +1507,11 @@
         </div>
     </section>
 
-	<section id="seamless-exploration" style="max-width: 1150px; margin: 0 auto; padding: 6rem 2rem 8rem 2rem;">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <p style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless</p>
+	<section id="seamless-exploration" style="max-width: 1150px; margin: 0 auto; padding: 8rem 2rem 4rem 2rem;">
+        <span style="display: block; width: 1px; height: 80px; background: var(--accent-vibrant); margin: 0 auto 4rem auto;" aria-hidden="true" class="reveal-up"></span>
+        
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <p class="reveal-up" style="color: var(--text-dark); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Seamless</p>
         </div>
         
         <div class="exploration-wrapper" style="position: relative;">
@@ -1539,6 +1541,8 @@
                 </div>
             </div>
         </div>
+
+        <span style="display: block; width: 1px; height: 80px; background: var(--accent-vibrant); margin: 6rem auto 0 auto;" aria-hidden="true" class="reveal-up"></span>
     </section>
 
 
@@ -5001,7 +5005,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, observerOptions);
 
     // Auto-attach the invisible 'reveal-up' state to your major narrative elements
-    const targets = document.querySelectorAll('.difference-hero, .difference-philosophy, .editorial-row, .exploration-step, .section-header, .review-item, .map-container');
+    const targets = document.querySelectorAll('.reveal-up, .difference-hero, .difference-philosophy, .editorial-row, .exploration-step, .section-header, .review-item, .map-container');
     
     targets.forEach(el => {
         el.classList.add('reveal-up');
@@ -5087,8 +5091,6 @@ document.getElementById('vurataBookingForm').addEventListener('submit', function
     const isWellnessVisible = document.getElementById('wellness-section').style.display === 'block';
     const isWellnessOptedIn = formData.get('massage_duration') !== 'None';
 
-    const familyFields = ['num_children', 'children_ages', 'care_schedule', 'start_time', 'care_days'];
-    const wellnessFields = ['massage_duration', 'massage_guests', 'massage_style', 'massage_time'];
     const familyFields = ['num_children', 'children_ages', 'care_schedule', 'start_time', 'care_days', 'emergency_contact'];
     const wellnessFields = ['massage_duration', 'massage_guests', 'massage_style', 'massage_time'];
 
