@@ -3442,7 +3442,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
 <div class="form-group row">
                     <div class="col">
                         <label for="special_occasion">Special Occasion</label>
-                        <select id="special_occasion" name="special_occasion" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                        <select id="special_occasion" name="special_occasion" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
                             <option value="None" selected>None / Just vacationing</option>
                             <option value="Honeymoon">Honeymoon</option>
                             <option value="Anniversary">Anniversary</option>
@@ -3452,7 +3452,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     </div>
                     <div class="col" id="car-seats-col">
                         <label for="car_seats">Infants / Toddlers (Car Seats)</label>
-                        <select id="car_seats" name="car_seats" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                        <select id="car_seats" name="car_seats" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
                             <option value="0" selected>0</option>
                             <option value="1">1 Required</option>
                             <option value="2">2 Required</option>
@@ -3468,7 +3468,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
 
                 <div class="form-group">
                     <label for="notes">Special Requirements / Notes</label>
-                    <textarea id="notes" name="notes" rows="3" placeholder="Dietary restrictions, preferred activities, etc."></textarea>
+                    <textarea id="notes" name="notes" rows="3" placeholder="e.g., Preferred host language, celebration surprises, accessibility needs, etc."></textarea>
                 </div>
 
 		<!-- Dynamic Scaled Logistics Block (Moved below the interaction layer to prevent viewport scroll jumping) -->
@@ -3793,7 +3793,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 } else if (packageID === 'Package C') { // VIP Nightlife
                     notesField.placeholder = "e.g., Venue preferences, table reservation requests, music taste, etc.";
                 } else {
-                    notesField.placeholder = "Dietary restrictions, preferred activities, etc.";
+                    notesField.placeholder = "e.g., Preferred host language, celebration surprises, accessibility needs, etc.";
                 }
             }
 
