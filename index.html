@@ -1055,7 +1055,8 @@
 
         /* Universal: swap native select/number input entirely for the stepper control */
         #standard-guest-col select#guests,
-        #family-guest-col input#num_children {
+        #family-guest-col input#num_children,
+        #care_days {
             display: none !important;
         }
 
@@ -3411,7 +3412,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 <div id="family-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.25rem;">
                     <div class="form-group">
                         <label for="care_schedule">Care Schedule Module</label>
-                        <select name="care_schedule" id="care_schedule" onchange="updateFamilyCareTimes()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                        <select name="care_schedule" id="care_schedule" onchange="updateFamilyCareTimes()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                             <option value="Day Shift">Day Shift — 8 Hours ($120)</option>
                             <option value="Evening Shift">Evening Shift — 8 Hours ($120)</option>
                             <option value="Night Shift">Night Shift — Flexible Up To 8 Hrs ($150)</option>
@@ -3422,13 +3423,18 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     <div class="form-group row" style="margin-bottom: 0;">
                         <div class="col">
                             <label for="start_time">Requested Start Time</label>
-                            <select id="start_time" name="start_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="start_time" name="start_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <!-- Dynamically injected via JS -->
                             </select>
                         </div>
                         <div class="col">
                             <label for="care_days">Number of Days</label>
-                            <input type="number" id="care_days" name="care_days" min="1" max="15" value="1" required placeholder="e.g., 3" inputmode="numeric" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <input type="number" id="care_days" name="care_days" min="1" max="15" value="1" required placeholder="e.g., 3" inputmode="numeric" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <div class="qty-stepper" id="careDaysStepper" role="group" aria-label="Number of days">
+                                <button type="button" class="qty-stepper-btn" id="careDaysStepperMinus" aria-label="Decrease number of days">&minus;</button>
+                                <span class="qty-stepper-value" id="careDaysStepperValue">Select Days</span>
+                                <button type="button" class="qty-stepper-btn" id="careDaysStepperPlus" aria-label="Increase number of days">&plus;</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -3723,6 +3729,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             // Apex UX: Boot the mobile steppers to match package constraints
             initQtyStepper('guestStepper', 1, maxLimit, config.formMode === 'family', 'Guest');
             initQtyStepper('childrenStepper', 1, 10, null, 'Care Guest', 'Care Guests');
+            initQtyStepper('careDaysStepper', 1, 15, null, 'Day', 'Days', 'care_days');
 
             // 5. Inclusions
             document.getElementById('inclusionsTitle').textContent = config.incTitle;
@@ -4526,7 +4533,7 @@ if (carSeatsCol) {
         /* ============================================================
            Apex UX: Guest / Children Stepper (Mobile Only)
         ============================================================ */
-        function initQtyStepper(stepperId, min, max, keepExistingValue, singularLabel, pluralLabel) {
+        function initQtyStepper(stepperId, min, max, keepExistingValue, singularLabel, pluralLabel, targetId) {
             const stepper = document.getElementById(stepperId);
             if (!stepper) return;
 
@@ -4534,7 +4541,7 @@ if (carSeatsCol) {
             stepper.dataset.max = max;
             stepper.dataset.singular = singularLabel;
             stepper.dataset.plural = pluralLabel || `${singularLabel}s`;
-            stepper.dataset.target = (stepperId === 'guestStepper') ? 'guests' : 'num_children';
+            stepper.dataset.target = targetId || ((stepperId === 'guestStepper') ? 'guests' : 'num_children');
 
             const target = document.getElementById(stepper.dataset.target);
 
@@ -4602,6 +4609,11 @@ if (carSeatsCol) {
             const childPlus = document.getElementById('childrenStepperPlus');
             if (childMinus) childMinus.addEventListener('click', () => stepQty('childrenStepper', -1));
             if (childPlus) childPlus.addEventListener('click', () => stepQty('childrenStepper', 1));
+
+            const careDaysMinus = document.getElementById('careDaysStepperMinus');
+            const careDaysPlus = document.getElementById('careDaysStepperPlus');
+            if (careDaysMinus) careDaysMinus.addEventListener('click', () => stepQty('careDaysStepper', -1));
+            if (careDaysPlus) careDaysPlus.addEventListener('click', () => stepQty('careDaysStepper', 1));
 
             const guestsSelect = document.getElementById('guests');
             if (guestsSelect) guestsSelect.addEventListener('change', () => updateQtyStepperDisplay('guestStepper'));
