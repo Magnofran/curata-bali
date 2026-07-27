@@ -2865,7 +2865,7 @@ function expandTerminal(){
                     <h3>In-Villa Massage</h3>
                     <p class="card-subtitle">Round-the-clock relaxation delivered directly to your accommodation. Premium mobile therapists available 24/7 for late-flight arrivals, early mornings, and seamless recovery.</p>
                     <div class="card-meta">
-                        <span>⏱ Flexible • 45 to 90 Mins</span>
+                        <span>⏱ Flexible • 30 to 120 Mins</span>
                         <span>👥 Best for Relaxation</span>
                         <span>🏡 Direct-to-Villa Dispatch</span>
                     </div>
@@ -3381,9 +3381,10 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                             <label for="massage_duration">Duration</label>
                             <select id="massage_duration" name="massage_duration" onchange="toggleWellnessFields()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="None">None</option>
-                                <option value="45 Minutes (+$40/pp)">45 Minutes (+ $40/pp)</option>
+                                <option value="30 Minutes (+$40/pp)">30 Minutes (+ $40/pp)</option>
                                 <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
                                 <option value="90 Minutes (+$90/pp)">90 Minutes (+ $90/pp)</option>
+                                <option value="120 Minutes (+$120/pp)">120 Minutes (+ $120/pp)</option>
                             </select>
                         </div>
                         <div class="form-group" id="massage-guests-col" style="margin-bottom: 0;">
@@ -3884,9 +3885,10 @@ if (carSeatsCol) {
 
                 document.getElementById('massage_duration').innerHTML = `
                     <option value="" disabled selected>Select Duration</option>
-                    <option value="45 Minutes ($55/pp)">45 Minutes ($55/pp)</option>
+                    <option value="30 Minutes ($55/pp)">30 Minutes ($55/pp)</option>
                     <option value="60 Minutes ($75/pp)">60 Minutes ($75/pp)</option>
                     <option value="90 Minutes ($105/pp)">90 Minutes ($105/pp)</option>
+                    <option value="120 Minutes ($135/pp)">120 Minutes ($135/pp)</option>
                 `;
                 document.getElementById('massage_duration').required = true;
             } else {
@@ -3917,9 +3919,10 @@ if (carSeatsCol) {
 
                 document.getElementById('massage_duration').innerHTML = `
                     <option value="None">None</option>
-                    <option value="45 Minutes (+$40/pp)">45 Minutes (+ $40/pp)</option>
+                    <option value="30 Minutes (+$40/pp)">30 Minutes (+ $40/pp)</option>
                     <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
                     <option value="90 Minutes (+$90/pp)">90 Minutes (+ $90/pp)</option>
+                    <option value="120 Minutes (+$120/pp)">120 Minutes (+ $120/pp)</option>
                 `;
                 document.getElementById('massage_duration').required = false;
             }
@@ -4335,9 +4338,10 @@ if (carSeatsCol) {
                 let durationLabel = "Session";
                 
                 if (durationEl && durationEl.value) {
-                    if (durationEl.value.includes('45')) { sessionPrice = 55; durationLabel = "45-Min Session"; }
+                    if (durationEl.value.includes('30')) { sessionPrice = 55; durationLabel = "30-Min Session"; }
                     if (durationEl.value.includes('60')) { sessionPrice = 75; durationLabel = "60-Min Session"; }
                     if (durationEl.value.includes('90')) { sessionPrice = 105; durationLabel = "90-Min Session"; }
+                    if (durationEl.value.includes('120')) { sessionPrice = 135; durationLabel = "120-Min Session"; }
                 }
                 
                 total = sessionPrice * guestCount;
@@ -4370,9 +4374,10 @@ if (carSeatsCol) {
             const massageGuestsEl = document.getElementById('massage_guests');
             if (config.formMode === 'standard' && durationEl && durationEl.value !== 'None') {
                 let addonPrice = 0;
-                if (durationEl.value.includes('45')) addonPrice = 40;
+                if (durationEl.value.includes('30')) addonPrice = 40;
                 if (durationEl.value.includes('60')) addonPrice = 60;
                 if (durationEl.value.includes('90')) addonPrice = 90;
+                if (durationEl.value.includes('120')) addonPrice = 120;
                 
                 const addonGuests = parseInt(massageGuestsEl.value) || 1;
                 addonTotal = addonPrice * addonGuests;
