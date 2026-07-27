@@ -3581,7 +3581,9 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Journey Includes',
                 incHTML: `<li>✓ Premium Beach Club or Lounge (Your Choice)</li><li>✓ 2-3 Curated Coastal Destinations (Your Choice)</li><li>✓ Sunset at Uluwatu Temple</li><li>✓ Private driver & personal guide</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
-                showDressCode: false,
+                showDressCode: true,
+                transparencyHTML: `This package secures your dedicated host, private transport, and curated logistics.<br><br>To grant you absolute flexibility, any beach club daybed minimum-spends or dining are settled independently by you directly with the venues.`,
+                dressCodeHTML: `Smart coastal attire.<br><br>• Beach clubs require neat beachwear (no branded singlets or boardshorts at daybeds).<br>• Uluwatu Temple requires modest dress — sarongs are provided on-site.<br>• Keep sunglasses, hats, and loose items secured near the temple — the resident macaques are known to grab anything within reach.`,
                 formMode: 'standard'
             },
             'Package C': {
@@ -3613,7 +3615,9 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 guestMax: 20, guestPlaceholder: '2',
                 incTitle: 'The Expedition Includes',
                 incHTML: `<li>✓ VIP fast-boat tickets & priority boarding</li><li>✓ Private porter service at Sanur port</li><li>✓ Island entry taxes & destination parking</li><li>✓ 3-4 Curated Destinations (Your Choice)</li><li>✓ Dedicated premium island vehicle & guide</li><li>✓ Premium snorkeling gear (upon request)</li><li>✓ UV-blocking sun umbrellas</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Botanical sun & insect care</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
-                showDressCode: false,
+                showDressCode: true,
+                advisoryHTML: `Nusa Penida remains a rugged frontier. The fast-boat crossing can be choppy — guests prone to seasickness may wish to prepare accordingly — and the island's roads are notably uneven.<br><br>Reaching iconic viewpoints like Kelingking Beach requires navigating steep, unshaded cliffside steps. This expedition calls for moderate physical mobility and is not recommended for guests with significant joint, back, or mobility restrictions.`,
+                dressCodeHTML: `Active exploration gear.<br><br>• Proper trainers or sturdy sandals are strongly advised for cliffside paths — avoid flip-flops.<br>• Expect sea spray and a wet landing during the fast-boat crossing; pack a dry bag for electronics.`,
                 formMode: 'standard'
             },
             'Package E': {
@@ -3749,6 +3753,15 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem 1.25rem;">
                         <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 0.35rem;">Transparency</strong>
                         <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">${config.transparencyHTML}</p>
+                    </div>
+                `;
+            }
+
+            if (config.advisoryHTML) {
+                guidanceContent += `
+                    <div style="background: var(--surface); border: 1px solid var(--border-light); border-left: 2px solid var(--text-dark); padding: 0.85rem 1.25rem;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 0.35rem;">Trip Advisory</strong>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">${config.advisoryHTML}</p>
                     </div>
                 `;
             }
