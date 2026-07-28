@@ -881,6 +881,37 @@
         .price-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         .price-value { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
 
+        /* Apex UX: Dual-Tier Pricing — the 2–4 Guest rate and the Solo rate presented as
+           two distinct products side-by-side, rather than a base price plus a surcharge.
+           Holds the block to the same two-line height as the original single price. */
+        .price-block--dual {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .price-tier {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 0;
+        }
+        .price-tier--solo {
+            align-items: flex-end;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .price-unit {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        @media (max-width: 380px) {
+            .price-block--dual .price-value { font-size: 1.05rem; }
+        }
+
         /* Modal Inclusions Box Grid (Mobile First) */
         #inclusionsList {
             display: grid;
@@ -2758,9 +2789,15 @@ function expandTerminal(){
                         <span>👥 Best for Cultural Purists</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
-                    <div class="price-block">
-                        <span class="price-label">Starting at</span>
-                        <span class="price-value">$285 / person</span>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">2–4 Guests</span>
+                            <span class="price-value">From $285<span class="price-unit"> / person</span></span>
+                        </div>
+                        <div class="price-tier price-tier--solo">
+                            <span class="price-label">1 Guest</span>
+                            <span class="price-value">$425</span>
+                        </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -2782,9 +2819,15 @@ function expandTerminal(){
                         <span>👥 Best for Creatives & Explorers</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
-                    <div class="price-block">
-                        <span class="price-label">Starting at</span>
-                        <span class="price-value">$245 / person</span>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">2–4 Guests</span>
+                            <span class="price-value">From $245<span class="price-unit"> / person</span></span>
+                        </div>
+                        <div class="price-tier price-tier--solo">
+                            <span class="price-label">1 Guest</span>
+                            <span class="price-value">$395</span>
+                        </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -2807,9 +2850,15 @@ function expandTerminal(){
                         <span>👥 Best for Couples & Groups</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
-                    <div class="price-block">
-                        <span class="price-label">Starting at</span>
-                        <span class="price-value">$245 / person</span>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">2–4 Guests</span>
+                            <span class="price-value">From $245<span class="price-unit"> / person</span></span>
+                        </div>
+                        <div class="price-tier price-tier--solo">
+                            <span class="price-label">1 Guest</span>
+                            <span class="price-value">$395</span>
+                        </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -2832,9 +2881,15 @@ function expandTerminal(){
                         <span>👥 Best for Groups & Celebrations</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
-                    <div class="price-block">
-                        <span class="price-label">Starting at</span>
-                        <span class="price-value">$315 / guest</span>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">2–4 Guests</span>
+                            <span class="price-value">From $315<span class="price-unit"> / guest</span></span>
+                        </div>
+                        <div class="price-tier price-tier--solo">
+                            <span class="price-label">1 Guest</span>
+                            <span class="price-value">$495</span>
+                        </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Reserve Your Night</button>
@@ -2857,9 +2912,15 @@ function expandTerminal(){
                         <span>👥 Best for Adventure Seekers</span>
                         <span>🚘 1 Host & Chauffeur per 4 Guests</span>
                     </div>
-                    <div class="price-block">
-                        <span class="price-label">Starting at</span>
-                        <span class="price-value">$345 / person</span>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">2–4 Guests</span>
+                            <span class="price-value">From $345<span class="price-unit"> / person</span></span>
+                        </div>
+                        <div class="price-tier price-tier--solo">
+                            <span class="price-label">1 Guest</span>
+                            <span class="price-value">$545</span>
+                        </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
                         <button class="card-btn">Check Availability</button>
@@ -3557,6 +3618,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
         const packageData = {
             // 1. THE NEW FLAGSHIP
             'Package AA': {
+                soloPrice: 425,
                 durationHours: 10,
                 delayDays: 3,
                 dateLabel: 'Date & Pick-Up Time',
@@ -3575,6 +3637,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             },
             // 2. THE UBUD & AMED FUSION
             'Package A': {
+                soloPrice: 395,
                 durationHours: 10,
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
@@ -3590,6 +3653,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 formMode: 'standard'
             },
             'Package B': {
+                soloPrice: 395,
                 durationHours: 8,
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
@@ -3607,6 +3671,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 formMode: 'standard'
             },
             'Package C': {
+                soloPrice: 495,
                 durationHours: 8,
                 delayDays: 2,
                 dateLabel: 'Date & Pick-Up Time',
@@ -3624,6 +3689,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 formMode: 'standard'
             },
             'Package D': {
+                soloPrice: 545,
                 durationHours: 10,
                 delayDays: 3,
                 dateLabel: 'Date & Pick-Up Time',
@@ -4294,7 +4360,8 @@ if (carSeatsCol) {
                     inlineNotice.style.display = 'block';
                     inlineNotice.style.background = 'var(--text-dark)';
                     inlineNotice.style.color = 'var(--surface)';
-                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four.`;
+                    const soloRateText = (typeof config.soloPrice === 'number') ? ` — from just $${config.soloPrice}.` : '.';
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four${soloRateText}`;
                 }
             } else {
                 // Revert to standard baseline non-destructively (2-4 guests)
@@ -4383,12 +4450,12 @@ if (carSeatsCol) {
             } else {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
                 
-                // Apex UX: Solo Traveler Supplement Integration
+                // Apex UX: Dedicated Solo Tier — a distinct rate, not a per-person surcharge
                 let appliedPrice = basePrice;
                 let soloNote = "";
                 if (guestCount === 1) {
-                    appliedPrice = basePrice + 100;
-                    soloNote = "<br><span style='font-size: 0.75rem; color: var(--text-muted);'>Solo supplement applied</span>";
+                    appliedPrice = (typeof config.soloPrice === 'number') ? config.soloPrice : basePrice;
+                    soloNote = "<br><span style='font-size: 0.75rem; color: var(--text-muted);'>Private Solo Rate</span>";
                 }
                 
                 total = appliedPrice * guestCount;
