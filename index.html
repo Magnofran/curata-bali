@@ -29,6 +29,7 @@
         :root {
             --bg-base: #f9fafb;
             --surface: #ffffff;
+            --card-surface: #fdfaf5; /* Warm ivory, gently gold-tinted — quietly separates resting cards from the cooler --bg-base without adding visual weight */
             --text-dark: #0f172a;
             --text-muted: #64748b;
             --accent-vibrant: #C2A679; /* Muted Architectural Gold */
@@ -47,6 +48,7 @@
         [data-theme="dark"] {
             --bg-base: #0f1115;
             --surface: #1a1d23;
+            --card-surface: var(--surface); /* Dark mode already reads well against --bg-base — kept unchanged */
             --text-dark: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-vibrant: #D8BD8F;
@@ -328,7 +330,7 @@
             flex: 0 0 90%; /* Expanded from 85% to give text more horizontal space on mobile */
             max-width: 400px;
             scroll-snap-align: center; /* Snaps perfectly to the middle of the viewport */
-            background: var(--surface);
+            background: var(--card-surface);
             border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-soft);
