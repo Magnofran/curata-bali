@@ -1026,6 +1026,49 @@
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+/* Apex UX: FAQ Progressive Disclosure */
+        .faq-show-more-row {
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem 0 0.5rem 0;
+        }
+        .faq-show-more-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 0.25rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            transition: color 0.25s ease;
+        }
+        .faq-show-more-btn::after {
+            content: '+';
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+        }
+        .faq-show-more-btn.is-expanded::after {
+            content: '−';
+            transform: rotate(180deg);
+            color: var(--text-dark);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .faq-show-more-btn:hover,
+            .faq-show-more-btn:hover::after {
+                color: var(--accent-vibrant);
+            }
+        }
+        .faq-more-items {
+            display: none;
+            animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
 	/* Apex UX: Mobile Viewport Stabilization */
         @media (max-width: 768px) {
             input, textarea, select {
@@ -3131,6 +3174,12 @@ function expandTerminal(){
                 </div>
             </details>
 
+            <div class="faq-show-more-row">
+                <button type="button" class="faq-show-more-btn" id="faqShowMoreBtn" onclick="toggleFaqMore()" aria-expanded="false" aria-controls="faqMoreItems">View All Questions</button>
+            </div>
+
+            <div class="faq-more-items" id="faqMoreItems">
+
             <details class="faq-item">
                 <summary class="faq-summary">Can you help us during our stay?</summary>
                 <div class="faq-content">
@@ -3267,8 +3316,36 @@ function expandTerminal(){
                 </div>
             </details>
 
+            </div>
+
         </div>
     </section>
+
+    <script>
+        function toggleFaqMore() {
+            const moreItems = document.getElementById('faqMoreItems');
+            const btn = document.getElementById('faqShowMoreBtn');
+            if (!moreItems || !btn) return;
+
+            const isExpanded = moreItems.style.display === 'block';
+
+            if (isExpanded) {
+                moreItems.style.display = 'none';
+                btn.classList.remove('is-expanded');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.textContent = 'View All Questions';
+            } else {
+                moreItems.style.display = 'block';
+                btn.classList.add('is-expanded');
+                btn.setAttribute('aria-expanded', 'true');
+                btn.textContent = 'Show Fewer Questions';
+            }
+
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        }
+    </script>
 
     <footer class="site-footer">
         <div class="footer-content">
