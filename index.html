@@ -41,6 +41,7 @@
             --tint-soft: rgba(15, 23, 42, 0.03);
             --tint-focus: rgba(15, 23, 42, 0.06);
             --tint-border: rgba(194, 166, 121, 0.4); /* Soft gold hairline — echoes the briefing panel's accent */
+            --summary-divider: rgba(15, 23, 42, 0.14); /* Internal hairlines inside tinted panels (e.g. Live Itinerary & Investment) — kept separate from --border-light so they stay visible against tint-focus backgrounds in both themes */
         }
 
         [data-theme="dark"] {
@@ -54,6 +55,7 @@
             --tint-soft: rgba(255, 255, 255, 0.04);
             --tint-focus: rgba(255, 255, 255, 0.08);
             --tint-border: rgba(255, 255, 255, 0.18);
+            --summary-divider: rgba(255, 255, 255, 0.16); /* Brighter than --border-light so it stays visible against the panel's own translucent background */
             color-scheme: dark; /* lets native date-picker icons and scrollbars invert automatically */
         }
 
@@ -3333,7 +3335,7 @@ function expandTerminal(){
                     <option value="arrival">Airport Arrival — Landing in Bali</option>
                     <option value="departure">Airport Departure — Flying Out</option>
                 </select>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Every detail below — from your itinerary to your inclusions — adjusts automatically based on your selection.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Every detail below updates automatically with your selection.</p>
             </div>
             
             <p id="modalContext" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; font-style: italic; border-left: 2px solid var(--accent-vibrant); padding-left: 1rem; display: none;"></p>
@@ -3625,7 +3627,7 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dark); margin-bottom: 1rem;">Live Itinerary & Investment</strong>
             
             <!-- Itinerary Details -->
-            <div id="summary-itinerary" style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-light); font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.35rem;">
+            <div id="summary-itinerary" style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--summary-divider); font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.35rem;">
                 <span id="summary-date-time" style="color: var(--text-dark); font-weight: 600;"></span>
                 <span id="summary-protocol"></span>
             </div>
@@ -3635,14 +3637,14 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 <span id="summary-subtotal" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
 
-            <div id="summary-addon-divider" style="display: none; border-top: 1px dotted var(--border-light); margin: 0.85rem 0;"></div>
+            <div id="summary-addon-divider" style="display: none; border-top: 1px dotted var(--summary-divider); margin: 0.85rem 0;"></div>
 
             <div id="summary-addon-row" style="display: none; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
                 <span id="summary-addon-label" style="flex: 1; min-width: 0;">In-Villa Wellness</span>
                 <span id="summary-addon-total" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
 
-            <div style="border-top: 1px solid var(--border-light); margin: 1rem 0 0 0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div style="border-top: 1px solid var(--summary-divider); margin: 1rem 0 0 0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
                 <div style="display: flex; flex-direction: column;">
                     <span id="summary-deposit-label" style="font-size: 0.85rem; font-weight: 700; color: var(--text-dark);">Required Deposit</span>
                     <span style="font-size: 0.7rem; color: var(--text-muted);">Final confirmation by concierge.</span>
