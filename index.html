@@ -3326,6 +3326,15 @@ function expandTerminal(){
                 <button onclick="sharePackage(document.getElementById('selectedPackage').value.split(' - ')[0], document.getElementById('modalTitle').textContent); event.stopPropagation();" style="background:none; border:none; cursor:pointer; padding:4px; display:inline-flex; align-items:center; gap:4px; color:var(--text-muted); flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg><span style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase;">Share</span></button>
             </div>
             <p id="modalPrice" style="font-size: 1.15rem; font-weight: 600; color: var(--text-dark); margin-top:0.25rem; margin-bottom: 1.5rem;"></p>
+
+            <div id="transfer-direction-col" style="display: none; margin: 0 0 1.75rem 0; padding: 1.25rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant);">
+                <label for="transfer_direction" style="display: block; margin-bottom: 0.65rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark);">Select Your Transfer Direction</label>
+                <select id="transfer_direction" name="transfer_direction" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--surface); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                    <option value="arrival">Airport Arrival — Landing in Bali</option>
+                    <option value="departure">Airport Departure — Flying Out</option>
+                </select>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Every detail below — from your itinerary to your inclusions — adjusts automatically based on your selection.</p>
+            </div>
             
             <p id="modalContext" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; font-style: italic; border-left: 2px solid var(--accent-vibrant); padding-left: 1rem; display: none;"></p>
             
@@ -3429,18 +3438,8 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                     </div>
                 </div>
 
-<div class="form-group row" id="transfer-direction-col" style="display: none;">
-                    <div class="col">
-                        <label for="transfer_direction">Transfer Direction</label>
-                        <select id="transfer_direction" name="transfer_direction" required style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: rgba(15, 23, 42, 0.03); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
-                            <option value="arrival">Airport Arrival — Landing in Bali</option>
-                            <option value="departure">Airport Departure — Flying Out</option>
-                        </select>
-                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Select the direction of your transfer — every detail below adjusts automatically.</p>
-                    </div>
-                </div>
-
 <div class="form-group row">
+
                     <div class="col">
                         <label for="accommodation_name">Villa / Hotel Name</label>
                         <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
@@ -3631,14 +3630,16 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
                 <span id="summary-protocol"></span>
             </div>
 
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
-                <span id="summary-line-item">Experience Subtotal</span>
-                <span id="summary-subtotal" style="color: var(--text-dark); font-weight: 500;">$0</span>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="summary-line-item" style="flex: 1; min-width: 0;">Experience Subtotal</span>
+                <span id="summary-subtotal" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
-            
-            <div id="summary-addon-row" style="display: none; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
-                <span id="summary-addon-label">In-Villa Wellness</span>
-                <span id="summary-addon-total" style="color: var(--text-dark); font-weight: 500;">$0</span>
+
+            <div id="summary-addon-divider" style="display: none; border-top: 1px dotted var(--border-light); margin: 0.85rem 0;"></div>
+
+            <div id="summary-addon-row" style="display: none; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="summary-addon-label" style="flex: 1; min-width: 0;">In-Villa Wellness</span>
+                <span id="summary-addon-total" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
 
             <div style="border-top: 1px solid var(--border-light); margin: 1rem 0 0 0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
@@ -3828,9 +3829,12 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             const form = document.querySelector('form');
             if (!form) return;
 
-            // Dynamically scan for actively required fields that are currently visible
-            const requiredFields = Array.from(form.querySelectorAll('input[required], select[required]')).filter(field => {
-                return field.offsetParent !== null; // Excludes dynamically hidden fields
+            // Dynamically scan for actively required fields that are currently visible.
+            // Uses form.elements (not querySelectorAll) so fields associated via a form="..."
+            // attribute — like the repositioned Transfer Direction selector — are correctly
+            // included even though they sit outside the <form> element in the DOM.
+            const requiredFields = Array.from(form.elements).filter(field => {
+                return (field.tagName === 'INPUT' || field.tagName === 'SELECT') && field.required && field.offsetParent !== null;
             });
 
             if (requiredFields.length === 0) return;
@@ -4489,6 +4493,7 @@ if (carSeatsCol) {
         if (transferDirectionEl) {
             transferDirectionEl.addEventListener('change', function() {
                 applyTransferDirection(this.value);
+                updateBookingProgress();
                 if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(10);
             });
         }
@@ -4658,7 +4663,7 @@ if (carSeatsCol) {
                 const lineLabel = effectiveConfig.lineItemLabel || 'Arrival Concierge';
                 const directionSuffix = (currentTransferDirection === 'departure') ? 'Departure' : 'Arrival';
 
-                document.getElementById('summary-line-item').innerHTML = `${lineLabel} • ${vehiclesNeeded} Vehicle${vehiclesNeeded > 1 ? 's' : ''} for ${guestCount} Guest${guestCount > 1 ? 's' : ''}`;
+                document.getElementById('summary-line-item').innerHTML = `<span style="display:block; font-weight:600; color:var(--text-dark);">${lineLabel}</span><span style="display:block; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">[ ${vehiclesNeeded} Vehicle${vehiclesNeeded > 1 ? 's' : ''} for ${guestCount} Guest${guestCount > 1 ? 's' : ''} ]</span>`;
                 protocolText = `✓ ${vehiclesNeeded} Executive Vehicle${vehiclesNeeded > 1 ? 's' : ''} & Dedicated Host${vehiclesNeeded > 1 ? 's' : ''} on Standby for Your ${directionSuffix}`;
             } else {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
@@ -4695,9 +4700,14 @@ if (carSeatsCol) {
                 const addonGuests = parseInt(massageGuestsEl.value) || 1;
                 addonTotal = addonPrice * addonGuests;
                 
-                // Extract exact scheduled time and buffer
+                // Extract exact scheduled time and buffer. The fallback wording adapts to
+                // whether the Preferred Start Time dropdown is actually available (arrivals)
+                // or hidden — in which case guests are directed to Special Requirements
+                // instead (departures — see showMassageBuffer in the Package G config).
                 const massageTimeEl = document.getElementById('massage_time');
-                let wellnessScheduleText = "Select start time below...";
+                const massageTimeColEl = document.getElementById('massage-time-col');
+                const massageTimeIsAvailable = massageTimeColEl && massageTimeColEl.style.display !== 'none';
+                let wellnessScheduleText = massageTimeIsAvailable ? "Select your preferred time above" : "Preferred time noted in 'Special Requirements'";
                 let bufferText = "";
                 
                 if (massageTimeEl && massageTimeEl.selectedIndex > 0) {
@@ -4715,12 +4725,14 @@ if (carSeatsCol) {
                 }
                 
                 const durationMins = durationEl.value.split(' ')[0];
-                document.getElementById('summary-addon-label').innerHTML = `In-Villa Wellness<br><span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">${durationMins}-Minute Session • ${addonGuests} Guest${addonGuests > 1 ? 's' : ''}<br><span style="color: var(--text-dark); font-weight: 600;">${wellnessScheduleText}</span><br><i style="opacity: 0.8;">${bufferText}</i></span>`;
+                document.getElementById('summary-addon-label').innerHTML = `<span style="display:block; font-weight:600; color:var(--text-dark);">In-Villa Wellness</span><span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; line-height: 1.4;">[ ${durationMins}-Minute Session • ${addonGuests} Guest${addonGuests > 1 ? 's' : ''} ]<br><span style="color: var(--text-dark); font-weight: 600;">${wellnessScheduleText}</span><br><i style="opacity: 0.8;">${bufferText}</i></span>`;
                 
                 document.getElementById('summary-addon-row').style.display = 'flex';
                 document.getElementById('summary-addon-total').textContent = `US$${addonTotal.toLocaleString('en-US')}`;
+                document.getElementById('summary-addon-divider').style.display = 'block';
             } else {
                 document.getElementById('summary-addon-row').style.display = 'none';
+                document.getElementById('summary-addon-divider').style.display = 'none';
             }
 
             const grandTotal = total + addonTotal;
