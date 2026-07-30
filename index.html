@@ -777,11 +777,15 @@
             display: block;
         }
 
-/* Apex UX: Mobile-only — matches the space below the wordmark to the
-           3rem of space the .site-footer padding-top already puts above it. */
+/* Apex UX: Mobile-only — expanded symmetrical breathing room around the wordmark. 
+           Borrows from the bottom scroll buffer to keep overall footer height balanced. */
         @media (max-width: 768px) {
+            .site-footer {
+                padding-top: 4rem;
+                padding-bottom: 4.5rem;
+            }
             .footer-wordmark {
-                margin-bottom: 3rem;
+                margin-bottom: 4rem;
             }
         }
 
@@ -805,19 +809,9 @@
                 text-align: left;
             }
             .footer-wordmark {
-                display: block;
-                font-family: 'Cormorant Garamond', serif;
-                font-size: 1.65rem;
-                font-weight: 700;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: var(--text-dark);
-                margin-bottom: 0.6rem;
+                margin-bottom: 2.5rem;
                 margin-left: 0;
                 margin-right: 0;
-            }
-            [data-theme="dark"] .footer-wordmark-ondark {
-                margin-bottom: 3rem;
             }
             .contact-info { grid-area: contact; }
             .social-links { grid-area: social; }
