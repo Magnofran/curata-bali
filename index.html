@@ -752,13 +752,21 @@
            The mobile stacked layout below this breakpoint is untouched. */
         .footer-wordmark {
             display: block;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.65rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--text-dark);
+            height: 1.65rem;
+            width: auto;
             margin-bottom: 0.6rem;
+        }
+
+        /* Apex UX: Wordmark SVG theme swap — light-theme (dark) mark shown by default,
+           dark-theme (white) mark shown only when [data-theme="dark"] is active */
+        .footer-wordmark-ondark {
+            display: none;
+        }
+        [data-theme="dark"] .footer-wordmark-onlight {
+            display: none;
+        }
+        [data-theme="dark"] .footer-wordmark-ondark {
+            display: block;
         }
 
 /* Apex UX: Mobile-only — matches the space below the wordmark to the
@@ -1529,7 +1537,7 @@
 
     <header class="main-hero">
         <nav style="position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 2.5rem; display: flex; justify-content: space-between; z-index: 10;">
-            <span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 1.65rem; color: #ffffff;">Vurata</span>
+            <img src="branding/vurata-wordmark-light.svg" alt="Vurata" style="height: 1.65rem; width: auto; display: block;">
         </nav>
         
        <div class="hero-content">
@@ -3352,7 +3360,8 @@ function expandTerminal(){
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-brand">
-                <span class="footer-wordmark">Vurata</span>
+                <img src="branding/vurata-wordmark-dark.svg" alt="Vurata" class="footer-wordmark footer-wordmark-onlight">
+                <img src="branding/vurata-wordmark-light.svg" alt="Vurata" class="footer-wordmark footer-wordmark-ondark">
                 <div class="trust-badge">
                     <div class="trust-badge-row">
                         <span>Dedicated Host & Driver per 4 Guests</span>
