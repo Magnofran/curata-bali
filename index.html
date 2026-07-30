@@ -1092,6 +1092,51 @@
             animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* Apex UX: Booking Essentials Progressive Disclosure (Transparency / Trip Advisory / Dress Code) */
+        .directive-show-more-row {
+            display: flex;
+            justify-content: center;
+            padding: 0.25rem 0 1.5rem 0;
+        }
+        .directive-show-more-btn {
+            background: none;
+            border: none;
+            padding: 0.4rem 0.25rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            transition: color 0.25s ease;
+        }
+        .directive-show-more-btn::after {
+            content: '+';
+            display: inline-block;
+            margin-left: 0.4rem;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+        }
+        .directive-show-more-btn.is-expanded::after {
+            content: '−';
+            transform: rotate(180deg);
+            color: var(--text-dark);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .directive-show-more-btn:hover,
+            .directive-show-more-btn:hover::after {
+                color: var(--accent-vibrant);
+            }
+        }
+        #modalDirective .directive-extra {
+            display: none;
+        }
+        #modalDirective.is-expanded .directive-extra {
+            display: flex;
+            animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
 	/* Apex UX: Mobile Viewport Stabilization */
         @media (max-width: 768px) {
             input, textarea, select {
@@ -3459,6 +3504,10 @@ function expandTerminal(){
                 <!-- Injected via JS -->
             </div>          
 
+            <div class="directive-show-more-row" id="directiveShowMoreRow" style="display: none;">
+                <button type="button" class="directive-show-more-btn" id="directiveShowMoreBtn" onclick="toggleDirectiveMore()" aria-expanded="false" aria-controls="modalDirective">View All</button>
+            </div>
+
             <!-- Apex Booking Threshold -->
             <div style="margin-bottom: 2.5rem; padding: 1.5rem; border: none; background: var(--border-light); text-align: center; border-top: 2px solid var(--accent-vibrant);">
                 <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark); margin-bottom: 0.75rem;">The Vurata Standard</strong>
@@ -3932,6 +3981,37 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
         const modal = document.getElementById('packageModal');
         let currentTransferDirection = 'arrival';
 
+        // Apex UX: Booking Essentials progressive disclosure (Transparency / Trip Advisory / Dress Code)
+        function toggleDirectiveMore() {
+            const directive = document.getElementById('modalDirective');
+            const btn = document.getElementById('directiveShowMoreBtn');
+            if (!directive || !btn) return;
+
+            const isExpanded = directive.classList.toggle('is-expanded');
+            btn.classList.toggle('is-expanded', isExpanded);
+            btn.setAttribute('aria-expanded', String(isExpanded));
+            btn.textContent = isExpanded ? 'Collapse' : 'View All';
+
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        }
+
+        function refreshDirectiveToggle() {
+            const directive = document.getElementById('modalDirective');
+            const row = document.getElementById('directiveShowMoreRow');
+            const btn = document.getElementById('directiveShowMoreBtn');
+            if (!directive || !row || !btn) return;
+
+            directive.classList.remove('is-expanded');
+            btn.classList.remove('is-expanded');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = 'View All';
+
+            const hasExtra = directive.querySelector('.directive-extra') !== null;
+            row.style.display = hasExtra ? 'flex' : 'none';
+        }
+
         // Apex UX: Silent Progress Tracking Algorithm
         function updateBookingProgress() {
             const form = document.querySelector('form');
@@ -4036,15 +4116,16 @@ We don't do pre-packaged bus tours. Share your preferences below, and your dedic
             if (config.transparencyHTML || config.advisoryHTML || (config.showDressCode && config.dressCodeHTML)) {
                 combinedDirectives = combinedDirectives.replace('</ul>', ''); // Open the list
                 
-                if (config.transparencyHTML) combinedDirectives += `<li><strong>Transparency</strong>${config.transparencyHTML}</li>`;
-                if (config.advisoryHTML) combinedDirectives += `<li><strong>Trip Advisory</strong>${config.advisoryHTML}</li>`;
-                if (config.showDressCode && config.dressCodeHTML) combinedDirectives += `<li><strong>Dress Code</strong>${config.dressCodeHTML}</li>`;
+                if (config.transparencyHTML) combinedDirectives += `<li class="directive-extra"><strong>Transparency</strong>${config.transparencyHTML}</li>`;
+                if (config.advisoryHTML) combinedDirectives += `<li class="directive-extra"><strong>Trip Advisory</strong>${config.advisoryHTML}</li>`;
+                if (config.showDressCode && config.dressCodeHTML) combinedDirectives += `<li class="directive-extra"><strong>Dress Code</strong>${config.dressCodeHTML}</li>`;
                 
                 combinedDirectives += '</ul>'; // Close the list
             }
             
             // Inject combined list into the DOM
             document.getElementById('modalDirective').innerHTML = combinedDirectives;
+            refreshDirectiveToggle();
 
             // Reset Dynamic Logistics
             const logisticsBlock = document.getElementById('dynamicLogisticsBlock');
@@ -4553,12 +4634,13 @@ if (carSeatsCol) {
             let combinedDirectives = c.directiveHTML;
             if (c.transparencyHTML || c.advisoryHTML || (c.showDressCode && c.dressCodeHTML)) {
                 combinedDirectives = combinedDirectives.replace('</ul>', '');
-                if (c.transparencyHTML) combinedDirectives += `<li><strong>Transparency</strong>${c.transparencyHTML}</li>`;
-                if (c.advisoryHTML) combinedDirectives += `<li><strong>Trip Advisory</strong>${c.advisoryHTML}</li>`;
-                if (c.showDressCode && c.dressCodeHTML) combinedDirectives += `<li><strong>Dress Code</strong>${c.dressCodeHTML}</li>`;
+                if (c.transparencyHTML) combinedDirectives += `<li class="directive-extra"><strong>Transparency</strong>${c.transparencyHTML}</li>`;
+                if (c.advisoryHTML) combinedDirectives += `<li class="directive-extra"><strong>Trip Advisory</strong>${c.advisoryHTML}</li>`;
+                if (c.showDressCode && c.dressCodeHTML) combinedDirectives += `<li class="directive-extra"><strong>Dress Code</strong>${c.dressCodeHTML}</li>`;
                 combinedDirectives += '</ul>';
             }
             document.getElementById('modalDirective').innerHTML = combinedDirectives;
+            refreshDirectiveToggle();
 
             const wellnessDescEl = document.getElementById('wellness-desc');
             if (wellnessDescEl) wellnessDescEl.textContent = c.wellnessDescOverride;
