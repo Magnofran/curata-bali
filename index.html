@@ -1537,7 +1537,8 @@
 
     <header class="main-hero">
         <nav style="position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 2.5rem; display: flex; justify-content: space-between; z-index: 10;">
-            <img src="branding/vurata-wordmark-light.svg" alt="Vurata" style="height: 1.65rem; width: auto; display: block;">
+            <!-- Apex UX: References "-dark.svg" intentionally — the two exported files render with colors swapped relative to their filenames. This is the file that renders white. -->
+            <img src="branding/vurata-wordmark-dark.svg" alt="Vurata" style="height: 1.65rem; width: auto; display: block;">
         </nav>
         
        <div class="hero-content">
@@ -3360,8 +3361,9 @@ function expandTerminal(){
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-brand">
-                <img src="branding/vurata-wordmark-dark.svg" alt="Vurata" class="footer-wordmark footer-wordmark-onlight">
-                <img src="branding/vurata-wordmark-light.svg" alt="Vurata" class="footer-wordmark footer-wordmark-ondark">
+                <!-- Apex UX: File references swapped relative to filename — see note above the nav wordmark. -->
+                <img src="branding/vurata-wordmark-light.svg" alt="Vurata" class="footer-wordmark footer-wordmark-onlight">
+                <img src="branding/vurata-wordmark-dark.svg" alt="Vurata" class="footer-wordmark footer-wordmark-ondark">
                 <div class="trust-badge">
                     <div class="trust-badge-row">
                         <span>Dedicated Host & Driver per 4 Guests</span>
