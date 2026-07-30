@@ -361,7 +361,7 @@
 
         .card-img-wrapper {
             position: relative;
-            height: 240px;
+            height: 210px; /* Slightly wider, less tall — shortens the card while giving the hero a more horizontal proportion */
             width: 100%;
             overflow: hidden;
             border-bottom: 1px solid var(--border-light);
@@ -431,7 +431,7 @@
         .card:hover .card-img-wrapper img { transform: scale(1.05); }
 
         .card-content {
-            padding: 1.25rem 1.15rem; /* Reclaims horizontal space for the inner text */
+            padding: 1rem 1.15rem; /* Tightened vertically to compact the card; horizontal space for inner text preserved */
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -859,7 +859,7 @@
         .card-subtitle {
             font-size: 0.8rem; /* Dropped one further notch for a tighter, more editorial rhythm and a more compact card, especially on mobile */
             color: var(--text-muted);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem; /* Tightened to compact the card without further reducing type size */
             line-height: 1.35;
             flex-grow: 1;
         }
@@ -868,18 +868,18 @@
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             font-size: 0.75rem; /* Down-scaled to ensure single-line rendering */
             font-weight: 500;
             color: var(--text-dark);
             border-top: 1px solid var(--border-light);
-            padding-top: 1rem;
+            padding-top: 0.85rem;
         }
 
         .price-block {
             display: flex;
             flex-direction: column;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.15rem;
         }
 
         .price-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
