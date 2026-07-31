@@ -3701,7 +3701,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
 
                 <!-- Dynamic Wellness/Massage Section -->
                 <div id="wellness-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.5rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant); padding: 1.25rem 0.5rem;">
-                    <label id="wellness-title" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: -0.04em; color: var(--text-dark); margin-bottom: 0.75rem; display: block;">In-Villa Wellness (Optional Add-on)</label>
+                    <label id="wellness-title" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-dark); margin-bottom: 0.75rem; display: block;">In-Villa Wellness (Optional Add-on)</label>
                     
                     <div id="wellness-info-box" style="margin-bottom: 1.25rem;">
                         <p id="wellness-desc" style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Arrange for a local Balinese massage therapist to visit your accommodation once your itinerary concludes.</p>
@@ -4378,7 +4378,7 @@ if (carSeatsCol) {
                 if(wellnessInfoBox) {
                     wellnessInfoBox.style.display = 'block';
                     const wellnessDesc = document.getElementById('wellness-desc');
-                    if(wellnessDesc) wellnessDesc.textContent = config.wellnessDescOverride || 'Arrange for a local Balinese massage therapist to visit your accommodation once your itinerary concludes — save $15 versus booking on-demand.';
+                    if(wellnessDesc) wellnessDesc.textContent = config.wellnessDescOverride || 'Arrange for a local Balinese massage therapist to visit your accommodation after your experience. Save $15 versus booking on-demand.';
                 }
                 
                 const hideMassageBuffer = (config.formMode === 'charter');
