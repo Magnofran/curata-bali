@@ -3124,6 +3124,36 @@ function expandTerminal(){
                 </div>
             </article>
 
+            <!-- Package H -->
+            <article class="card" onclick="openModal('Package H', 'Private Day Charter', 'From $995', 'images/package-h.webp')">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">No Fixed Itinerary</span>
+                    <img src="images/package-h.webp" alt="Private Day Charter" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <h3>Private Day Charter</h3>
+                    <p class="card-subtitle">There's no set itinerary here — just a dedicated host, chauffeur, and executive vehicle held entirely at your disposal, ready to adapt the moment your day does.</p>
+                    <div class="card-meta">
+                        <span>⏱ 8, 10, or 12-Hour Options</span>
+                        <span>👥 Best for Custom, Multi-Stop Days</span>
+                        <span>🚘 1 Host & Chauffeur per 4 Guests</span>
+                    </div>
+                    <div class="price-block price-block--dual">
+                        <div class="price-tier">
+                            <span class="price-label">Flat Rate</span>
+                            <span class="price-value">From $995</span>
+                        </div>
+                        <div class="price-tier" style="flex: 1; text-align: right;">
+                            <span class="price-unit">Covers 1–4 guests, per vehicle</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                        <button class="card-btn">Request</button>
+                        <button onclick="sharePackage('Package H', 'Private Day Charter'); event.stopPropagation();" style="background:none; border:none; cursor:pointer; padding:4px; display:inline-flex; align-items:center; gap:4px; color:var(--text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg><span style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase;">Share</span></button>
+                    </div>
+                </div>
+            </article>
+
         </div>   
     </section>
 
@@ -3491,7 +3521,18 @@ function expandTerminal(){
                 </select>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Details below update based on your selection.</p>
             </div>
-            
+
+            <div id="charter-duration-col" style="display: none; margin: 0 0 1.75rem 0; padding: 1.25rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant);">
+                <label for="charter_duration" style="display: block; margin-bottom: 0.65rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark);">Select Your Charter Duration</label>
+                <select id="charter_duration" name="charter_duration" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--surface); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                    <option value="8-Hour Charter ($995 per vehicle)">8-Hour Charter — $995 per vehicle</option>
+                    <option value="10-Hour Charter ($1,195 per vehicle)">10-Hour Charter — $1,195 per vehicle</option>
+                    <option value="12-Hour Charter ($1,395 per vehicle)">12-Hour Charter — $1,395 per vehicle</option>
+                    <option value="Multi-Day Charter (3+ Days, Custom Quote)">Multi-Day Charter (3+ Days) — Custom Quote</option>
+                </select>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Pricing and inclusions below update based on your selection.</p>
+            </div>
+
             <p id="modalContext" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; font-style: italic; border-left: 2px solid var(--accent-vibrant); padding-left: 1rem; display: none;"></p>
             
             <!-- Moved: Inclusions First -->
@@ -3978,6 +4019,25 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     lineItemLabel: 'Airport Departure Concierge',
                     receiptTimeLabel: 'Departure Flight'
                 }
+            },
+            // PACKAGE H — PRIVATE DAY CHARTER
+            'Package H': {
+                delayDays: 2,
+                dateLabel: 'Date & Requested Start Time',
+                timeMin: '06:00',
+                timeMax: '14:00',
+                timeHelper: 'Choose when you\'d like your host and vehicle to arrive — anywhere from early morning through mid-afternoon, depending on your plans for the day.',
+                contextHTML: '"Some days don\'t need a plan — only someone capable standing by. Your host and driver remain entirely at your disposal, ready to adjust the moment your day does."',
+                directiveHTML: `<strong>Booking Essentials</strong><ul class="directive-list"><li style="grid-column: 1 / -1;"><strong>48-Hour Notice</strong> required to confirm your dedicated host and chauffeur for the requested window.</li><li><strong>No Fixed Route</strong> There's no pre-set itinerary — share a rough idea of your day with your host, or simply decide as you go.</li><li><strong>Standby Time Included</strong> Your host and vehicle remain with you at every stop for as long as you'd like to stay.</li><li><strong>Larger Groups</strong> Parties of 5 or more automatically receive an additional vehicle and host, each billed at the same rate as your selected duration.</li><li class="directive-extra"><strong>Multi-Day Charters</strong> Selecting 3+ Days submits a request for a custom quote — your concierge will follow up directly to coordinate staff logistics before confirming pricing.</li><li style="grid-column: 1 / -1;"><strong>50% Deposit</strong> Confirms your booking — the balance is settled before your host arrives.</li></ul>`,
+                transparencyHTML: `This package secures your dedicated host, chauffeur, and executive vehicle for the selected duration.<br><br>Entry fees, tolls, parking, dining, and any venue costs along the way are settled independently by you — your host simply handles the coordination, queueing, and logistics.`,
+                guestMax: 20, guestPlaceholder: '1-4',
+                incTitle: 'The Charter Includes',
+                incHTML: `<li>✓ Dedicated host & executive chauffeur</li><li>✓ Premium climate-controlled vehicle</li><li>✓ Fully open, adjustable routing</li><li>✓ On-the-day restaurant & venue coordination</li><li>✓ Translation & local liaison support</li><li>✓ Waiting time included at every stop</li><li>✓ In-vehicle Wi-Fi & charging hub</li><li>✓ Mineral-chilled towel service</li><li>✓ Premium Mineral Water (2x 600ml Per Guest)</li><li>✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
+                showDressCode: false,
+                formMode: 'charter',
+                pickupLabel: 'Villa / Hotel Pick-Up Pin',
+                pickupHelper: 'Required — this is where your host and vehicle will arrive to begin your day. Open Google Maps, tap Share, and paste the link here.',
+                notesPlaceholder: 'e.g., Rough itinerary ideas, preferred stops, accessibility needs, etc.'
             }
         };
 
@@ -4167,6 +4227,8 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     notesField.placeholder = "e.g., Children's allergies, bedtime routines, special needs, etc.";
                 } else if (config.formMode === 'arrival') {
                     notesField.placeholder = "e.g., Preferred grocery items, dinner reservation requests, early check-in needs, etc.";
+                } else if (config.formMode === 'charter') {
+                    notesField.placeholder = "e.g., Rough itinerary ideas, preferred stops, accessibility needs, etc.";
                 } else if (packageID === 'Package C') { // VIP Nightlife
                     notesField.placeholder = "e.g., Venue preferences, table reservation requests, music taste, etc.";
                 } else {
@@ -4187,10 +4249,13 @@ Every Vurata service is delivered with the same standards of discretion, coordin
             const pickupHelper = document.getElementById('pickupLocationHelper');
             const pickupLabel = document.getElementById('pickupLocationLabel');
             if (pickupInput) {
-                pickupInput.required = (config.formMode === 'massage' || config.formMode === 'family' || config.formMode === 'arrival');
+                pickupInput.required = (config.formMode === 'massage' || config.formMode === 'family' || config.formMode === 'arrival' || config.formMode === 'charter');
                 if (config.formMode === 'arrival') {
                     if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Drop-Off Pin';
                     if (pickupHelper) pickupHelper.textContent = "Required — this is where your host will take you after collecting you from the airport. Open Google Maps, tap Share, and paste the link here.";
+                } else if (config.formMode === 'charter') {
+                    if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Pick-Up Pin';
+                    if (pickupHelper) pickupHelper.textContent = "Required — this is where your host and vehicle will arrive to begin your day. Open Google Maps, tap Share, and paste the link here.";
                 } else {
                     if (pickupLabel) pickupLabel.textContent = 'Google Maps Pick-Up Pin';
                     if (pickupHelper) {
@@ -4213,8 +4278,9 @@ Every Vurata service is delivered with the same standards of discretion, coordin
             }
 
 if (carSeatsCol) {
-                carSeatsCol.style.display = (config.formMode === 'standard' || config.formMode === 'arrival') ? 'block' : 'none';
-                if (config.formMode !== 'standard' && config.formMode !== 'arrival') document.getElementById('car_seats').value = "0";
+                const showCarSeats = (config.formMode === 'standard' || config.formMode === 'arrival' || config.formMode === 'charter');
+                carSeatsCol.style.display = showCarSeats ? 'block' : 'none';
+                if (!showCarSeats) document.getElementById('car_seats').value = "0";
             }
 
             if (flightNumberCol) {
@@ -4233,6 +4299,18 @@ if (carSeatsCol) {
             const transferDirectionSelect = document.getElementById('transfer_direction');
             if (transferDirectionSelect && config.formMode === 'arrival' && config.departureContent) {
                 transferDirectionSelect.value = 'arrival';
+            }
+
+            const charterDurationCol = document.getElementById('charter-duration-col');
+            if (charterDurationCol) {
+                charterDurationCol.style.display = (config.formMode === 'charter') ? 'block' : 'none';
+            }
+            const charterDurationSelect = document.getElementById('charter_duration');
+            if (charterDurationSelect) {
+                charterDurationSelect.required = (config.formMode === 'charter');
+                if (config.formMode === 'charter') {
+                    charterDurationSelect.selectedIndex = 0;
+                }
             }
 
             if (config.formMode === 'family') {
@@ -4298,9 +4376,14 @@ if (carSeatsCol) {
                     if(wellnessDesc) wellnessDesc.textContent = config.wellnessDescOverride || 'Arrange for a local Balinese massage therapist to visit your accommodation once your itinerary concludes — save $15 versus booking on-demand.';
                 }
                 
-                if(massageTimeCol) massageTimeCol.style.display = 'block';
-                if(massageTimeNote) massageTimeNote.style.display = 'block';
-                document.getElementById('massage_time').innerHTML = '<option value="" disabled selected>Select start time first...</option>';
+                const hideMassageBuffer = (config.formMode === 'charter');
+                if(massageTimeCol) massageTimeCol.style.display = hideMassageBuffer ? 'none' : 'block';
+                if(massageTimeNote) massageTimeNote.style.display = hideMassageBuffer ? 'none' : 'block';
+                if (hideMassageBuffer) {
+                    document.getElementById('massage_time').value = '';
+                } else {
+                    document.getElementById('massage_time').innerHTML = '<option value="" disabled selected>Select start time first...</option>';
+                }
                 familySection.style.display = 'none';
                 
                 if(guestMassageNote) guestMassageNote.style.display = 'none';
@@ -4672,6 +4755,15 @@ if (carSeatsCol) {
             });
         }
 
+        const charterDurationEl = document.getElementById('charter_duration');
+        if (charterDurationEl) {
+            charterDurationEl.addEventListener('change', function() {
+                calculateInvestment();
+                updateBookingProgress();
+                if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(10);
+            });
+        }
+
         // Dynamic Fleet & Host Protocol Trigger
         document.getElementById('guests').addEventListener('change', function() {
             const guestCount = parseInt(this.value);
@@ -4784,6 +4876,7 @@ if (carSeatsCol) {
             let addonTotal = 0;
             let guestCount = 1;
             let protocolText = "";
+            let isCharterCustomQuote = false;
 
             if (config.formMode === 'family') {
                 const days = parseInt(document.getElementById('care_days').value) || 0;
@@ -4839,6 +4932,37 @@ if (carSeatsCol) {
 
                 document.getElementById('summary-line-item').innerHTML = `<span style="display:block; font-weight:600; color:var(--text-dark);">${lineLabel}</span><span style="display:block; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">[ ${vehiclesNeeded} Vehicle${vehiclesNeeded > 1 ? 's' : ''} for ${guestCount} Guest${guestCount > 1 ? 's' : ''} ]</span>`;
                 protocolText = `✓ Dedicated Host${vehiclesNeeded > 1 ? 's' : ''} & ${vehiclesNeeded} Executive Vehicle${vehiclesNeeded > 1 ? 's' : ''} on Standby for Your ${directionSuffix}`;
+            } else if (config.formMode === 'charter') {
+                guestCount = parseInt(document.getElementById('guests').value) || 0;
+                const vehiclesNeeded = Math.ceil(guestCount / 4);
+                const charterDurationEl = document.getElementById('charter_duration');
+                const charterDurationVal = charterDurationEl ? charterDurationEl.value : '';
+
+                let tierPrice = 995;
+                let tierLabel = '8-Hour Charter';
+
+                if (charterDurationVal.includes('10-Hour')) {
+                    tierPrice = 1195;
+                    tierLabel = '10-Hour Charter';
+                } else if (charterDurationVal.includes('12-Hour')) {
+                    tierPrice = 1395;
+                    tierLabel = '12-Hour Charter';
+                } else if (charterDurationVal.includes('Multi-Day')) {
+                    isCharterCustomQuote = true;
+                    tierLabel = 'Multi-Day Charter';
+                }
+
+                if (isCharterCustomQuote) {
+                    total = 0;
+                    document.getElementById('summary-line-item').innerHTML = `<span style="display:block; font-weight:600; color:var(--text-dark);">${tierLabel}</span><span style="display:block; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">[ ${guestCount} Guest${guestCount > 1 ? 's' : ''} — Custom Quote ]</span>`;
+                    protocolText = `✓ Your concierge will follow up directly to confirm staffing and pricing`;
+                } else {
+                    total = tierPrice * vehiclesNeeded;
+                    document.getElementById('summary-line-item').innerHTML = `<span style="display:block; font-weight:600; color:var(--text-dark);">${tierLabel}</span><span style="display:block; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">[ ${vehiclesNeeded} Vehicle${vehiclesNeeded > 1 ? 's' : ''} for ${guestCount} Guest${guestCount > 1 ? 's' : ''} ]</span>`;
+                    protocolText = (vehiclesNeeded > 1)
+                        ? `✓ ${vehiclesNeeded} Dedicated Hosts & Executive Vehicles on Standby`
+                        : `✓ Dedicated Host & Executive Vehicle on Standby`;
+                }
             } else {
                 guestCount = parseInt(document.getElementById('guests').value) || 0;
                 
@@ -4990,6 +5114,33 @@ if (carSeatsCol) {
                     const nextDayLabel = endHour24 >= 24 ? ' (Next Day)' : '';
                     
                     dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Pick-up ≈ ${endHour12}:${endMinStr} ${endAmpm} Return${nextDayLabel}</span>`;
+                } else if (timeVal && config.formMode === 'charter') {
+                    const [hoursStr, minutesStr] = timeVal.split(':');
+                    let hours = parseInt(hoursStr, 10);
+                    let minutes = parseInt(minutesStr, 10);
+                    const startAmpm = hours >= 12 ? 'PM' : 'AM';
+                    const startHour12 = (hours % 12) || 12;
+                    const startMinStr = String(minutes).padStart(2, '0');
+
+                    const charterDurationValNow = document.getElementById('charter_duration') ? document.getElementById('charter_duration').value : '';
+
+                    if (charterDurationValNow.includes('Multi-Day')) {
+                        dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Start • Multi-Day Charter</span>`;
+                    } else {
+                        let chosenHours = 8;
+                        if (charterDurationValNow.includes('10-Hour')) chosenHours = 10;
+                        else if (charterDurationValNow.includes('12-Hour')) chosenHours = 12;
+
+                        const endTotalMins = (hours * 60) + minutes + (chosenHours * 60);
+                        const endHour24 = Math.floor(endTotalMins / 60);
+                        const endMins = endTotalMins % 60;
+                        const endAmpm = (endHour24 % 24) >= 12 ? 'PM' : 'AM';
+                        const endHour12 = (endHour24 % 12) || 12;
+                        const endMinStr = String(endMins).padStart(2, '0');
+                        const nextDayLabel = endHour24 >= 24 ? ' (Next Day)' : '';
+
+                        dateTimeText = `${finalDateStr}<br><span style="font-weight: 500; font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">${startHour12}:${startMinStr} ${startAmpm} Start ≈ ${endHour12}:${endMinStr} ${endAmpm} Return${nextDayLabel}</span>`;
+                    }
                 } else if (timeVal) {
                     // Fallback formatting for mobile services that do not require return times
                     const [hoursStr, minutesStr] = timeVal.split(':');
@@ -5019,7 +5170,9 @@ if (carSeatsCol) {
                 document.getElementById('summary-grand-total').textContent = '';
             }
 
-            if (grandTotal > 0) {
+            if (isCharterCustomQuote) {
+                summaryBox.style.display = 'none';
+            } else if (grandTotal > 0) {
                 summaryBox.style.display = 'block';
             } else {
                 summaryBox.style.display = 'none';
