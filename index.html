@@ -255,6 +255,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Apex UX: Responsive Title Breaks */
+        .responsive-break { 
+            display: inline; 
+        }
+        @media (max-width: 768px) {
+            .responsive-break { 
+                display: block; 
+            }
+        }
 
         /* Carousel Section */
         .packages-section { padding: 0; max-width: 1400px; margin: 10rem auto 6rem auto; }
@@ -3193,7 +3202,7 @@ function expandTerminal(){
     <!-- Apex Upgrade: FAQ Section -->
     <section style="max-width: 800px; margin: 8.5rem auto 8rem auto; padding: 0 2rem;">
         <div style="text-align: center; margin-bottom: 1.35rem;">
-            <h2 style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Everything You Need to Know</h2>
+            <h2 style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark);">Everything <span class="responsive-break">You Need to Know</span></h2>
         </div>
         
         <div class="faq-accordion">
