@@ -352,8 +352,13 @@
 
         @media (min-width: 768px) { 
             .card { flex: 0 0 40%; scroll-snap-align: start; } 
-            /* Swaps internal padding for external margin to create a hard visual clip */
-            .carousel { padding: 1rem 0 4rem 0; margin: 0 2rem; scroll-padding-left: 0; }
+            /* Swaps internal padding for external margin to create a hard visual clip.
+               0.5rem of that inset is kept as real padding (not margin) on each side —
+               visually identical, since margin and padding both render as empty space
+               here — but padding sits *inside* the scrollport's clip boundary, giving
+               the card's hover translate(-4px,-4px)/shadow room to paint without being
+               cut off by overflow-x/overflow-y at the scroll boundaries. */
+            .carousel { padding: 1rem 0.5rem 4rem 0.5rem; margin: 0 1.5rem; scroll-padding-left: 0; }
         }
         @media (min-width: 1024px) { 
             .card { flex: 0 0 28%; } 
