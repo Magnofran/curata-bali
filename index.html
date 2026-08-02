@@ -259,9 +259,17 @@
         .responsive-break { 
             display: inline; 
         }
+        .desktop-break {
+            display: block;
+            margin-top: 0.25rem; /* Adds a tiny bit of breathing room above the punchline */
+        }
         @media (max-width: 768px) {
             .responsive-break { 
                 display: block; 
+            }
+            .desktop-break {
+                display: inline;
+                margin-top: 0;
             }
         }
 
@@ -1260,7 +1268,7 @@
 
         /* Philosophy Text */
         .difference-philosophy {
-            max-width: 700px;
+            max-width: 715px; /* Increased by 15px to give ~7.5px more lateral breathing room */
             margin: 0 auto 5rem auto;
         }
 
@@ -1623,7 +1631,7 @@
 
             <div class="difference-philosophy">
                 <p>Private hospitality isn't about exclusivity. It's about removing everything that distracts from the experience. Whether you're collected or welcomed at your door, every detail is quietly coordinated so you can remain present in the experience—not the logistics.</p>
-                <p style="margin-top: 1.25rem;">This same discipline shapes how we operate. Vurata works with a deliberately limited number of clients at any time — the only way we know to coordinate every specialist, host, and partner, and confirm each detail against real availability rather than assumed capacity. Where others scale outward, we've chosen to go deeper: fewer experiences, each one considered in full.</p>
+                <p style="margin-top: 1.25rem;">This same discipline shapes how we operate. Vurata works with a deliberately limited number of clients at any time — the only way we know to coordinate every specialist, host, and partner, and confirm each detail against real availability rather than assumed capacity. Where others scale outward, we've chosen to go deeper: <span class="desktop-break">fewer experiences, each one considered in full.</span></p>
             </div>
 
             <div class="editorial-comparison">
