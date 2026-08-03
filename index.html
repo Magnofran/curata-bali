@@ -531,9 +531,9 @@
     }
 
     @keyframes systemRecalculate {
-        0% { opacity: 0.3; transform: scale(0.96) translateY(2px); color: var(--accent-vibrant); }
+        0% { opacity: 0.3; transform: scale(0.96) translateY(2px); }
         40% { opacity: 1; transform: scale(1.01) translateY(0); }
-        100% { opacity: 1; transform: scale(1); color: var(--surface); }
+        100% { opacity: 1; transform: scale(1); }
     }
 
     .recalculate-flash {
@@ -3658,10 +3658,10 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                                 <button type="button" class="qty-stepper-btn" id="guestStepperPlus" aria-label="Increase number of guests">&plus;</button>
                             </div>
                             <!-- Apex Inline Reveal -->
-                            <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--text-dark); color: var(--surface); border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                            <div id="inlineFleetNotice" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: var(--border-light); border: none; color: var(--text-dark); border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.4; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
                                 </div>
                             <!-- Standalone Massage Ratio Note -->
-                            <p id="guestMassageNote" style="display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; font-style: italic;">*1 specialist per 2 guests, in sequence. For simultaneous sessions, note it in <strong>Special Requirements</strong> below. All Vurata wellness specialists are female.</p>
+                            <p id="guestMassageNote" style="display: none; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; font-style: italic;">*1 specialist per 2 guests, in sequence. For simultaneous sessions, note it in <strong>Special Requirements</strong> below. All Vurata wellness specialists are female.</p>
                         </div>
                         <div id="family-guest-col" style="display: none;">
                             <label for="num_children">Children / Assisted Guests</label>
@@ -3870,15 +3870,15 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 </div>
 
 		<!-- Dynamic Scaled Logistics Block (Moved below the interaction layer to prevent viewport scroll jumping) -->
-            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: var(--tint-focus); border: 1px solid var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div id="dynamicLogisticsBlock" style="margin-bottom: 2rem; background: var(--border-light); border-left: 3px solid var(--text-dark); padding: 1.25rem; display: none; animation: contentStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
                 
                 <!-- Dynamic Highlights Re-anchored to prevent top-viewport scroll jumping -->
                 <div id="dynamicIncTeam" style="display: none; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.35rem;"></div>
                 <div id="dynamicIncFleet" style="display: none; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 1.25rem;"></div>
 
                 <strong id="logisticsBlockTitle" style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-dark); margin-bottom:0.75rem;"></strong>
-                <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
-                <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
+                <p style="margin:0 0 0.75rem 0; font-size:0.85rem; color:var(--text-dark); line-height:1.6;">To ensure uncompromising comfort and space, groups of 5 or more automatically receive a scaled deployment. Your party is seamlessly distributed across a synchronized convoy of premium vehicles, complete with dedicated concierge support in every vehicle (<strong>1 Dedicated Host per 4 Guests</strong>).</p>
+                <p style="margin:0; font-size:0.85rem; color:var(--text-dark); line-height:1.6;">This structure grants your party absolute flexibility. Should any members of your group wish to return to the villa early—whether to rest after an excursion or retire after an evening out—a dedicated vehicle and host will safely escort them back without ever cutting the day short for the rest of the group.</p>
             </div>
 
 		<!-- Apex Investment Summary -->
@@ -4890,7 +4890,7 @@ if (carSeatsCol) {
                 const protocolTitle = isSyndicate ? "Expanded Group Coordination" : "Dedicated Convoy Secured";
                 
                 // Apex UX: Distinct luxury tones for each tier's notice
-                const inlineColor = isSyndicate ? "var(--surface)" : "#94a3b8"; // Platinum White for 9+, Soft Slate for 5-8
+                const inlineColor = isSyndicate ? "var(--accent-vibrant)" : "var(--text-dark)"; 
                 
                 const inlineTitle = isSyndicate ? "✦ Multi-Vehicle Convoy Allocated" : "✦ Scaled Logistics Allocated";
                 const inlineDesc = "Your group size automatically activates our expanded deployment for absolute comfort.";
@@ -4911,9 +4911,7 @@ if (carSeatsCol) {
 
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
-                    inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = 'var(--surface)';
-                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong>${hostCount} dedicated hosts</strong> have been secured in your package details below.`;
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:${inlineColor}; transition: color 0.4s ease;">${inlineTitle}</strong>${inlineDesc} A synchronized multi-vehicle convoy and <strong style="color: var(--text-dark);">${hostCount} dedicated hosts</strong> have been secured in your package details below.`;
                 }
 
             } else if (guestCount === 1) {
@@ -4924,10 +4922,8 @@ if (carSeatsCol) {
                 
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
-                    inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = 'var(--surface)';
                     const soloRateText = (typeof config.soloPrice === 'number') ? ` — from just $${config.soloPrice}.` : '.';
-                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four${soloRateText}`;
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--text-dark); transition: color 0.4s ease;"><span style="color: var(--accent-vibrant);">✦</span> Solo Traveler Rate</strong>Your private host and vehicle are yours alone, ensuring the exact same uncompromised luxury and pacing as a group of four${soloRateText}`;
                 }
             } else {
                 // Revert to standard baseline non-destructively (2-4 guests)
@@ -4937,9 +4933,7 @@ if (carSeatsCol) {
                 
                 if (inlineNotice) {
                     inlineNotice.style.display = 'block';
-                    inlineNotice.style.background = 'var(--text-dark)';
-                    inlineNotice.style.color = 'var(--surface)';
-                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--accent-vibrant); transition: color 0.4s ease;">✦ Private Logistics Confirmed</strong>Your personal operational footprint is set. A premium vehicle and <strong>1 dedicated host</strong> are allocated strictly for your group's comfort.`;
+                    inlineNotice.innerHTML = `<strong style="display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; color:var(--text-dark); transition: color 0.4s ease;"><span style="color: var(--accent-vibrant);">✦</span> Private Logistics Confirmed</strong>Your personal operational footprint is set. A premium vehicle and <strong style="color: var(--text-dark);">1 dedicated host</strong> are allocated strictly for your group's comfort.`;
                 }
             }
 
