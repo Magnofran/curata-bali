@@ -621,6 +621,12 @@
         /* Restored Flex Grid for Form Rows */
         .form-group.row { display: flex; gap: 1rem; }
         .form-group.row .col { flex: 1; min-width: 0; }
+
+        /* Apex UX: WhatsApp + Guest Count row — always stacked (matches the existing
+           mobile behavior at every width) so the Solo Traveler / Fleet notice below the
+           guest selector can use the full field width instead of sitting beside an empty
+           column on desktop. */
+        .form-group.row.phone-guest-row { flex-direction: column; }
         
         /* Stripped conflicting font rules so it inherits the 0.12em tracking and 700 weight from the master class */
         label { display: block; margin-bottom: 0.5rem; color: var(--text-dark); }
@@ -3568,7 +3574,7 @@ function expandTerminal(){
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.6rem 0 0 0; line-height: 1.4;">Details below update based on your selection.</p>
             </div>
 
-            <p id="modalContext" style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; display: none;"></p>
+            <p id="modalContext" style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem; display: none;"></p>
             
             <!-- Moved: Inclusions First -->
             <div id="modalInclusions" style="margin-bottom: 2rem;">
@@ -3625,14 +3631,14 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row phone-guest-row">
                     <div class="col">
                         <label for="phone">WhatsApp Number</label>
                         <div style="position: relative; display: flex; align-items: center;">
                             <span style="position: absolute; left: 1rem; color: var(--text-dark); font-weight: 500; font-size: 0.95rem; pointer-events: none; z-index: 2;">+</span>
                             <input type="tel" id="phone" name="phone" required placeholder="61 412 345 678" style="padding-left: 1.85rem;" oninput="this.value = this.value.replace(/[^0-9\s]/g, '');">
                         </div>
-                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Please include your country code.</p>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Our primary contact method. Please include your country code.</p>
                     </div>
                     <div class="col">
                         <div id="standard-guest-col">
@@ -3666,17 +3672,18 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     </div>
                 </div>
 
-<div class="form-group row">
-
-                    <div class="col">
-                        <label for="accommodation_name">Villa / Hotel Name</label>
-                        <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
+<div class="form-group" style="margin-bottom: 1.6rem;">
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <div class="col">
+                            <label for="accommodation_name">Villa / Hotel Name</label>
+                            <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
+                        </div>
+                        <div class="col">
+                            <label for="pickup_location" id="pickupLocationLabel">Google Maps Pin</label>
+                            <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="pickup_location" id="pickupLocationLabel">Google Maps Pick-Up Pin</label>
-                        <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
-                        <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.</p>
-                    </div>
+                    <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.</p>
                 </div>
 
                 <div class="form-group row" id="flight-number-col" style="display: none;">
@@ -3718,12 +3725,17 @@ Every Vurata service is delivered with the same standards of discretion, coordin
 
                     <!-- Global Date & Time Block -->
                     <div class="col">
-                        <label id="dateLabel" for="dates">Date of Experience</label>
                         <div class="split-input-group">
-                            <input type="date" id="dates" name="dates" required>
-                            <select id="time" name="time" required style="cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
-                                <option value="" disabled selected>Select Time</option>
-                            </select>
+                            <div style="flex: 1; min-width: 0;">
+                                <label id="dateLabel" for="dates">Date</label>
+                                <input type="date" id="dates" name="dates" required>
+                            </div>
+                            <div id="timeColWrapper" style="flex: 1; min-width: 0;">
+                                <label id="timeLabel" for="time">Pick-Up Time</label>
+                                <select id="time" name="time" required style="cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
+                                    <option value="" disabled selected>Select Time</option>
+                                </select>
+                            </div>
                         </div>
                         <p id="timeHelperText" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; margin-top: 0.25rem; margin-bottom: 0; display: none;"></p>
                     </div>
@@ -4032,7 +4044,6 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 showDressCode: false,
                 formMode: 'arrival',
                 fullPayment: true,
-                pickupLabel: 'Villa / Hotel Drop-Off Pin',
                 pickupHelper: 'Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.',
                 flightHelper: 'We monitor this flight for delays and adjust your intercept time automatically.',
                 notesPlaceholder: 'e.g., Preferred grocery items, dinner reservation requests, early check-in needs, etc.',
@@ -4048,7 +4059,6 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     incTitle: 'The Departure Includes',
                     incHTML: `<li>✓ Backward-planned pick-up timing</li><li>✓ Live flight monitoring for delays</li><li>✓ Dedicated Host & Driver (On Standby)</li><li>✓ Priority check-in & departure hall assistance</li><li>✓ Luggage handling from villa to terminal</li><li>✓ Optional last-minute errands or shopping stop</li><li class="inc-amenity">✓ In-vehicle Wi-Fi & charging hub</li><li class="inc-amenity">✓ Mineral-chilled towel service</li><li class="inc-amenity">✓ Premium Mineral Water (2x 600ml Per Guest)</li><li class="inc-amenity">✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
                     wellnessDescOverride: 'Before your journey home, unwind with an in-villa massage — best scheduled early in the day, well before your pick-up. Let us know your preferred time in the Special Requirements section below.',
-                    pickupLabel: 'Villa / Hotel Pick-Up Pin',
                     pickupHelper: 'Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.',
                     flightHelper: 'We monitor this flight and plan your pick-up time backward from its scheduled departure.',
                     notesPlaceholder: 'e.g., Preferred massage time, last-minute errands, shopping stops, etc.',
@@ -4072,7 +4082,6 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 incHTML: `<li>✓ Dedicated host & executive chauffeur</li><li>✓ Premium climate-controlled vehicle</li><li>✓ Fully open, adjustable routing</li><li>✓ On-the-day restaurant & venue coordination</li><li>✓ Translation & local liaison support</li><li>✓ Waiting time included at every stop</li><li class="inc-amenity">✓ In-vehicle Wi-Fi & charging hub</li><li class="inc-amenity">✓ Mineral-chilled towel service</li><li class="inc-amenity">✓ Premium Mineral Water (2x 600ml Per Guest)</li><li class="inc-amenity">✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
                 showDressCode: false,
                 formMode: 'charter',
-                pickupLabel: 'Villa / Hotel Pick-Up Pin',
                 pickupHelper: 'Required — this is where your host and vehicle will arrive to begin your day. Open Google Maps, tap Share, and paste the link here.'
             }
         };
@@ -4166,7 +4175,12 @@ Every Vurata service is delivered with the same standards of discretion, coordin
 
             // 2. Directives & Dynamic Labels
             document.getElementById('modalDirective').innerHTML = config.directiveHTML;
-            document.getElementById('dateLabel').textContent = config.dateLabel;
+            if (config.dateLabel) {
+                const parts = config.dateLabel.split(' & ');
+                document.getElementById('dateLabel').textContent = parts[0];
+                const timeLabelEl = document.getElementById('timeLabel');
+                if (timeLabelEl && parts[1]) timeLabelEl.textContent = parts[1];
+            }
             
             // 3. Calendar Constraints & Reset Time
             const dateInput = document.getElementById('dates');
@@ -4280,24 +4294,22 @@ Every Vurata service is delivered with the same standards of discretion, coordin
             familyAgesCol.style.display = 'none';
             document.getElementById('children_ages').required = false;
 
-// Pick-up location: required only for Massage (6-hour dispatch window); optional for all other services, which carry 48+ hours of lead time
+// Pick-up location: required only for Massage (6-hour dispatch) and Charter
             const pickupInput = document.getElementById('pickup_location');
             const pickupHelper = document.getElementById('pickupLocationHelper');
             const pickupLabel = document.getElementById('pickupLocationLabel');
+            
             if (pickupInput) {
-                pickupInput.required = (config.formMode === 'massage');
-                if (config.formMode === 'arrival') {
-                    if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Drop-Off Pin';
-                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
-                } else if (config.formMode === 'charter') {
-                    if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Pick-Up Pin';
-                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
-                } else {
-                    if (pickupLabel) pickupLabel.textContent = 'Google Maps Pick-Up Pin';
-                    if (pickupHelper) {
-                        pickupHelper.textContent = pickupInput.required
-                            ? "Required — your therapist is dispatched directly to this address. Open Google Maps, tap Share, and paste the link here."
-                            : "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
+                pickupInput.required = (config.formMode === 'massage' || config.formMode === 'charter');
+                if (pickupLabel) pickupLabel.textContent = 'Google Maps Pin'; // Static, unified label
+                
+                if (pickupHelper) {
+                    if (config.pickupHelper) {
+                        pickupHelper.textContent = config.pickupHelper;
+                    } else if (config.formMode === 'massage') {
+                        pickupHelper.textContent = "Required — your therapist is dispatched directly to this address. Open Google Maps, tap Share, and paste the link here.";
+                    } else {
+                        pickupHelper.textContent = "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
                     }
                 }
             }
@@ -4358,7 +4370,7 @@ if (carSeatsCol) {
                 familyAgesCol.style.display = 'block';
                 document.getElementById('children_ages').required = true;
 
-                timeSelect.style.display = 'none';
+                document.getElementById('timeColWrapper').style.display = 'none';
                 timeSelect.required = false;
                 
                 wellnessSection.style.display = 'none';
@@ -4370,7 +4382,7 @@ if (carSeatsCol) {
                 document.getElementById('care_schedule').value = "Day Shift"; 
                 updateFamilyCareTimes(); 
             } else if (config.formMode === 'massage') {
-                timeSelect.style.display = 'block';
+                document.getElementById('timeColWrapper').style.display = 'block';
                 timeSelect.required = true;
                 wellnessSection.style.display = 'block';
                 
@@ -4399,7 +4411,7 @@ if (carSeatsCol) {
                 `;
                 document.getElementById('massage_duration').required = true;
             } else {
-                timeSelect.style.display = 'block';
+                document.getElementById('timeColWrapper').style.display = 'block';
                 timeSelect.required = true;
                 wellnessSection.style.display = 'block';
                 
@@ -4762,7 +4774,12 @@ if (carSeatsCol) {
             // (modalDirective injection moved down to handle dynamic appends)
             document.getElementById('inclusionsTitle').textContent = c.incTitle;
             document.getElementById('inclusionsList').innerHTML = c.incHTML;
-            document.getElementById('dateLabel').textContent = c.dateLabel;
+            if (c.dateLabel) {
+                const parts = c.dateLabel.split(' & ');
+                document.getElementById('dateLabel').textContent = parts[0];
+                const timeLabelEl = document.getElementById('timeLabel');
+                if (timeLabelEl && parts[1]) timeLabelEl.textContent = parts[1];
+            }
 
             const timeHelperTextEl = document.getElementById('timeHelperText');
             if (timeHelperTextEl) {
@@ -4773,7 +4790,7 @@ if (carSeatsCol) {
 
             const pickupLabelEl = document.getElementById('pickupLocationLabel');
             const pickupHelperEl = document.getElementById('pickupLocationHelper');
-            if (pickupLabelEl) pickupLabelEl.textContent = c.pickupLabel;
+            if (pickupLabelEl) pickupLabelEl.textContent = 'Google Maps Pin';
             if (pickupHelperEl) pickupHelperEl.textContent = c.pickupHelper;
 
             const flightNumberHelperEl = document.getElementById('flightNumberHelper');
