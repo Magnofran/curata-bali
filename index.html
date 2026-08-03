@@ -3675,7 +3675,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     <div class="col">
                         <label for="pickup_location" id="pickupLocationLabel">Google Maps Pick-Up Pin</label>
                         <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
-                        <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up your booking! If skipped, your concierge will request it on WhatsApp.</p>
+                        <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.</p>
                     </div>
                 </div>
 
@@ -4033,7 +4033,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 formMode: 'arrival',
                 fullPayment: true,
                 pickupLabel: 'Villa / Hotel Drop-Off Pin',
-                pickupHelper: 'Optional — speeds up your booking! If skipped, your concierge will confirm your villa or hotel drop-off on WhatsApp before your host arrives.',
+                pickupHelper: 'Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.',
                 flightHelper: 'We monitor this flight for delays and adjust your intercept time automatically.',
                 notesPlaceholder: 'e.g., Preferred grocery items, dinner reservation requests, early check-in needs, etc.',
                 showMassageBuffer: true,
@@ -4049,7 +4049,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     incHTML: `<li>✓ Backward-planned pick-up timing</li><li>✓ Live flight monitoring for delays</li><li>✓ Dedicated Host & Driver (On Standby)</li><li>✓ Priority check-in & departure hall assistance</li><li>✓ Luggage handling from villa to terminal</li><li>✓ Optional last-minute errands or shopping stop</li><li class="inc-amenity">✓ In-vehicle Wi-Fi & charging hub</li><li class="inc-amenity">✓ Mineral-chilled towel service</li><li class="inc-amenity">✓ Premium Mineral Water (2x 600ml Per Guest)</li><li class="inc-amenity">✓ Provisions Box (Sweet/Savory, Per Guest)</li>`,
                     wellnessDescOverride: 'Before your journey home, unwind with an in-villa massage — best scheduled early in the day, well before your pick-up. Let us know your preferred time in the Special Requirements section below.',
                     pickupLabel: 'Villa / Hotel Pick-Up Pin',
-                    pickupHelper: 'Optional — speeds up your booking! If skipped, your concierge will confirm your pick-up location on WhatsApp.',
+                    pickupHelper: 'Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.',
                     flightHelper: 'We monitor this flight and plan your pick-up time backward from its scheduled departure.',
                     notesPlaceholder: 'e.g., Preferred massage time, last-minute errands, shopping stops, etc.',
                     showMassageBuffer: false,
@@ -4288,16 +4288,16 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 pickupInput.required = (config.formMode === 'massage');
                 if (config.formMode === 'arrival') {
                     if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Drop-Off Pin';
-                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up your booking! If skipped, your concierge will confirm your villa or hotel drop-off on WhatsApp before your host arrives.";
+                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
                 } else if (config.formMode === 'charter') {
                     if (pickupLabel) pickupLabel.textContent = 'Villa / Hotel Pick-Up Pin';
-                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up your booking! If skipped, your concierge will confirm your pick-up location on WhatsApp.";
+                    if (pickupHelper) pickupHelper.textContent = "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
                 } else {
                     if (pickupLabel) pickupLabel.textContent = 'Google Maps Pick-Up Pin';
                     if (pickupHelper) {
                         pickupHelper.textContent = pickupInput.required
                             ? "Required — your therapist is dispatched directly to this address. Open Google Maps, tap Share, and paste the link here."
-                            : "Optional — speeds up your booking! If skipped, your concierge will request it on WhatsApp.";
+                            : "Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.";
                     }
                 }
             }
