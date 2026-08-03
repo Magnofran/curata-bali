@@ -43,6 +43,7 @@
             --tint-focus: rgba(15, 23, 42, 0.06);
             --tint-border: rgba(194, 166, 121, 0.4); /* Soft gold hairline — echoes the briefing panel's accent */
             --summary-divider: rgba(15, 23, 42, 0.14); /* Internal hairlines inside tinted panels (e.g. Live Itinerary & Investment) — kept separate from --border-light so they stay visible against tint-focus backgrounds in both themes */
+            --highlight-tint: rgba(194, 166, 121, 0.16); /* Wellness add-on panel background — a deliberately stronger wash than --tint-border so the upsell can't be skimmed past */
         }
 
         [data-theme="dark"] {
@@ -58,6 +59,7 @@
             --tint-focus: rgba(255, 255, 255, 0.08);
             --tint-border: rgba(255, 255, 255, 0.18);
             --summary-divider: rgba(255, 255, 255, 0.16); /* Brighter than --border-light so it stays visible against the panel's own translucent background */
+            --highlight-tint: rgba(216, 189, 143, 0.16); /* Wellness add-on panel background — same treatment as light mode, tuned to the dark-theme accent gold */
             color-scheme: dark; /* lets native date-picker icons and scrollbars invert automatically */
         }
 
@@ -1997,7 +1999,7 @@
                             <span class="price-value">From $995</span>
                         </div>
                         <div class="price-tier" style="flex: 1; text-align: right;">
-                            <span class="price-unit">1–4 guests, per vehicle</span>
+                            <span class="price-unit">Per vehicle</span>
                         </div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
@@ -3540,11 +3542,11 @@ function expandTerminal(){
             </div>
         </div>
         <div class="modal-body">
-            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom: 1.5rem;">
                 <h3 id="modalTitle" style="margin-bottom:0;">Package Title</h3>
                 <button onclick="sharePackage(document.getElementById('selectedPackage').value.split(' - ')[0], document.getElementById('modalTitle').textContent); event.stopPropagation();" style="background:none; border:none; cursor:pointer; padding:4px; display:inline-flex; align-items:center; gap:4px; color:var(--text-muted); flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg><span style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase;">Share</span></button>
             </div>
-            <p id="modalPrice" style="font-size: 1.15rem; font-weight: 600; color: var(--text-dark); margin-top:0.25rem; margin-bottom: 1.5rem;"></p>
+            <p id="modalPrice" style="display:none; font-size: 1.15rem; font-weight: 600; color: var(--text-dark); margin-top:0.25rem; margin-bottom: 1.5rem;"></p>
 
             <div id="transfer-direction-col" style="display: none; margin: 0 0 1.75rem 0; padding: 1.25rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant);">
                 <label for="transfer_direction" style="display: block; margin-bottom: 0.65rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark);">Select Your Transfer Direction</label>
@@ -3728,15 +3730,16 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 </div>
 
                 <!-- Dynamic Wellness/Massage Section -->
-                <div id="wellness-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.5rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant); padding: 1.25rem 0.5rem;">
-                    <label id="wellness-title" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-dark); margin-bottom: 0.75rem; display: block;">In-Villa Wellness (Optional Add-on)</label>
+                <div id="wellness-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.5rem; background: var(--highlight-tint); border-left: 3px solid var(--accent-vibrant); border-right: 3px solid var(--accent-vibrant); padding: 1.25rem 0.75rem;">
+                    <button type="button" id="wellness-title" onclick="toggleWellnessCollapse()" aria-expanded="false" aria-controls="wellnessCollapseBody" style="display: block; width: 100%; text-align: left; background: none; border: none; padding: 0; margin-bottom: 0.75rem; font-family: inherit; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-dark); cursor: pointer;">In-Villa Wellness (Optional Add-on)<span id="wellnessToggleIcon" aria-hidden="true" style="display: inline-block; margin-left: 0.5rem; font-weight: 700; font-size: 1.15rem; color: var(--accent-vibrant);">+</span></button>
                     
-                    <div id="wellness-info-box" style="margin-bottom: 1.25rem;">
-                        <p id="wellness-desc" style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Arrange for a local Balinese massage therapist to visit your accommodation once your itinerary concludes.</p>
-                        <p id="wellnessRatioNote" style="font-size: 0.75rem; color: var(--text-muted); margin: 0; line-height: 1.5;">*1 specialist per 2 guests, in sequence. For simultaneous sessions, note it in <strong>Special Requirements</strong> below. All Vurata wellness specialists are female.</p>
+                    <div id="wellness-info-box" style="margin-bottom: 0;">
+                        <p id="wellness-desc" style="font-size: 0.85rem; color: var(--text-dark); font-weight: 500; margin-top: 0; margin-bottom: 0;">Arrange for a local Balinese massage therapist to visit your accommodation once your itinerary concludes.</p>
                     </div>
-                    
-                    <div class="wellness-grid">
+
+                    <div id="wellnessCollapseBody" style="display: none; margin-top: 1.25rem;">
+                        <p id="wellnessRatioNote" style="font-size: 0.75rem; color: var(--text-muted); margin: 0 0 1.25rem 0; line-height: 1.5;">*1 specialist per 2 guests, in sequence. For simultaneous sessions, note it in <strong>Special Requirements</strong> below. All Vurata wellness specialists are female.</p>
+                        <div class="wellness-grid">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label for="massage_duration">Duration</label>
                             <select id="massage_duration" name="massage_duration" onchange="toggleWellnessFields()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
@@ -3769,7 +3772,8 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                             </select>
                         </div>
                     </div>
-                    <p id="massage-time-note" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4; display: none;">*Timed to give you 2 to 3 hours to relax and shower once your itinerary concludes. Prefer a shorter turnaround? Note it in Special Requirements and we'll do our best to accommodate you.</p>
+                        <p id="massage-time-note" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0; line-height: 1.4; display: none;">*Timed to give you 2 to 3 hours to relax and shower once your itinerary concludes. Prefer a shorter turnaround? Note it in Special Requirements and we'll do our best to accommodate you.</p>
+                    </div>
                 </div>
 
                 <!-- Family Concierge Section (Flattened Flow) -->
@@ -4383,6 +4387,9 @@ if (carSeatsCol) {
                 if(wellnessRatioNote) wellnessRatioNote.style.display = 'none';
                 if(massageGuestsCol) massageGuestsCol.style.display = 'none'; // Primary guest count covers this
 
+                const wellnessCollapseBody = document.getElementById('wellnessCollapseBody');
+                if(wellnessCollapseBody) wellnessCollapseBody.style.display = 'block'; // Package E: always expanded, no collapse affordance
+
                 document.getElementById('massage_duration').innerHTML = `
                     <option value="" disabled selected>Select Duration</option>
                     <option value="30 Minutes ($55/pp)">30 Minutes ($55/pp)</option>
@@ -4399,7 +4406,7 @@ if (carSeatsCol) {
                 // Restore headers for standard optional add-on
                 if(wellnessTitle) {
                     wellnessTitle.style.display = 'block';
-                    wellnessTitle.textContent = 'In-Villa Wellness (Optional Add-on)';
+                    wellnessTitle.setAttribute('aria-expanded', 'false');
                 }
                 const wellnessInfoBox = document.getElementById('wellness-info-box');
                 if(wellnessInfoBox) {
@@ -4407,6 +4414,10 @@ if (carSeatsCol) {
                     const wellnessDesc = document.getElementById('wellness-desc');
                     if(wellnessDesc) wellnessDesc.textContent = config.wellnessDescOverride || 'Arrange for a local Balinese massage therapist to visit your accommodation after your experience. Save $15 versus booking on-demand.';
                 }
+                const wellnessCollapseBody = document.getElementById('wellnessCollapseBody');
+                const wellnessToggleIcon = document.getElementById('wellnessToggleIcon');
+                if(wellnessCollapseBody) wellnessCollapseBody.style.display = 'none'; // Collapsed by default each time the modal opens
+                if(wellnessToggleIcon) wellnessToggleIcon.textContent = '+';
                 
                 const hideMassageBuffer = (config.formMode === 'charter');
                 if(massageTimeCol) massageTimeCol.style.display = hideMassageBuffer ? 'none' : 'block';
@@ -4521,6 +4532,24 @@ if (carSeatsCol) {
             if (timeEl) {
                 timeEl.disabled = isOptedOut;
                 if (isOptedOut) timeEl.value = "";
+            }
+        }
+
+        // Apex UX: In-Villa Wellness collapsible add-on (standard/arrival/charter packages only —
+        // Package E's standalone massage form always shows this content expanded, see openModal)
+        function toggleWellnessCollapse() {
+            const body = document.getElementById('wellnessCollapseBody');
+            const btn = document.getElementById('wellness-title');
+            const icon = document.getElementById('wellnessToggleIcon');
+            if (!body) return;
+
+            const isExpanded = body.style.display === 'block';
+            body.style.display = isExpanded ? 'none' : 'block';
+            if (icon) icon.textContent = isExpanded ? '+' : '−';
+            if (btn) btn.setAttribute('aria-expanded', String(!isExpanded));
+
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
             }
         }
 
