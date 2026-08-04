@@ -3673,22 +3673,45 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                                 <button type="button" class="qty-stepper-btn" id="childrenStepperPlus" aria-label="Increase number of children">&plus;</button>
                             </div>
                             <p id="concierge-ratio-warning" style="font-size: 0.7rem; color: #FF4F4F; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4; display: none;">*Note: For safety and quality of care, a strict ratio of 2 care guests per concierge applies. Your request will automatically reflect the required additional staff.</p>
+                            <div id="family-ages-col" style="margin-top: 0.85rem;">
+                                <label for="children_ages">Ages (Children / Assisted Guests)</label>
+                                <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 68" oninput="this.value = this.value.replace(/[^0-9,\s]/g, '');">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-<div class="form-group" style="margin-bottom: 1.6rem;">
-                    <div class="form-group row" style="margin-bottom: 0;">
-                        <div class="col">
-                            <label for="accommodation_name">Villa / Hotel Name</label>
-                            <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
+                <div class="form-group" id="car-seats-col">
+                    <label for="car_seats">Infants / Toddlers (Car Seats)</label>
+                    <select id="car_seats" name="car_seats" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                        <option value="0" selected>0</option>
+                        <option value="1">1 Required</option>
+                        <option value="2">2 Required</option>
+                        <option value="3">3 Required</option>
+                    </select>
+                </div>
+
+<div class="form-group row" id="emergency-contact-col" style="display: none;">
+                    <div class="col">
+                        <label for="emergency_contact">Secondary Emergency Contact</label>
+                        <input type="text" id="emergency_contact" name="emergency_contact" placeholder="Name and WhatsApp number (must differ from primary)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="split-input-group">
+                        <div style="flex: 1; min-width: 0;">
+                            <label id="dateLabel" for="dates">Date</label>
+                            <input type="date" id="dates" name="dates" required>
                         </div>
-                        <div class="col">
-                            <label for="pickup_location" id="pickupLocationLabel">Google Maps Pin</label>
-                            <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
+                        <div id="timeColWrapper" style="flex: 1; min-width: 0;">
+                            <label id="timeLabel" for="time">Pick-Up Time</label>
+                            <select id="time" name="time" required style="cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
+                                <option value="" disabled selected>Select Time</option>
+                            </select>
                         </div>
                     </div>
-                    <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.</p>
+                    <p id="timeHelperText" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; margin-top: 0.25rem; margin-bottom: 0; display: none;"></p>
                 </div>
 
                 <div class="form-group row" id="flight-number-col" style="display: none;">
@@ -3707,42 +3730,24 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     </div>
                 </div>
 
-<div class="form-group row" id="marine-manifest-col" style="display: none;">
+                <div class="form-group" style="margin-bottom: 1.6rem;">
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <div class="col">
+                            <label for="accommodation_name">Villa / Hotel Name</label>
+                            <input type="text" id="accommodation_name" name="accommodation_name" placeholder="e.g., Villa Semarapura, Seminyak">
+                        </div>
+                        <div class="col">
+                            <label for="pickup_location" id="pickupLocationLabel">Google Maps Pin</label>
+                            <input type="text" id="pickup_location" name="pickup_location" placeholder="Paste your Google Maps link" inputmode="url" autocomplete="off">
+                        </div>
+                    </div>
+                    <p id="pickupLocationHelper" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Optional — speeds up booking! Otherwise, your concierge will confirm the details on WhatsApp.</p>
+                </div>
+
+                <div class="form-group row" id="marine-manifest-col" style="display: none;">
                     <div class="col">
                         <label for="marine_manifest">Passport / ID Numbers & Nationalities</label>
                         <textarea id="marine_manifest" name="marine_manifest" rows="2" placeholder="Required for fast-boat manifest. e.g., John Doe - US - 123456789"></textarea>
-                    </div>
-                </div>
-
-                                <div class="form-group row" id="emergency-contact-col" style="display: none;">
-                    <div class="col">
-                        <label for="emergency_contact">Secondary Emergency Contact</label>
-                        <input type="text" id="emergency_contact" name="emergency_contact" placeholder="Name and WhatsApp number (must differ from primary)">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <!-- Hidden block for Ages and the Safety Warning -->
-                    <div class="col" id="family-ages-col" style="display: none;">
-                        <label for="children_ages">Ages (Children / Assisted Guests)</label>
-                        <input type="text" id="children_ages" name="children_ages" placeholder="e.g., 3, 5, 68" oninput="this.value = this.value.replace(/[^0-9,\s]/g, '');">
-                    </div>
-
-                    <!-- Global Date & Time Block -->
-                    <div class="col">
-                        <div class="split-input-group">
-                            <div style="flex: 1; min-width: 0;">
-                                <label id="dateLabel" for="dates">Date</label>
-                                <input type="date" id="dates" name="dates" required>
-                            </div>
-                            <div id="timeColWrapper" style="flex: 1; min-width: 0;">
-                                <label id="timeLabel" for="time">Pick-Up Time</label>
-                                <select id="time" name="time" required style="cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
-                                    <option value="" disabled selected>Select Time</option>
-                                </select>
-                            </div>
-                        </div>
-                        <p id="timeHelperText" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; margin-top: 0.25rem; margin-bottom: 0; display: none;"></p>
                     </div>
                 </div>
 
@@ -3831,26 +3836,15 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     <input type="text" id="attribution" name="attribution" maxlength="100" placeholder="e.g., Wayan, Rep A12, or leave blank">
                 </div>
 
-<div class="form-group row">
-                    <div class="col">
-                        <label for="special_occasion">Special Occasion</label>
-                        <select id="special_occasion" name="special_occasion" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
-                            <option value="None" selected>None / Just vacationing</option>
-                            <option value="Honeymoon">Honeymoon</option>
-                            <option value="Anniversary">Anniversary</option>
-                            <option value="Birthday">Birthday</option>
-                            <option value="Other">Other (Specify in notes)</option>
-                        </select>
-                    </div>
-                    <div class="col" id="car-seats-col">
-                        <label for="car_seats">Infants / Toddlers (Car Seats)</label>
-                        <select id="car_seats" name="car_seats" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
-                            <option value="0" selected>0</option>
-                            <option value="1">1 Required</option>
-                            <option value="2">2 Required</option>
-                            <option value="3">3 Required</option>
-                        </select>
-                    </div>
+<div class="form-group">
+                    <label for="special_occasion">Special Occasion</label>
+                    <select id="special_occasion" name="special_occasion" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                        <option value="None" selected>None / Just vacationing</option>
+                        <option value="Honeymoon">Honeymoon</option>
+                        <option value="Anniversary">Anniversary</option>
+                        <option value="Birthday">Birthday</option>
+                        <option value="Other">Other (Specify in notes)</option>
+                    </select>
                 </div>
 
 <div class="form-group">
@@ -4337,7 +4331,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
             }
 
 if (carSeatsCol) {
-                const showCarSeats = (config.formMode === 'standard' || config.formMode === 'arrival' || config.formMode === 'charter');
+                const showCarSeats = (config.formMode === 'standard' || config.formMode === 'arrival' || config.formMode === 'charter') && packageID !== 'Package C';
                 carSeatsCol.style.display = showCarSeats ? 'block' : 'none';
                 if (!showCarSeats) document.getElementById('car_seats').value = "0";
             }
