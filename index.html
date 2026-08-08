@@ -3879,13 +3879,8 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 </div>
 
 <div class="form-group">
-                    <label for="medical_notes">Health & Dietary Requirements</label>
-                    <textarea id="medical_notes" name="medical_notes" rows="2" placeholder="Crucial for provisions boxes & catered meals. E.g., Peanut allergy, vegan, mobility issues"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="notes">Special Requirements / Notes</label>
-                    <textarea id="notes" name="notes" rows="3" placeholder="e.g., Preferred host language, celebration surprises, accessibility needs, etc."></textarea>
+                    <label for="notes">Health, Dietary & Special Requirements / Notes</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="e.g., Allergies, dietary preferences, mobility/accessibility needs, preferred host language, celebration surprises, or other requests."></textarea>
                 </div>
 
                 <div aria-hidden="true" style="display: flex; align-items: center; margin: 1rem 0 2.5rem 0;">
@@ -4308,17 +4303,17 @@ Every Vurata service is delivered with the same standards of discretion, coordin
             const notesField = document.getElementById('notes');
             if (notesField) {
                 if (config.formMode === 'massage') {
-                    notesField.placeholder = "e.g., Request simultaneous sessions, focus areas, injuries, etc.";
+                    notesField.placeholder = "e.g., Request simultaneous sessions, focus areas, injuries, allergies to oils, etc.";
                 } else if (config.formMode === 'family') {
                     notesField.placeholder = "e.g., Children's allergies, bedtime routines, special needs, etc.";
                 } else if (config.formMode === 'arrival') {
-                    notesField.placeholder = "e.g., Preferred grocery items, dinner reservation requests, early check-in needs, etc.";
+                    notesField.placeholder = "e.g., Allergies or dietary restrictions, preferred grocery items, dinner reservation requests, early check-in needs, etc.";
                 } else if (config.formMode === 'charter') {
-                    notesField.placeholder = "e.g., Rough itinerary ideas and preferred stops. For Multi-Day charters, share your day-by-day timing — e.g., 4 days, starting around 10 AM most days, earlier on Tuesday.";
+                    notesField.placeholder = "e.g., Allergies or dietary restrictions, rough itinerary ideas and preferred stops. For Multi-Day charters, share your day-by-day timing — e.g., 4 days, starting around 10 AM most days, earlier on Tuesday.";
                 } else if (packageID === 'Package C') { // VIP Nightlife
-                    notesField.placeholder = "e.g., Venue preferences, table reservation requests, music taste, etc.";
+                    notesField.placeholder = "e.g., Allergies, venue preferences, table reservation requests, music taste, etc.";
                 } else {
-                    notesField.placeholder = "e.g., Preferred host language, celebration surprises, accessibility needs, etc.";
+                    notesField.placeholder = "e.g., Allergies or dietary restrictions, preferred host language, celebration surprises, accessibility needs, etc.";
                 }
             }
 
