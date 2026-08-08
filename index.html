@@ -44,6 +44,7 @@
             --tint-border: rgba(194, 166, 121, 0.4); /* Soft gold hairline — echoes the briefing panel's accent */
             --summary-divider: rgba(15, 23, 42, 0.14); /* Internal hairlines inside tinted panels (e.g. Live Itinerary & Investment) — kept separate from --border-light so they stay visible against tint-focus backgrounds in both themes */
             --highlight-tint: rgba(194, 166, 121, 0.16); /* Wellness add-on panel background — a deliberately stronger wash than --tint-border so the upsell can't be skimmed past */
+            --dialog-elevation: 0 1px 3px rgba(15, 23, 42, 0.08), 0 16px 48px rgba(15, 23, 42, 0.14); /* Restrained two-layer lift for the booking modal — a tight edge shadow plus a soft ambient falloff, deliberately avoiding a heavy directional drop shadow */
         }
 
         [data-theme="dark"] {
@@ -60,6 +61,7 @@
             --tint-border: rgba(255, 255, 255, 0.18);
             --summary-divider: rgba(255, 255, 255, 0.16); /* Brighter than --border-light so it stays visible against the panel's own translucent background */
             --highlight-tint: rgba(216, 189, 143, 0.16); /* Wellness add-on panel background — same treatment as light mode, tuned to the dark-theme accent gold */
+            --dialog-elevation: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 16px 48px rgba(255, 255, 255, 0.05); /* Inverted from light mode: a dark shadow is invisible against the already-dark backdrop, so elevation instead reads as a soft light halo at the card's edge */
             color-scheme: dark; /* lets native date-picker icons and scrollbars invert automatically */
         }
 
@@ -520,7 +522,7 @@
         border: none;
         border-radius: var(--radius-lg);
         background: var(--surface);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        box-shadow: var(--dialog-elevation);
         max-width: 640px;
         width: 95%;
         height: 90dvh; /* Upgraded to dynamic viewport height */
