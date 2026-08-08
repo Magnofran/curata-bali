@@ -108,7 +108,7 @@
             border: none;
             border-bottom: 2px solid var(--border-light);
             border-radius: 0;
-            background: var(--tint-soft);
+            background: var(--border-light);
             font-family: inherit !important;
             font-size: 0.95rem !important;
             font-weight: 500;
@@ -119,8 +119,21 @@
         }
 
         input:focus, textarea:focus, select:focus {
-            background: var(--tint-focus);
             border-bottom: 2px solid var(--text-dark); /* Deep ink focus state instead of red */
+        }
+
+/* Apex UX: Overrides the browser's native autofill highlight so an autofilled
+           field matches the same border-light background as every other input, instead
+           of introducing a foreign pastel blue outside Vurata's palette. */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px var(--border-light) inset;
+            box-shadow: 0 0 0 1000px var(--border-light) inset;
+            -webkit-text-fill-color: var(--text-dark);
+            caret-color: var(--text-dark);
+            transition: background-color 9999s ease-in-out 0s;
         }
 
 /* Apex UX: Mobile-only calendar icon fix for Date & Pick-Up Time fields.
@@ -1195,7 +1208,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
-            background: var(--tint-soft);
+            background: var(--border-light);
             border-bottom: 2px solid var(--border-light);
             padding: 0.15rem 0.5rem; /* Reduced to match the newly slimmed inputs */
             transition: border-color 0.2s ease;
@@ -3597,7 +3610,7 @@ function expandTerminal(){
 
             <div id="transfer-direction-col" style="display: none; margin: 0 0 1.75rem 0; padding: 1.25rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant);">
                 <label for="transfer_direction" style="display: block; margin-bottom: 0.65rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark);">Select Your Transfer Direction</label>
-                <select id="transfer_direction" name="transfer_direction" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--surface); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                <select id="transfer_direction" name="transfer_direction" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                     <option value="arrival">Airport Arrival — Landing in Bali</option>
                     <option value="departure">Airport Departure — Flying Out</option>
                 </select>
@@ -3606,7 +3619,7 @@ function expandTerminal(){
 
             <div id="charter-duration-col" style="display: none; margin: 0 0 1.75rem 0; padding: 1.25rem; background: rgba(194, 166, 121, 0.08); border-left: 3px solid var(--accent-vibrant);">
                 <label for="charter_duration" style="display: block; margin-bottom: 0.65rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark);">Select Your Charter Duration</label>
-                <select id="charter_duration" name="charter_duration" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--surface); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                <select id="charter_duration" name="charter_duration" form="vurataBookingForm" required style="width: 100%; padding: 0.75rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 0.95rem; font-weight: 500; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.4rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                     <option value="8-Hour ($995 per vehicle)">8-Hour — $995 per vehicle</option>
                     <option value="10-Hour ($1,195 per vehicle)">10-Hour — $1,195 per vehicle</option>
                     <option value="12-Hour ($1,395 per vehicle)">12-Hour — $1,395 per vehicle</option>
@@ -3725,7 +3738,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
 
                 <div class="form-group" id="car-seats-col">
                     <label for="car_seats">Infants / Toddlers (Car Seats)</label>
-                    <select id="car_seats" name="car_seats" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
+                    <select id="car_seats" name="car_seats" style="width: 100%; min-height: 42px; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; font-family: inherit;">
                         <option value="0" selected>0</option>
                         <option value="1">1 Required</option>
                         <option value="2">2 Required</option>
@@ -3806,7 +3819,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                         <div class="wellness-grid">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label for="massage_duration">Duration</label>
-                            <select id="massage_duration" name="massage_duration" onchange="toggleWellnessFields()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="massage_duration" name="massage_duration" onchange="toggleWellnessFields()" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="None">None</option>
                                 <option value="30 Minutes (+$40/pp)">30 Minutes (+ $40/pp)</option>
                                 <option value="60 Minutes (+$60/pp)">60 Minutes (+ $60/pp)</option>
@@ -3816,13 +3829,13 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                         </div>
                         <div class="form-group" id="massage-guests-col" style="margin-bottom: 0;">
                             <label for="massage_guests">Add-on Guests</label>
-                            <select id="massage_guests" name="massage_guests" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="massage_guests" name="massage_guests" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="" disabled selected>Select...</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label for="massage_style">Massage Style</label>
-                            <select id="massage_style" name="massage_style" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="massage_style" name="massage_style" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="" disabled selected>Select...</option>
                                 <option value="Traditional Balinese">Traditional Balinese</option>
                                 <option value="Deep Tissue">Deep Tissue (Firm)</option>
@@ -3831,7 +3844,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                         </div>
                         <div class="form-group" id="massage-time-col" style="margin-bottom: 0;">
                             <label for="massage_time">Preferred Start Time</label>
-                            <select id="massage_time" name="massage_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--bg-base); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="massage_time" name="massage_time" style="width: 100%; padding: 0.85rem 1rem; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <option value="" disabled selected>Select start time first...</option>
                             </select>
                         </div>
@@ -3844,7 +3857,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 <div id="family-section" style="display: none; margin-top: 1.25rem; margin-bottom: 1.25rem;">
                     <div class="form-group">
                         <label for="care_schedule">Care Schedule Module</label>
-                        <select name="care_schedule" id="care_schedule" onchange="updateFamilyCareTimes()" style="width: 100%; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                        <select name="care_schedule" id="care_schedule" onchange="updateFamilyCareTimes()" style="width: 100%; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                             <option value="Day Shift">Day Shift — 8 Hours ($120)</option>
                             <option value="Evening Shift">Evening Shift — 8 Hours ($120)</option>
                             <option value="Night Shift">Night Shift — Flexible Up To 8 Hrs ($150)</option>
@@ -3855,7 +3868,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                     <div class="form-group row" style="margin-bottom: 0;">
                         <div class="col">
                             <label for="start_time">Requested Start Time</label>
-                            <select id="start_time" name="start_time" style="width: 100%; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--tint-soft); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
+                            <select id="start_time" name="start_time" style="width: 100%; border: none; border-bottom: 2px solid var(--border-light); border-radius: 0; background: var(--border-light); font-size: 1rem; -webkit-appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230f172a%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;">
                                 <!-- Dynamically injected via JS -->
                             </select>
                         </div>
