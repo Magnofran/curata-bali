@@ -491,7 +491,16 @@
             display: block;
         }
 
-        .card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.2; }
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            overflow: hidden;
+        }
         .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
 
         .card-btn {
@@ -921,6 +930,11 @@
             margin-bottom: 0.75rem; /* Tightened to compact the card without further reducing type size */
             line-height: 1.35;
             flex-grow: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5; /* Ceiling set above the longest current English subtitle (Package C, ~176 chars) so English is never truncated, while translations are bounded rather than free to grow indefinitely */
+            line-clamp: 5;
+            overflow: hidden;
         }
 
         .card-meta {
@@ -957,7 +971,7 @@
         }
 
         .price-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-        .price-value { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
+        .price-value { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); line-height: 1.2; }
 
         /* Apex UX: Dual-Tier Pricing — the 2–4 Guest rate and the Solo rate presented as
            two distinct products side-by-side, rather than a base price plus a surcharge.
