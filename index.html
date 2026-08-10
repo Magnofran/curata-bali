@@ -503,7 +503,7 @@
         .card-copy {
             display: flex;
             flex-direction: column;
-            height: 9.45rem; /* Fixed sum of a 1-line title's box (1.8rem line-height + 0.5rem margin) + the subtitle's full 6.4rem allowance + its 0.75rem margin. This total is what stays constant on every card — a 2-line title just claims more of it, leaving the subtitle proportionally less room before its own fade kicks in. Tune this one number to taste if the balance looks off; it no longer depends on anything below it. */
+            height: 9.75rem; /* Expanded slightly to accommodate the taller 0.85rem subtitle font size, keeping the bottom fade perfectly aligned */
             flex-shrink: 0;
             overflow: hidden;
         }
