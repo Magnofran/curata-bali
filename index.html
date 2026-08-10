@@ -500,6 +500,13 @@
             display: block;
         }
 
+        .card-copy {
+            display: flex;
+            flex-direction: column;
+            height: 9.45rem; /* Fixed sum of a 1-line title's box (1.8rem line-height + 0.5rem margin) + the subtitle's full 6.4rem allowance + its 0.75rem margin. This total is what stays constant on every card — a 2-line title just claims more of it, leaving the subtitle proportionally less room before its own fade kicks in. Tune this one number to taste if the balance looks off; it no longer depends on anything below it. */
+            flex-shrink: 0;
+            overflow: hidden;
+        }
         .card h3 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
@@ -509,6 +516,7 @@
             -webkit-line-clamp: 2;
             line-clamp: 2;
             overflow: hidden;
+            flex-shrink: 0; /* Always renders at its natural 1- or 2-line height inside the fixed box, never gets squeezed */
         }
         .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
 
@@ -928,6 +936,8 @@
             margin-bottom: 0.75rem; /* Tightened to compact the card without further reducing type size */
             line-height: 1.35;
             flex-grow: 1;
+            flex-shrink: 1;
+            min-height: 0; /* Without this, flex's default min-height:auto stops the box from shrinking below its own text content, which would defeat the whole point when a 2-line title compresses the available space */
             position: relative;
             max-height: 6.4rem; /* Same ceiling the previous line-clamp:5 enforced (5 lines at this font-size/line-height) — now contained via scroll instead of "..." so no translated copy is ever hidden, only English's own height budget is preserved */
             overflow-y: auto;
@@ -1817,8 +1827,10 @@
                     <img src="images/package-0a.webp" alt="Tabanan Temple" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
+                    <div class="card-copy">
                     <h3>Tabanan Ancestral Origins</h3>
                     <p class="card-subtitle">A deeply personal journey through Bali's lush interior. Experience private temple rituals, vast UNESCO terraces, and exclusive local crafts.</p>
+                    </div>
                     <div class="card-meta">
                         <span>⏱ Full Day • Approx. 10 Hours</span>
                         <div class="card-meta-emphasis">
