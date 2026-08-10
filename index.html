@@ -314,6 +314,13 @@
             color: var(--text-dark);
         }
         
+/* Apex UX: Hides the gold bullet separators once the collection subtitle wraps onto
+           multiple lines (long translations only — English never wraps here). Toggled by
+           JS below via .is-wrapped, since CSS alone can't detect actual line-wrap state. */
+        #collectionSubtitle.is-wrapped .subtitle-bullet {
+            display: none;
+        }
+
         .carousel-nav {
             display: none; /* Hidden on mobile */
             gap: 0.5rem;
@@ -782,17 +789,6 @@
 
         /* Expands back to the original layout on tablets and desktop */
         @media (min-width: 768px) {
-            .trust-badge {
-                flex-direction: column;
-                gap: 0.6rem;
-            }
-            .trust-badge-row {
-                flex-direction: row;
-                gap: 0.75rem;
-            }
-            .badge-separator { 
-                display: block; 
-            }
             .contact-info {
                 flex-direction: row;
                 gap: 2.5rem;
@@ -1806,7 +1802,7 @@
         <div class="section-header">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
                 <h2>The Vurata Collection</h2>
-                <span style="font-family: 'Inter', sans-serif; font-size: clamp(0.55rem, 2.5vw, 0.8rem); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; white-space: nowrap;">Private Experiences <span style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span> In-Villa Wellness <span style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span> Concierge</span>
+                <span id="collectionSubtitle" style="display: inline-flex; flex-wrap: wrap; justify-content: center; row-gap: 0.3rem; min-width: 0; max-width: 100%; text-align: center; font-family: 'Inter', sans-serif; font-size: clamp(0.55rem, 2.5vw, 0.8rem); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;"><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;">Private Experiences</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>In-Villa Wellness</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>Concierge</span></span>
             </div>
             <div class="carousel-nav">
                 <button class="carousel-btn" id="scrollLeft" aria-label="Scroll Left">&larr;</button>
@@ -3959,14 +3955,14 @@ Every Vurata service is delivered with the same standards of discretion, coordin
 
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
                 <span id="summary-line-item" style="flex: 1; min-width: 0;">Experience Subtotal</span>
-                <span id="summary-subtotal" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
+                <span id="summary-subtotal" class="notranslate" translate="no" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
 
             <div id="summary-addon-divider" style="display: none; border-top: 1px dotted var(--summary-divider); margin: 0.85rem 0;"></div>
 
             <div id="summary-addon-row" style="display: none; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
                 <span id="summary-addon-label" style="flex: 1; min-width: 0;">In-Villa Wellness</span>
-                <span id="summary-addon-total" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
+                <span id="summary-addon-total" class="notranslate" translate="no" style="color: var(--text-dark); font-weight: 500; flex-shrink: 0; white-space: nowrap;">$0</span>
             </div>
 
             <div style="border-top: 1px solid var(--summary-divider); margin: 1rem 0 0 0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
@@ -3976,7 +3972,7 @@ Every Vurata service is delivered with the same standards of discretion, coordin
                 </div>
                 <div style="text-align: right;">
                     <span id="summary-grand-total" style="display: block; font-size: 0.75rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.15rem;"></span>
-                    <span id="summary-deposit-total" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark);">$0</span>
+                    <span id="summary-deposit-total" class="notranslate" translate="no" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark);">$0</span>
                 </div>
             </div>
         </div>
@@ -5319,7 +5315,7 @@ if (carSeatsCol) {
             
             // Strike-through gross total for visual context on 50% deposits
             if (!requiresFullPayment && grandTotal > 0) {
-                document.getElementById('summary-grand-total').textContent = `Total: US$${grandTotal.toLocaleString('en-US')}`;
+                document.getElementById('summary-grand-total').innerHTML = `Total: <span class="notranslate" translate="no">US$${grandTotal.toLocaleString('en-US')}</span>`;
             } else {
                 document.getElementById('summary-grand-total').textContent = '';
             }
@@ -5650,6 +5646,29 @@ if (carSeatsCol) {
         });
 		
     </script>
+
+<script>
+// Apex UX: Hides the subtitle's gold bullet separators only once it wraps onto multiple
+// lines. Wrap state can't be detected in pure CSS, so this measures whether all phrases
+// share the same offsetTop. A MutationObserver (rather than a fixed delay) re-checks when
+// GTranslate rewrites the text asynchronously after its own load.
+document.addEventListener('DOMContentLoaded', () => {
+    const subtitleWrap = document.getElementById('collectionSubtitle');
+    if (!subtitleWrap) return;
+    const phrases = subtitleWrap.querySelectorAll('.subtitle-phrase');
+
+    function updateSubtitleWrapState() {
+        if (!phrases.length) return;
+        const firstTop = phrases[0].offsetTop;
+        const isWrapped = Array.from(phrases).some(p => p.offsetTop !== firstTop);
+        subtitleWrap.classList.toggle('is-wrapped', isWrapped);
+    }
+
+    updateSubtitleWrapState();
+    window.addEventListener('resize', updateSubtitleWrapState);
+    new MutationObserver(updateSubtitleWrapState).observe(subtitleWrap, { childList: true, subtree: true, characterData: true });
+});
+</script>
 
 <style>
         /* Force the native select menu to stretch invisibly over our custom button */
