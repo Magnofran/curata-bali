@@ -931,33 +931,41 @@
         }
 
         .card .card-subtitle {
-            font-size: 0.85rem; /* Dropped one further notch for a tighter, more editorial rhythm and a more compact card, especially on mobile */
+            font-size: 0.90rem; /* Dropped one further notch for a tighter, more editorial rhythm and a more compact card, especially on mobile */
             color: var(--text-muted);
             margin-bottom: 0.75rem; /* Tightened to compact the card without further reducing type size */
             line-height: 1.35;
             flex-grow: 1;
             flex-shrink: 1;
             min-height: 0; /* Without this, flex's default min-height:auto stops the box from shrinking below its own text content, which would defeat the whole point when a 2-line title compresses the available space */
-            position: relative;
             max-height: 6.4rem; /* Same ceiling the previous line-clamp:5 enforced (5 lines at this font-size/line-height) — now contained via scroll instead of "..." so no translated copy is ever hidden, only English's own height budget is preserved */
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-y: contain; /* Prevents scroll-chaining into the carousel track or page — same technique already used by .review-item p */
             scrollbar-width: none;
             touch-action: pan-y pan-x !important; /* Matches .review-item p's override so the browser allows vertical panning starting inside this box */
+            /* Apex UX: Bottom "eyelid" fade — masks the element's own rendered pixels rather
+               than painting an opaque card-surface-colored gradient box on top of them. The
+               previous ::after overlay only looked clean when the last visible row was a
+               complete line; since available height differs per card (1-line vs 2-line
+               titles leave different room for the subtitle) and rarely lands on an exact
+               multiple of line-height, the last visible row is often a partially clipped
+               line — painting a solid color wash across half a glyph row is what produced
+               the patchy "printer running out of ink" look. Masking fades whatever pixels
+               are actually there — full row, half row, any language's glyph shapes — evenly.
+               calc(100% - 22px) keeps the fade a fixed 22px band measured from THIS card's
+               own bottom edge, so it's pixel-identical across every card regardless of box
+               height, content length, or language — never a proportional fade, never
+               dependent on line-height math lining up. */
+            -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent 100%);
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
         }
         .card-subtitle::-webkit-scrollbar {
             display: none;
-        }
-        .card-subtitle::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 22px;
-            background: linear-gradient(to bottom, transparent, var(--card-surface));
-            pointer-events: none; /* Purely visual — never intercepts scroll or the card's click-to-open handler */
         }
 
         .card-meta {
