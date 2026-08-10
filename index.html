@@ -1674,6 +1674,42 @@
             50% { box-shadow: 0 0 0 6px rgba(15, 23, 42, 0); }
         }
 
+/* Apex UX: "How It Works" mobile nav — regrouped beneath each step's copy as a
+           quiet, centered pair instead of sitting at the lateral edges of the viewport.
+           Reuses .explore-nav-btn's existing circular look untouched; only repositions it
+           via this new wrapper so the shared class (also used by the dormant Guest
+           Reflections carousel) is unaffected. */
+        .explore-nav-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.75rem;
+        }
+
+        .exploration-wrapper .explore-nav-group .explore-nav-btn.left,
+        .exploration-wrapper .explore-nav-group .explore-nav-btn.right {
+            position: static;
+            top: auto;
+            left: auto;
+            right: auto;
+            transform: none;
+        }
+
+        /* Dims the spent-direction arrow instead of removing it, so the pair holds its
+           position and never looks lopsided — the same disabled treatment already used
+           by .qty-stepper-btn:disabled elsewhere on the site. */
+        .exploration-wrapper .explore-nav-group .explore-nav-btn.hidden {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .explore-nav-group {
+                display: none;
+            }
+        }
+
         /* Hide the nav arrows on Desktop where grid is fully visible */
         @media (min-width: 768px) {
             .explore-nav-btn {
@@ -1780,9 +1816,6 @@
         </div>
         
         <div class="exploration-wrapper" style="position: relative;">
-            <button class="explore-nav-btn left hidden" id="exploreNavLeft" aria-label="Previous step">&larr;</button>
-            <button class="explore-nav-btn right pulse-arrow" id="exploreNavRight" aria-label="Next step">&rarr;</button>
-            
             <div class="exploration-grid" id="exploreGrid">
                 <div class="exploration-step">
                     <span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--text-dark); color: var(--surface); border-radius: 50%; margin: 0 auto 1rem auto; font-weight: 700;">1</span>
@@ -1804,6 +1837,11 @@
                     <h4 style="font-size: 1.05rem; margin-bottom: 0.15rem; text-transform: uppercase; letter-spacing: 0.05em;">Enjoy Bali</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 auto;">Welcome your dedicated team and settle the balance upon arrival.</p>
                 </div>
+            </div>
+
+            <div class="explore-nav-group">
+                <button class="explore-nav-btn left hidden" id="exploreNavLeft" aria-label="Previous step">&larr;</button>
+                <button class="explore-nav-btn right pulse-arrow" id="exploreNavRight" aria-label="Next step">&rarr;</button>
             </div>
         </div>
 
