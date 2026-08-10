@@ -314,10 +314,10 @@
             color: var(--text-dark);
         }
         
-/* Apex UX: Hides the gold bullet separators once the collection subtitle wraps onto
-           multiple lines (long translations only — English never wraps here). Toggled by
-           JS below via .is-wrapped, since CSS alone can't detect actual line-wrap state. */
-        #collectionSubtitle.is-wrapped .subtitle-bullet {
+/* Apex UX: When the subtitle fits on a single line (English), the first bullet is hidden 
+           to maintain perfect symmetry. When it wraps (long translations), all bullets become 
+           visible to create a clean, scannable list format. */
+        #collectionSubtitle:not(.is-wrapped) .first-bullet {
             display: none;
         }
 
@@ -1802,7 +1802,7 @@
         <div class="section-header">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
                 <h2>The Vurata Collection</h2>
-                <span id="collectionSubtitle" style="display: inline-flex; flex-wrap: wrap; justify-content: center; row-gap: 0.3rem; min-width: 0; max-width: 100%; text-align: center; font-family: 'Inter', sans-serif; font-size: clamp(0.55rem, 2.5vw, 0.8rem); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;"><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;">Private Experiences</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>In-Villa Wellness</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>Concierge</span></span>
+                <span id="collectionSubtitle" style="display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.3rem 0.4rem; min-width: 0; max-width: 100%; text-align: center; font-family: 'Inter', sans-serif; font-size: clamp(0.45rem, 2.2vw, 0.8rem); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;"><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet first-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>Private Experiences</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>In-Villa Wellness</span><span class="subtitle-phrase" style="white-space: nowrap; overflow-wrap: break-word;"><span class="subtitle-bullet" style="color: var(--accent-vibrant); margin: 0 0.35rem;">•</span>Concierge</span></span>
             </div>
             <div class="carousel-nav">
                 <button class="carousel-btn" id="scrollLeft" aria-label="Scroll Left">&larr;</button>
@@ -5660,7 +5660,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSubtitleWrapState() {
         if (!phrases.length) return;
         const firstTop = phrases[0].offsetTop;
-        const isWrapped = Array.from(phrases).some(p => p.offsetTop !== firstTop);
+        const isWrapped = Array.from(phrases).some(p => Math.abs(p.offsetTop - firstTop) > 5);
         subtitleWrap.classList.toggle('is-wrapped', isWrapped);
     }
 
