@@ -979,6 +979,33 @@
             color: var(--text-dark);
             border-top: 1px solid var(--border-light);
             padding-top: 0.85rem;
+            /* Apex UX: Caps this block to the height its English content naturally renders
+               at, and lets any translated fact that runs long simply wrap onto an extra
+               line within that same fixed window — revealed via vertical scroll with a
+               bottom mask-fade, the identical technique already used on .card-subtitle
+               above. Deliberately vertical, not horizontal: this block sits inside the
+               horizontally-swiping .carousel track, so a horizontal scroll region here
+               would compete with the carousel's own swipe gesture on the same axis.
+               Vertical scroll is orthogonal to that gesture and never fights it. */
+            max-height: 5rem; /* English content's rendered height (padding-top + 3 lines + both gaps ≈ 4.95rem), rounded up slightly for cross-browser font-metric safety */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            scrollbar-width: none;
+            touch-action: pan-y pan-x !important;
+            -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent 100%);
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+        }
+        .card-meta::-webkit-scrollbar {
+            display: none;
+        }
+        .card-meta > span,
+        .card-meta-emphasis {
+            flex-shrink: 0; /* Protects each fact's natural (possibly multi-line) height from flex-shrink compression now that the container has a max-height — overflow is handled by scroll, never by squeezing the text */
         }
 
 /* Apex UX: Brackets "Best for" and the host-ratio value prop together with a
