@@ -294,7 +294,7 @@
         /* Carousel Section */
         .packages-section { padding: 0; max-width: 1400px; margin: 5rem auto 6rem auto; }
         .section-header { 
-            padding: 0 2rem; 
+            padding: 0 0.5rem; /* Dropped from 2rem to reclaim physical screen width, giving translations significantly more room to stretch on a single horizontal line before wrapping */
             margin-bottom: 2rem; 
             display: flex; 
             flex-direction: column;
@@ -1013,14 +1013,29 @@
            cancellation card) so a first-time visitor's eye lands on both facts at
            once. Duration/timing stays unaccented above it — least decision-relevant
            line for a quick scanner. No new color, no font-weight change (avoids
-           wrapping risk on longer "Best for" lines at 0.75rem). */
+           wrapping risk on longer "Best for" lines at 0.75rem).
+           Rendered via an absolutely-positioned ::before rather than the previous
+           border-left + negative-margin trick: .card-meta now scrolls vertically
+           (overflow-y: auto for the multilingual fade fix), which forces overflow-x
+           to compute as auto too per spec — any content relying on a negative
+           margin to bleed outside the box gets clipped at that edge. Keeping the
+           gold line fully inside the box avoids that entirely, in a way that's
+           robust to any future overflow changes on the parent. */
         .card-meta-emphasis {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
-            border-left: 2px solid var(--accent-vibrant);
             padding-left: 0.5rem;
-            margin-left: -0.5rem;
+        }
+        .card-meta-emphasis::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 2px;
+            background: var(--accent-vibrant);
         }
 
         .price-block {
